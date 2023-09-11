@@ -36,17 +36,17 @@ public class TestPuzzle {
 		for (int i = 0; i < TAILLE; i++) {
 			for (int j = 0; j < TAILLE; j++) {
 				if (i != 0 && j != 0) {
-					grilleCorrecte[i][j] = compteur;
-					grilleIncorrecte[i][j] = compteur;
+					grilleCorrecte[i][j] = new Case(compteur);
+					grilleIncorrecte[i][j] = new Case(compteur);
 				}
 			}
 			compteur++;
 		}
 
-		grilleCorrecte[0][0] = -1;
+		grilleCorrecte[0][0] = new Case(-1);
 		int numChangement = grilleIncorrecte[TAILLE][TAILLE - 1];
-		grilleIncorrecte[TAILLE][TAILLE - 1] = -1;
-		grilleIncorrecte[0][0] = numChangement;
+		grilleIncorrecte[TAILLE][TAILLE - 1] = new Case(-1);
+		grilleIncorrecte[0][0] = new Case(numChangement);
 		
 		puzzle.setGrille(grilleCorrecte);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être correcte");
