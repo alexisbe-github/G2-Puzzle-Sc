@@ -95,7 +95,7 @@ public class TestPuzzle {
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
-		puzzle.deplacerCase(EDeplacement.Gauche);
+		puzzle.deplacerCase(EDeplacement.GAUCHE);
 
 		int newX, newY;
 		newX = puzzle.getXCaseVide();
@@ -117,7 +117,7 @@ public class TestPuzzle {
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
-		puzzle.deplacerCase(EDeplacement.Droite);
+		puzzle.deplacerCase(EDeplacement.DROITE);
 
 		int newX, newY;
 		newX = puzzle.getXCaseVide();
