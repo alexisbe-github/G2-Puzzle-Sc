@@ -56,8 +56,8 @@ public class TestPuzzle {
 		}
 
 		grilleCorrecte[0][0] = new Case(-1);
-		int numChangement = grilleIncorrecte[TAILLE][TAILLE - 1].getIndex();
-		grilleIncorrecte[TAILLE][TAILLE - 1] = new Case(-1);
+		int numChangement = grilleIncorrecte[TAILLE - 1][TAILLE - 2].getIndex();
+		grilleIncorrecte[TAILLE - 1][TAILLE - 2] = new Case(-1);
 		grilleIncorrecte[0][0] = new Case(numChangement);
 		
 		puzzle.setGrille(grilleCorrecte);
