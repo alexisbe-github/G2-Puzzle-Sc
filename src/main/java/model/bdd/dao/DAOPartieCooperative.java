@@ -95,8 +95,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 			pstmt.execute();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			
 		}
 		return partie;
 	}
