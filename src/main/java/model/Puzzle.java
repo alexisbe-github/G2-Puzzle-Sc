@@ -86,6 +86,7 @@ public class Puzzle {
 		System.out.println("Puzzle Après : \n"+this); //DEBUG
 	}
 	
+	
 	/**
 	 * 
 	 * @return TRUE si la grille est terminée, FALSE sinon
@@ -174,9 +175,10 @@ public void setGrille(Case[][] grille) {
 		String res = "";
 		for(int i=0;i<this.TAILLE;i++) {
 			for(int j=0;j<this.TAILLE;j++) {
-				res+=this.grille[i][j]+" / ";
+				res+=this.grille[i][j];
+				if(j==this.TAILLE-1) res+="\n";
+					else res+=" / ";
 			}
-			if(i!=this.TAILLE) res+="\n";
 		}
 		return res;
 	}
