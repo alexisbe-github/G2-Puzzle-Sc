@@ -1,43 +1,134 @@
 package main.java.model;
 
+import java.util.Random;
+
 public class Puzzle {
 	
-	private int taille;
+	public static final int TAILLEMINI= 3;
+	private final int TAILLE;
 	private Case[][] grille;
 	
 	/**
-	 * 
+	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
-	Puzzle(int taille){
-		this.taille=taille;
-		this.grille=new Case[4][4];
+	public Puzzle(int taille){
+		this.TAILLE = (taille>TAILLEMINI ? taille : TAILLEMINI);
+		this.grille=new Case[this.TAILLE][this.TAILLE];
+		this.initGrille();
+	}
+	
+	/**
+	 * Initialise la grille avec des cases de valeurs allant de 0 à 
+	 */
+	public void initGrille() {
+		int compteur = 0;
+		for(int i = 0; i<this.TAILLE;i++) {
+			for(int j = 0; j<this.TAILLE;j++) {
+				this.grille[i][j] = new Case(compteur);
+				compteur++;
+			}
+		}
+		this.grille[0][0] = new Case(-1);
 	}
 	
 	/**
 	 * Mélange la grille (place chaque case à une place aléatoire).
 	 */
-	private void melanger() {
+	public void melanger() {
 		//TODO
+		Random rd = new Random();
+		int tempi;
+		int tempj;
+		Case tempCase;
+		
+		for(int i=0;i<this.TAILLE;i++) {
+			for(int j=0;j<this.TAILLE;j++) {
+				tempi = rd.nextInt(this.TAILLE);
+				tempj = rd.nextInt(this.TAILLE);
+				tempCase = this.grille[tempi][tempj];
+				this.grille[tempi][tempj] = grille[i][j];
+				this.grille[i][j] = tempCase;
+			}
+		}
+	}
+	
+	/**
+	 * déplace la case vide dans une direction.
+	 * @param Enumeration de direction (EDeplacement) : HAUT -> y-1, BAS -> y+1, GAUCHE -> x-1, DROITE -> x+1.
+	 */
+	public void deplacerCase(EDeplacement dp) {
+		//TODO
+		int oldCoordX = this.getXCaseVide();
+		int oldCoordY = this.getYCaseVide();
+		int newCoordX = oldCoordX;
+		int newCoordY = oldCoordY;
+		switch(dp) {
+		case HAUT :
+			newCoordX += 1;
+			break;
+		case BAS :
+			newCoordX += -1;
+			break;
+		case GAUCHE :
+			newCoordY += 1;
+			break;
+		case DROITE :
+			newCoordY += -1;
+			break;
+		}
+		System.out.println("direction attendue : "+dp+"\nPuzzle Avant : \n"+this); //DEBUG
+		if(newCoordX < this.TAILLE && newCoordX >= 0 && newCoordY < this.TAILLE && newCoordY >= 0) {
+			Case tempCase = grille[newCoordX][newCoordY];
+			this.grille[newCoordX][newCoordY] = this.grille[oldCoordX][oldCoordY];
+			this.grille[oldCoordX][oldCoordY] = tempCase;
+		}
+		System.out.println("Puzzle Après : \n"+this); //DEBUG
 	}
 	
 	/**
 	 * 
-	 * @param nouvelle grille.
+	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
-	private void setGrille(Case[][] grille) {
+	public boolean verifierGrille() {
+		//TODO
+		boolean res = true;
+		int last = this.grille[0][0].getIndex();
+		
+		for(int i=0;i<this.TAILLE && res==true;i++) {
+			for(int j=0;j<this.TAILLE && res==true;j++) {
+				if(this.grille[i][j].getIndex()>=last) {
+					last = this.grille[i][j].getIndex();
+				}else res=false;
+			}
+		}
+		
+		return res;
+	}
+	
+	
+	
+	
+	
+public Case[][] getGrille(){
+	return this.grille;
+}
+	
+public void setGrille(Case[][] grille) {
 		this.grille=grille;
 	}
 	
+	
+	
 	/**
-	 * 
+	 * Getter coordonnée X Case vide
 	 * @return coordonnée X de la case vide (0 à gauche -> taille-1 à droite)
 	 */
 	public int getXCaseVide() {
 		int res = -1;
 		for(int i=0;i<this.grille.length;i++) {
-			for(int j=0;j<this.grille[i].length;j++) {
-				if(grille[i][j].getIndex()==-1) {
+			for(int j=0;j<this.TAILLE;j++) {
+				if(this.grille[i][j].getIndex()==-1) {
 					res=i;
 				}
 			}
@@ -46,14 +137,14 @@ public class Puzzle {
 	}
 	
 	/**
-	 * 
+	 * Getter coordonnée Y Case vide
 	 * @return coordonnée Y de la case vide (0 en haut -> taille-1 à en bas)
 	 */
 	public int getYCaseVide() {
 		int res = -1;
 		for(int i=0;i<this.grille.length;i++) {
-			for(int j=0;j<this.grille[i].length;j++) {
-				if(grille[i][j].getIndex()==-1) {
+			for(int j=0;j<this.TAILLE;j++) {
+				if(this.grille[i][j].getIndex()==-1) {
 					res=j;
 				}
 			}
@@ -63,7 +154,7 @@ public class Puzzle {
 	
 	
 	/**
-	 * 
+	 * Getter Case a une coordonnée
 	 * @param x : Coordonnée x de la case (de gauche à droite)
 	 * @param y : Coordonnée y de la case (de haut en bas)
 	 * @return La case aux coordonnées demandées.
@@ -72,30 +163,22 @@ public class Puzzle {
 		return grille[x][y];
 	}
 	
-	/**
-	 * 
-	 * @return taille du puzzle (Puzzle de 4x4 -> retourne 4).
-	 */
+
+	
 	public int getTaille() {
-		return this.taille;
+		return this.TAILLE;
 	}
 	
-	/**
-	 * déplace la case vide dans une direction.
-	 * @param Enumeration de direction (EDeplacement) : HAUT -> y-1, BAS -> y+1, GAUCHE -> x-1, DROITE -> x+1.
-	 */
-	private void deplacerCase(EDeplacement dp) {
-		//TODO
-		switch(dp) {
-		case HAUT :
-			break;
-		case BAS :
-			break;
-		case GAUCHE :
-			break;
-		case DROITE :
-			break;
+	@Override
+	public String toString() {
+		String res = "";
+		for(int i=0;i<this.TAILLE;i++) {
+			for(int j=0;j<this.TAILLE;j++) {
+				res+=this.grille[i][j]+" / ";
+			}
+			if(i!=this.TAILLE) res+="\n";
 		}
+		return res;
 	}
 
 }

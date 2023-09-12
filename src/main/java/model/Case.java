@@ -42,4 +42,9 @@ public class Case {
 		return this.image;
 	}
 	
+	@Override
+	public String toString() {
+		return "["+this.index+"]";
+	}
+	
 }
