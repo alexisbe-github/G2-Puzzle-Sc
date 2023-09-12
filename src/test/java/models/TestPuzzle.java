@@ -56,7 +56,7 @@ public class TestPuzzle {
 		}
 
 		grilleCorrecte[0][0] = new Case(-1);
-		int numChangement = grilleIncorrecte[TAILLE][TAILLE - 1];
+		Case numChangement = grilleIncorrecte[TAILLE][TAILLE - 1];
 		grilleIncorrecte[TAILLE][TAILLE - 1] = new Case(-1);
 		grilleIncorrecte[0][0] = new Case(numChangement);
 		
