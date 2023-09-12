@@ -49,7 +49,7 @@ public class TestPuzzle {
 		int compteur = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int j = 0; j < TAILLE; j++) {
-				if (i != 0 && j != 0) {
+				if (!(i == 0 && j == 0)) {
 					grilleCorrecte[i][j] = new Case(compteur);
 					grilleIncorrecte[i][j] = new Case(compteur);
 				}
