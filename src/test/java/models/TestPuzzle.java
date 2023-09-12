@@ -17,6 +17,18 @@ public class TestPuzzle {
 	public static void setUp() {
 		puzzle = new Puzzle(TAILLE);
 	}
+	
+	@Test
+	public void testConstructor() {
+		int tailleMauvaise = 2;
+		Puzzle p = new Puzzle(tailleMauvaise);
+		Assertions.assertTrue(p.getGrille().length>2,"La taille du puzzle devrait être supérieure à 2, actuellement:"+tailleMauvaise);
+		
+		int tailleMauvaise2 = -1;
+		Puzzle p2 = new Puzzle(tailleMauvaise2);
+		Assertions.assertTrue(p2.getGrille().length>2,"La taille du puzzle devrait être supérieure à 2, actuellement:"+tailleMauvaise2);
+		
+	}
 
 	@Test
 	public void testMelangerGrille() {
