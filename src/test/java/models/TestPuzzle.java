@@ -1,11 +1,11 @@
 package test.java.models;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import main.java.model.Case;
+import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 
 public class TestPuzzle {
