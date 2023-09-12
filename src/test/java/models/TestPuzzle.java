@@ -17,17 +17,19 @@ public class TestPuzzle {
 	public static void setUp() {
 		puzzle = new Puzzle(TAILLE);
 	}
-	
+
 	@Test
 	public void testConstructor() {
 		int tailleMauvaise = 2;
 		Puzzle p = new Puzzle(tailleMauvaise);
-		Assertions.assertTrue(p.getGrille().length>2,"La taille du puzzle devrait être supérieure à 2, actuellement:"+tailleMauvaise);
-		
+		Assertions.assertTrue(p.getGrille().length > 2,
+				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise);
+
 		int tailleMauvaise2 = -1;
 		Puzzle p2 = new Puzzle(tailleMauvaise2);
-		Assertions.assertTrue(p2.getGrille().length>2,"La taille du puzzle devrait être supérieure à 2, actuellement:"+tailleMauvaise2);
-		
+		Assertions.assertTrue(p2.getGrille().length > 2,
+				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise2);
+
 	}
 
 	@Test
@@ -51,18 +53,18 @@ public class TestPuzzle {
 					grilleCorrecte[i][j] = new Case(compteur);
 					grilleIncorrecte[i][j] = new Case(compteur);
 				}
+				compteur++;
 			}
-			compteur++;
 		}
 
 		grilleCorrecte[0][0] = new Case(-1);
 		int numChangement = grilleIncorrecte[TAILLE - 1][TAILLE - 2].getIndex();
 		grilleIncorrecte[TAILLE - 1][TAILLE - 2] = new Case(-1);
 		grilleIncorrecte[0][0] = new Case(numChangement);
-		
+
 		puzzle.setGrille(grilleCorrecte);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être correcte");
-		
+
 		puzzle.setGrille(grilleIncorrecte);
 		Assertions.assertFalse(puzzle.verifierGrille(), "La grille devrait être incorrecte");
 	}
@@ -103,14 +105,14 @@ public class TestPuzzle {
 
 		if (oldX == puzzle.getTaille()) {
 			Assertions.assertEquals(oldX, newX,
-					"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à droite (" + oldX
-							+ ") or elle se trouve maintenant en " + newX);
+					"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à droite ("
+							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
 			Assertions.assertEquals(oldX, newX + 1,
 					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX + 1));
 		}
 	}
-	
+
 	@Test
 	public void testDeplacerCaseDroit() {
 		int oldX, oldY;
@@ -125,8 +127,8 @@ public class TestPuzzle {
 
 		if (oldX == 0) {
 			Assertions.assertEquals(oldX, newX,
-					"Le déplacement vers la droite n'est pas possible lorsque la case vide se trouve tout à gauche (" + oldX
-							+ ") or elle se trouve maintenant en " + newX);
+					"Le déplacement vers la droite n'est pas possible lorsque la case vide se trouve tout à gauche ("
+							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
 			Assertions.assertEquals(oldX, newX - 1,
 					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX - 1));
