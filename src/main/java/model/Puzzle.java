@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Puzzle {
 	
-	public static final int TAILLEMINI= 3;
+	public static final int TAILLE_MINI= 3;
 	private final int TAILLE;
 	private Case[][] grille;
 	
@@ -13,7 +13,7 @@ public class Puzzle {
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
 	public Puzzle(int taille){
-		this.TAILLE = (taille>TAILLEMINI ? taille : TAILLEMINI);
+		this.TAILLE = (taille>TAILLE_MINI ? taille : TAILLE_MINI);
 		this.grille=new Case[this.TAILLE][this.TAILLE];
 		this.initGrille();
 	}
@@ -36,7 +36,6 @@ public class Puzzle {
 	 * Mélange la grille (place chaque case à une place aléatoire).
 	 */
 	public void melanger() {
-		//TODO
 		Random rd = new Random();
 		int tempi;
 		int tempj;
@@ -46,9 +45,7 @@ public class Puzzle {
 			for(int j=0;j<this.TAILLE;j++) {
 				tempi = rd.nextInt(this.TAILLE);
 				tempj = rd.nextInt(this.TAILLE);
-				tempCase = this.grille[tempi][tempj];
-				this.grille[tempi][tempj] = grille[i][j];
-				this.grille[i][j] = tempCase;
+				this.echangerCase(i, j, tempi, tempj);
 			}
 		}
 	}
@@ -58,7 +55,6 @@ public class Puzzle {
 	 * @param Enumeration de direction (EDeplacement) : HAUT -> y-1, BAS -> y+1, GAUCHE -> x-1, DROITE -> x+1.
 	 */
 	public void deplacerCase(EDeplacement dp) {
-		//TODO
 		int oldCoordX = this.getXCaseVide();
 		int oldCoordY = this.getYCaseVide();
 		int newCoordX = oldCoordX;
@@ -77,13 +73,28 @@ public class Puzzle {
 			newCoordX += -1;
 			break;
 		}
-		System.out.println("direction attendue : "+dp+"\nPuzzle Avant : \n"+this); //DEBUG
 		if(newCoordX < this.TAILLE && newCoordX >= 0 && newCoordY < this.TAILLE && newCoordY >= 0) {
-			Case tempCase = grille[newCoordX][newCoordY];
-			this.grille[newCoordX][newCoordY] = this.grille[oldCoordX][oldCoordY];
-			this.grille[oldCoordX][oldCoordY] = tempCase;
+			this.echangerCase(oldCoordX, oldCoordY, newCoordX, newCoordY);
 		}
-		System.out.println("Puzzle Après : \n"+this); //DEBUG
+	}
+	
+	/**
+	 * Permet d'échanger deux cases.
+	 * 
+	 * @param x1 Coordonnée X de la première case
+	 * @param y1 Coordonnée Y de la première case
+	 * @param x2 Coordonnée X de la deuxieme case
+	 * @param y2 Coordonnée Y de la deuxieme case
+	 */
+	private void echangerCase(int x1, int y1, int x2, int y2){
+		try {
+			Case tempCase = grille[x1][y1];
+			this.grille[x1][y1] = this.grille[x2][y2];
+			this.grille[x2][y2] = tempCase;
+		}catch(ArrayIndexOutOfBoundsException e) {
+			//Ne pas déplacer les cases si les coordonnées sont éronnées
+		}
+		
 	}
 	
 	
@@ -92,7 +103,6 @@ public class Puzzle {
 	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
 	public boolean verifierGrille() {
-		//TODO
 		boolean res = true;
 		int last = this.grille[0][0].getIndex();
 		
@@ -106,8 +116,6 @@ public class Puzzle {
 		
 		return res;
 	}
-	
-	
 	
 	
 	
@@ -160,7 +168,7 @@ public class Puzzle {
 	 * @param y : Coordonnée y de la case (de haut en bas)
 	 * @return La case aux coordonnées demandées.
 	 */
-	public Case getCase(int x, int y) throws Exception{
+	public Case getCase(int x, int y) throws ArrayIndexOutOfBoundsException{
 		return grille[x][y];
 	}
 	

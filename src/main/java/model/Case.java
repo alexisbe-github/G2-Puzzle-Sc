@@ -26,18 +26,11 @@ public class Case {
 	}
 	
 	
-	/**
-	 * 
-	 * @return index de la case1
-	 */
 	public int getIndex() {
 		return this.index;
 	}
 	
-	/**
-	 * 
-	 * @return image de la case
-	 */
+
 	public BufferedImage getImage() {
 		return this.image;
 	}
