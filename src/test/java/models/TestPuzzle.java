@@ -109,7 +109,7 @@ public class TestPuzzle {
 							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
 			Assertions.assertEquals(oldX, newX - 1,
-					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX + 1));
+					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX - 1));
 		}
 	}
 
@@ -131,7 +131,7 @@ public class TestPuzzle {
 							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
 			Assertions.assertEquals(oldX, newX + 1,
-					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX - 1));
+					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX + 1));
 		}
 	}
 
