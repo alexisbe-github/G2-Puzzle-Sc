@@ -23,7 +23,7 @@ public class Puzzle {
 	/**
 	 * Initialise la grille avec des cases de valeurs allant de 0 à
 	 */
-	public void initGrille() {
+	private void initGrille() {
 		int compteur = 0;
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
