@@ -25,7 +25,7 @@ public class Puzzle {
 		int compteur = 0;
 		for(int i = 0; i<this.TAILLE;i++) {
 			for(int j = 0; j<this.TAILLE;j++) {
-				this.grille[i][j] = new Case(compteur);
+				this.grille[j][i] = new Case(compteur);
 				compteur++;
 			}
 		}
@@ -65,16 +65,16 @@ public class Puzzle {
 		int newCoordY = oldCoordY;
 		switch(dp) {
 		case HAUT :
-			newCoordX += 1;
-			break;
-		case BAS :
-			newCoordX += -1;
-			break;
-		case GAUCHE :
 			newCoordY += 1;
 			break;
-		case DROITE :
+		case BAS :
 			newCoordY += -1;
+			break;
+		case GAUCHE :
+			newCoordX += 1;
+			break;
+		case DROITE :
+			newCoordX += -1;
 			break;
 		}
 		System.out.println("direction attendue : "+dp+"\nPuzzle Avant : \n"+this); //DEBUG
@@ -98,8 +98,8 @@ public class Puzzle {
 		
 		for(int i=0;i<this.TAILLE && res==true;i++) {
 			for(int j=0;j<this.TAILLE && res==true;j++) {
-				if(this.grille[i][j].getIndex()>=last) {
-					last = this.grille[i][j].getIndex();
+				if(this.grille[j][i].getIndex()>=last) {
+					last = this.grille[j][i].getIndex();
 				}else res=false;
 			}
 		}
@@ -111,13 +111,13 @@ public class Puzzle {
 	
 	
 	
-public Case[][] getGrille(){
-	return this.grille;
-}
-	
-public void setGrille(Case[][] grille) {
-		this.grille=grille;
+	public Case[][] getGrille(){
+		return this.grille;
 	}
+		
+	public void setGrille(Case[][] grille) {
+			this.grille=grille;
+		}
 	
 	
 	
@@ -175,7 +175,7 @@ public void setGrille(Case[][] grille) {
 		String res = "";
 		for(int i=0;i<this.TAILLE;i++) {
 			for(int j=0;j<this.TAILLE;j++) {
-				res+=this.grille[i][j];
+				res+=this.grille[j][i];
 				if(j==this.TAILLE-1) res+="\n";
 					else res+=" / ";
 			}

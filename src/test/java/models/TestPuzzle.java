@@ -50,8 +50,8 @@ public class TestPuzzle {
 		for (int i = 0; i < TAILLE; i++) {
 			for (int j = 0; j < TAILLE; j++) {
 				if (!(i == 0 && j == 0)) {
-					grilleCorrecte[i][j] = new Case(compteur);
-					grilleIncorrecte[i][j] = new Case(compteur);
+					grilleCorrecte[j][i] = new Case(compteur);
+					grilleIncorrecte[j][i] = new Case(compteur);
 				}
 				compteur++;
 			}
@@ -86,8 +86,8 @@ public class TestPuzzle {
 					"Le déplacement vers le haut n'est pas possible lorsque la case vide se trouve tout en bas (" + oldY
 							+ ") or elle se trouve maintenant en " + newY);
 		} else {
-			Assertions.assertEquals(oldY, newY + 1,
-					"La case vide se trouve en " + newY + ", elle devait se trouver en " + (newY + 1));
+			Assertions.assertEquals(oldY, newY - 1,
+					"La case vide se trouve en " + newY + ", elle devait se trouver en " + (newY - 1));
 		}
 	}
 
@@ -108,7 +108,7 @@ public class TestPuzzle {
 					"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à droite ("
 							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
-			Assertions.assertEquals(oldX, newX + 1,
+			Assertions.assertEquals(oldX, newX - 1,
 					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX + 1));
 		}
 	}
@@ -130,7 +130,7 @@ public class TestPuzzle {
 					"Le déplacement vers la droite n'est pas possible lorsque la case vide se trouve tout à gauche ("
 							+ oldX + ") or elle se trouve maintenant en " + newX);
 		} else {
-			Assertions.assertEquals(oldX, newX - 1,
+			Assertions.assertEquals(oldX, newX + 1,
 					"La case vide se trouve en " + newX + ", elle devait se trouver en " + (newX - 1));
 		}
 	}
@@ -152,8 +152,8 @@ public class TestPuzzle {
 					"Le déplacement vers le bas n'est pas possible lorsque la case vide se trouve tout en haut (" + oldY
 							+ ") or elle se trouve maintenant en " + newY);
 		} else {
-			Assertions.assertEquals(oldY, newY - 1,
-					"La case vide se trouve en " + newY + ", elle devait se trouver en " + (newY + 1));
+			Assertions.assertEquals(oldY, newY + 1,
+					"La case vide se trouve en " + newY + ", elle devait se trouver en " + (newY - 1));
 		}
 	}
 }
