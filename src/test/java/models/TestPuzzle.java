@@ -29,7 +29,6 @@ public class TestPuzzle {
 		Puzzle p2 = new Puzzle(tailleMauvaise2);
 		Assertions.assertTrue(p2.getGrille().length > 2,
 				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise2);
-
 	}
 
 	@Test
@@ -155,5 +154,29 @@ public class TestPuzzle {
 			Assertions.assertEquals(oldY, newY + 1,
 					"La case vide se trouve en " + newY + ", elle devait se trouver en " + (newY - 1));
 		}
+	}
+
+	@Test
+	public void testGetCoordonneesCaseVide() {
+		int x, y;
+		x = puzzle.getXCaseVide();
+		y = puzzle.getYCaseVide();
+
+		int valeurCaseRecuperee, valeurAttendue;
+		valeurCaseRecuperee = puzzle.getGrille()[x][y].getIndex();
+		valeurAttendue = Case.INDEX_CASE_VIDE;
+
+		Assertions.assertEquals(valeurCaseRecuperee, valeurAttendue, "Normalement la case vide doit avoir comme index:"
+				+ valeurAttendue + " or l'index de la case récupérée est:" + valeurCaseRecuperee);
+	}
+
+	@Test
+	public void testGetCaseArrayIndexOutOfBounds() {
+		int xAbsurde = this.TAILLE + 1;
+		int y = 0;
+
+		Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+			Case caseTmp = puzzle.getCase(xAbsurde, y);
+		});
 	}
 }

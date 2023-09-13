@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Case {
 
+	public final static int INDEX_CASE_VIDE = -1;
 	private int index;
 	private BufferedImage image;
 	
