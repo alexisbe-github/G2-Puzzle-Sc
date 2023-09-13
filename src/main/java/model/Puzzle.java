@@ -40,15 +40,15 @@ public class Puzzle {
 		Random rd = new Random();
 		int tempi;
 		int tempj;
-		Case tempCase;
-		
-		for(int i=0;i<this.TAILLE;i++) {
-			for(int j=0;j<this.TAILLE;j++) {
-				tempi = rd.nextInt(this.TAILLE);
-				tempj = rd.nextInt(this.TAILLE);
-				this.echangerCase(new Point(i, j), new Point(tempi, tempj));
+		do {
+			for(int i=0;i<this.TAILLE;i++) {
+				for(int j=0;j<this.TAILLE;j++) {
+					tempi = rd.nextInt(this.TAILLE);
+					tempj = rd.nextInt(this.TAILLE);
+					this.echangerCase(new Point(i, j), new Point(tempi, tempj));
+				}
 			}
-		}
+		}while(this.verifierGrille());  //Permet d'éviter de se retrouver avec une grille ordonnée malgré le mélange
 	}
 	
 	/**
