@@ -1,5 +1,6 @@
 package main.java.model;
 
+import java.awt.Point;
 import java.util.Random;
 
 public class Puzzle {
@@ -45,7 +46,7 @@ public class Puzzle {
 			for(int j=0;j<this.TAILLE;j++) {
 				tempi = rd.nextInt(this.TAILLE);
 				tempj = rd.nextInt(this.TAILLE);
-				this.echangerCase(i, j, tempi, tempj);
+				this.echangerCase(new Point(i, j), new Point(tempi, tempj));
 			}
 		}
 	}
@@ -74,7 +75,7 @@ public class Puzzle {
 			break;
 		}
 		if(newCoordX < this.TAILLE && newCoordX >= 0 && newCoordY < this.TAILLE && newCoordY >= 0) {
-			this.echangerCase(oldCoordX, oldCoordY, newCoordX, newCoordY);
+			this.echangerCase(new Point(oldCoordX, oldCoordY),new Point(newCoordX, newCoordY));
 		}
 	}
 	
@@ -86,11 +87,11 @@ public class Puzzle {
 	 * @param x2 Coordonnée X de la deuxieme case
 	 * @param y2 Coordonnée Y de la deuxieme case
 	 */
-	private void echangerCase(int x1, int y1, int x2, int y2){
+	private void echangerCase(Point p1, Point p2){
 		try {
-			Case tempCase = grille[x1][y1];
-			this.grille[x1][y1] = this.grille[x2][y2];
-			this.grille[x2][y2] = tempCase;
+			Case tempCase = grille[p1.x][p1.y];
+			this.grille[p1.x][p1.y] = this.grille[p2.x][p2.y];
+			this.grille[p2.x][p2.y] = tempCase;
 		}catch(ArrayIndexOutOfBoundsException e) {
 			//Ne pas déplacer les cases si les coordonnées sont éronnées
 		}
