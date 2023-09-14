@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Puzzle {
@@ -159,6 +160,22 @@ public class Puzzle {
 			}
 		}
 		return res;
+	}
+	
+	/**
+	 * 
+	 * @param img
+	 */
+	public void decoupageImage(BufferedImage img) {
+		int height = img.getHeight();
+		int width = img.getWidth();
+		for(int i=0;i<this.TAILLE;i++) {
+			for(int j=0;j<this.TAILLE;j++) {
+				int index = this.grille[j][i].getIndex();
+				//BufferedImage subImg = img.getSubimage(.x, y, width/this.TAILLE, height/this.TAILLE);
+				//this.grille[j][i].setImage(subImg);
+			}
+		}
 	}
 
 	/**
