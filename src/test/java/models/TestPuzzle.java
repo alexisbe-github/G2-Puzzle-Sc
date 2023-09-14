@@ -19,16 +19,36 @@ public class TestPuzzle {
 	}
 
 	@Test
-	public void testConstructor() {
+	public void testConstructor1() {
 		int tailleMauvaise = 2;
 		Puzzle p = new Puzzle(tailleMauvaise);
 		Assertions.assertTrue(p.getGrille().length > 2,
 				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise);
+	}
 
-		int tailleMauvaise2 = -1;
-		Puzzle p2 = new Puzzle(tailleMauvaise2);
+	@Test
+	public void testConstructor2() {
+		int tailleMauvaise = -1;
+		Puzzle p2 = new Puzzle(tailleMauvaise);
 		Assertions.assertTrue(p2.getGrille().length > 2,
-				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise2);
+				"La taille du puzzle devrait être supérieure à 2, actuellement:" + tailleMauvaise);
+	}
+
+	@Test
+	public void testConstructor3() {
+		int bonneTaille = 4;
+		Puzzle p = new Puzzle(bonneTaille);
+		Assertions.assertEquals(p.getTaille(), bonneTaille,
+				"La taille du puzzle devrait être " + bonneTaille + ", actuellement:" + p.getTaille());
+	}
+
+	@Test
+	public void testConstructorCase() {
+		int indexCaseVide = Case.INDEX_CASE_VIDE;
+		Case caseVide = new Case(indexCaseVide);
+		Assertions.assertEquals(indexCaseVide, caseVide.getIndex(),
+				"On devrait avoir une case vide construite avec l'index " + indexCaseVide + " mais on a "
+						+ caseVide.getIndex());
 	}
 
 	@Test
@@ -179,10 +199,10 @@ public class TestPuzzle {
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldX, newX,
-				"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à droite ("
-						+ oldX + ") or elle se trouve maintenant en " + newX);
+				"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à droite (" + oldX
+						+ ") or elle se trouve maintenant en " + newX);
 	}
-	
+
 	@Test
 	public void testDeplacerCaseBas() {
 		// on prépare la grille avec une case vide qui ne se trouve pas en bas
@@ -294,8 +314,8 @@ public class TestPuzzle {
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldX, newX,
-				"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à gauche ("
-						+ oldX + ") or elle se trouve maintenant en " + newX);
+				"Le déplacement vers la gauche n'est pas possible lorsque la case vide se trouve tout à gauche (" + oldX
+						+ ") or elle se trouve maintenant en " + newX);
 	}
 
 	@Test
