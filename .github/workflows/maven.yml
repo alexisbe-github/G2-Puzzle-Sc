@@ -28,6 +28,14 @@ jobs:
 
      - name: Run Tests
        run: mvn test
+
+     - name: Génération badge Coverage
+       id: cov-badge
+       uses: cicirello/jacoco-badge-generator@v2
+       with:
+        generate-branches-badge: true
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
+        
   
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
