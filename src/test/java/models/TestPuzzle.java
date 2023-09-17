@@ -12,7 +12,9 @@ public class TestPuzzle {
 
 	private static Puzzle puzzle;
 	private final static int TAILLE = 3;
-
+	private int oldX,oldY,newX,newY;
+	private Case[][] grille;
+	
 	@BeforeAll
 	public static void setUp() {
 		puzzle = new Puzzle(TAILLE);
@@ -92,7 +94,7 @@ public class TestPuzzle {
 	public void testDeplacerCaseHaut() {
 		// on prépare la grille avec une case vide qui ne se trouve pas en bas
 		puzzle.melanger();
-		Case[][] grille = puzzle.getGrille();
+		grille = puzzle.getGrille();
 		int x, y, posX, posY;
 		x = 1;
 		y = 1;
@@ -103,13 +105,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.HAUT);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldY, newY - 1,
@@ -120,7 +120,7 @@ public class TestPuzzle {
 	public void testDeplacerCaseHautImpossible() {
 		// on prépare la grille avec une case vide qui se trouve tout en bas
 		puzzle.melanger();
-		Case[][] grille = puzzle.getGrille();
+		grille = puzzle.getGrille();
 		int x, y, posX, posY;
 		x = 1;
 		y = this.TAILLE - 1;
@@ -131,13 +131,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.HAUT);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldY, newY,
@@ -149,7 +147,7 @@ public class TestPuzzle {
 	public void testDeplacerCaseGauche() {
 		// on prépare la grille avec une case vide qui ne se trouve pas à droite
 		puzzle.melanger();
-		Case[][] grille = puzzle.getGrille();
+		grille = puzzle.getGrille();
 		int x, y, posX, posY;
 		x = 1;
 		y = 1;
@@ -160,13 +158,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.GAUCHE);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 
@@ -178,7 +174,7 @@ public class TestPuzzle {
 	public void testDeplacerCaseGaucheImpossible() {
 		// on prépare la grille avec une case vide qui se trouve tout à droite
 		puzzle.melanger();
-		Case[][] grille = puzzle.getGrille();
+		grille = puzzle.getGrille();
 		int x, y, posX, posY;
 		x = this.TAILLE - 1;
 		y = 1;
@@ -189,13 +185,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.HAUT);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldX, newX,
@@ -207,7 +201,7 @@ public class TestPuzzle {
 	public void testDeplacerCaseBas() {
 		// on prépare la grille avec une case vide qui ne se trouve pas en bas
 		puzzle.melanger();
-		Case[][] grille = puzzle.getGrille();
+		grille = puzzle.getGrille();
 		int x, y, posX, posY;
 		x = 1;
 		y = 1;
@@ -218,13 +212,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.BAS);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldY, newY + 1,
@@ -246,13 +238,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.BAS);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldY, newY,
@@ -275,13 +265,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.DROITE);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 
@@ -304,13 +292,11 @@ public class TestPuzzle {
 		grille[posX][posY] = caseSwap;
 		grille[x][y] = caseVide;
 
-		int oldX, oldY;
 		oldX = puzzle.getXCaseVide();
 		oldY = puzzle.getYCaseVide();
 
 		puzzle.deplacerCase(EDeplacement.DROITE);
 
-		int newX, newY;
 		newX = puzzle.getXCaseVide();
 		newY = puzzle.getYCaseVide();
 		Assertions.assertEquals(oldX, newX,
