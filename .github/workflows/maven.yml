@@ -36,7 +36,7 @@ jobs:
        id: cov-badge
        uses: cicirello/jacoco-badge-generator@v1.0.0
        with:
-        jacoco-badge-file: coverage.svg
+        jacoco-badge-file: jacoco.svg
 
      - name: Log taux de Coverage
        run: |
