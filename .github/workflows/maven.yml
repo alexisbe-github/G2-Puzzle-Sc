@@ -26,6 +26,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+     - name: Verify
+       run: mvn verify
+
      - name: Run Tests
        run: mvn test
 
@@ -34,7 +37,6 @@ jobs:
        uses: cicirello/jacoco-badge-generator@v2
        with:
         generate-branches-badge: true
-        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
         
   
 
