@@ -31,9 +31,13 @@ jobs:
 
      - name: Génération badge Coverage
        id: cov-badge
-       uses: cicirello/jacoco-badge-generator@v2
+       uses: cicirello/jacoco-badge-generator@v1.0.0
        with:
-        generate-branches-badge: true
+        jacoco-badge-file: coverage.svg
+
+     - name: Log taux de Coverage
+       run: |
+        echo "Coverage: ${{ steps.cov-badge.outputs.coverage }}"
         
   
 
