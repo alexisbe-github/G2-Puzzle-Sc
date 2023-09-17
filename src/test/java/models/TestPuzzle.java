@@ -66,7 +66,6 @@ public class TestPuzzle {
 	public void verifierGrille() {
 		Case[][] grilleCorrecte = new Case[TAILLE][TAILLE];
 		Case[][] grilleIncorrecte = new Case[TAILLE][TAILLE];
-
 		int compteur = 0;
 		for (int i = 0; i < TAILLE; i++) {
 			for (int j = 0; j < TAILLE; j++) {
