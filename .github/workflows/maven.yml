@@ -32,6 +32,11 @@ jobs:
      - name: Run Tests
        run: mvn test
 
+     - name: Setup git credentials
+       uses: de-vri-es/setup-git-credentials@v2
+       with:
+          credentials: ${{secrets.GIT_CREDENTIALS}}
+          
      - name: Génération badge Coverage
        id: cov-badge
        uses: cicirello/jacoco-badge-generator@v1.0.0
