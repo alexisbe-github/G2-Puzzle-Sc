@@ -12,9 +12,9 @@ public class TestPuzzle {
 
 	private static Puzzle puzzle;
 	private final static int TAILLE = 3;
-	private int oldX,oldY,newX,newY;
+	private int oldX, oldY, newX, newY;
 	private Case[][] grille;
-	
+
 	@BeforeAll
 	public static void setUp() {
 		puzzle = new Puzzle(TAILLE);
