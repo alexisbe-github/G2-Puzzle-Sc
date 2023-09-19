@@ -1,15 +1,13 @@
 package test.java.model.bdd.dao;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 
@@ -18,7 +16,7 @@ public class TestDAOJoueur implements TestCRUD {
 	private static DAOJoueur dao;
 	private static List<Long> listeJoueurs = new ArrayList<>();
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		dao = new DAOJoueur();
 	}
@@ -72,7 +70,7 @@ public class TestDAOJoueur implements TestCRUD {
 		Assertions.assertNull(dao.trouver(j.getId()).getPseudo());
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanUp() {
 		for (long id : listeJoueurs) {
 			dao.supprimer(dao.trouver(id));

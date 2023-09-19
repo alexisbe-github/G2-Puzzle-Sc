@@ -3,10 +3,10 @@ package test.java.model.bdd.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.DAOPartie;
@@ -25,7 +25,7 @@ public class TestDAOPartieCooperative implements TestCRUD {
 	private static DAOPartie daoPartie;
 	private static long idJoueur1, idJoueur2, idJoueur3, idJoueur4, idPartie1, idPartie2, idPartie3;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		dao = new DAOPartieCooperative();
 		daoJoueur = new DAOJoueur();
@@ -124,7 +124,7 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), 0);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanUp() {
 
 		for (long id : listePartiesCooperatives) {

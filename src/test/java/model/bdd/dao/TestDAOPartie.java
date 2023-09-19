@@ -3,10 +3,10 @@ package test.java.model.bdd.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import main.java.model.bdd.dao.DAOPartie;
 import main.java.model.bdd.dao.beans.PartieSQL;
@@ -16,7 +16,7 @@ public class TestDAOPartie implements TestCRUD {
 	private static DAOPartie dao;
 	private static List<Long> listeParties = new ArrayList<>();
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		dao = new DAOPartie();
 	}
@@ -77,7 +77,7 @@ public class TestDAOPartie implements TestCRUD {
 		Assertions.assertEquals(dao.trouver(p.getId()).getTailleGrille(), 0);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanUp() {
 		for (long id : listeParties) {
 			dao.supprimer(dao.trouver(id));
