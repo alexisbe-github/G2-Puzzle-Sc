@@ -93,7 +93,7 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 			pstmt.execute();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.err.println("Erreur lors de la création : \n" + e.getMessage());
 		}
 		return partie;
 	}
