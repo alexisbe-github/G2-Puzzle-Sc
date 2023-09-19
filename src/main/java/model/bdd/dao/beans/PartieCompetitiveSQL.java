@@ -13,7 +13,7 @@ public class PartieCompetitiveSQL implements Serializable {
 
 	private static final long serialVersionUID = 2636352681810373717L;
 
-	long id_joueur, id_partie, id_vainqueur;
+	private long id_joueur, id_partie, id_vainqueur;
 
 	/**
 	 * @return L'identifiant du joueur

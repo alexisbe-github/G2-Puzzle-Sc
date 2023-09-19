@@ -1,4 +1,4 @@
-package test.java.models;
+package test.java.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
