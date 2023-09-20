@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class acceuil extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./resources/acceuil.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("acceuil.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 300, 200);
