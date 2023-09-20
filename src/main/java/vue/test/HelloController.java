@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package main.java.vue.test;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

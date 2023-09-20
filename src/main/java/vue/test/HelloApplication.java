@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package main.java.vue.test;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
