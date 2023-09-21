@@ -12,6 +12,8 @@ import main.resources.utils.EnvironmentVariablesUtils;
  */
 
 public class Connexion {
+	
+	// TODO Énumération
 
 	private static Connexion instance = null;
 	private Connection con;
