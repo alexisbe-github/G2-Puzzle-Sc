@@ -1,5 +1,11 @@
 package test.java.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -7,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
+import main.java.utils.Utils;
 
 public class TestPuzzle {
 
@@ -325,5 +332,34 @@ public class TestPuzzle {
 		Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
 			Case caseTmp = puzzle.getCase(xAbsurde, y);
 		});
+	}
+	
+	@Test
+	public void testDecoupageImage() {
+		BufferedImage img;
+		boolean res=true;
+		try {
+			img = ImageIO.read(new File("src/main/resources/testimg.jpg"));
+			Puzzle pTest = new Puzzle(4,img);
+			for(int i = 0; i<pTest.getTaille(); i++) {
+				for(int j = 0; j<pTest.getTaille(); j++) {
+					if(!(i==pTest.getYCaseVide() && j==pTest.getXCaseVide())) {
+						boolean b = 
+								Utils.comparerImages(pTest.getCase(j, i).getImage(), 
+								ImageIO.read(new File("src/main/resources/test/image_"+pTest.getCase(j, i).getIndex()+".jpg")) 
+								);
+						System.out.println(pTest.getCase(j, i).getIndex());
+						System.out.println(b);
+						if(!b) res=false;
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			res=false;
+		}
+		
+		Assertions.assertTrue(res, "Les images ne correspondent pas aux images attendues.");
+		
 	}
 }

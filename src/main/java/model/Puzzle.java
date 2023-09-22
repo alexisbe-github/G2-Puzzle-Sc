@@ -1,6 +1,5 @@
 package main.java.model;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,6 +7,8 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+
+import main.java.utils.Utils;
 
 public class Puzzle {
 
@@ -37,6 +38,7 @@ public class Puzzle {
 	public Puzzle(int taille, BufferedImage image) {
 		this(taille);
 		this.image = image;
+		this.decoupageImage();
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class Puzzle {
 				compteur++;
 			}
 		}
-		this.grille[0][0] = new Case(Case.INDEX_CASE_VIDE);
+		this.grille[this.TAILLE-1][this.TAILLE-1] = new Case(Case.INDEX_CASE_VIDE);
 	}
 
 	/**
@@ -126,7 +128,6 @@ public class Puzzle {
 		int last = -1;
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
-				System.out.println(this.grille[j][i]);
 				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1)) {
 					return false;
 				}
@@ -186,7 +187,22 @@ public class Puzzle {
 	 * 
 	 */
 	public void decoupageImage() {
-		// TODO
+		//Largeur et hauteur des sous-images
+				int height = this.image.getHeight()/this.TAILLE;
+				int width = this.image.getWidth()/this.TAILLE;
+				//Parcours de la grille
+				for(int i=0;i<this.TAILLE;i++) {
+					for(int j=0;j<this.TAILLE;j++) {
+						//Initialisation de la sous image
+						BufferedImage subImg;
+						if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
+							subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
+							this.grille[j][i].setImage(subImg);
+						}else {
+							subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
+						}	
+					}
+				}
 	}
 
 	/**
