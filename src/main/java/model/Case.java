@@ -26,6 +26,9 @@ public class Case {
 		this.index=index;
 	}
 	
+	public void setImage(BufferedImage img) {
+		this.image=img;
+	}
 	
 	public int getIndex() {
 		return this.index;
