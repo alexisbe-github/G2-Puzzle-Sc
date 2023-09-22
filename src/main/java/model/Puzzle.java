@@ -104,19 +104,19 @@ public class Puzzle {
 	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
 	public boolean verifierGrille() {
-		boolean res = true;
-		int last = this.grille[0][0].getIndex();
-
-		for (int i = 0; i < this.TAILLE && res == true; i++) {
-			for (int j = 0; j < this.TAILLE && res == true; j++) {
-				if (this.grille[j][i].getIndex() >= last) {
-					last = this.grille[j][i].getIndex();
-				} else
-					res = false;
+		int last = -1;
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				System.out.println(this.grille[j][i]);
+				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1)) {
+					return false;
+				}
+				last = this.grille[j][i].getIndex();
 			}
 		}
-
-		return res;
+		if (this.grille[TAILLE - 1][TAILLE - 1].getIndex() != -1)
+			return false;
+		return true;
 	}
 
 	public Case[][] getGrille() {
