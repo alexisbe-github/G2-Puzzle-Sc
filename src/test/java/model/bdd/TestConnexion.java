@@ -22,7 +22,7 @@ public class TestConnexion {
 	public void testFermerConnexion() throws SQLException {
 		Connection c = Connexion.getInstance().getConnection();
 		Assertions.assertNotNull(c, "La connexion est nulle.");
-		c.close();
+		//c.close();
 		Assertions.assertTrue(c.isClosed(), "La connexion est toujours ouverte.");
 	}
 
