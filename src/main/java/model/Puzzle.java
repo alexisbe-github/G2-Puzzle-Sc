@@ -9,14 +9,12 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import main.java.utils.Utils;
-
 public class Puzzle {
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
 	private Case[][] grille;
-	BufferedImage image;
+	private BufferedImage image;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -28,22 +26,17 @@ public class Puzzle {
 		this.grille = new Case[this.TAILLE][this.TAILLE];
 		this.initGrille();
 	}
-	
+
 	/**
-	 * Définit l'image et la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
+	 * Définit l'image et la taille du puzzle : si inferieur à 3, remise
+	 * automatiquement à 3.
 	 * 
 	 * @param imgSrc : image du puzzle
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
-	public Puzzle(int taille, String imgSrc) {
+	public Puzzle(int taille, BufferedImage image) {
 		this(taille);
-		File img = new File(imgSrc);
-		try {
-			this.image = ImageIO.read(img);
-			this.decoupageImage();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.image = image;
 	}
 
 	/**
@@ -126,6 +119,7 @@ public class Puzzle {
 
 	/**
 	 * Vérifie si la grille est dans son état final.
+	 * 
 	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
 	public boolean verifierGrille() {
@@ -185,37 +179,14 @@ public class Puzzle {
 		}
 		return res;
 	}
-	
+
 	/**
-	 * Permet de découper l'image en images de tailles égales correspondant a l'index de chaque cases.
+	 * Permet de découper l'image en images de tailles égales correspondant a
+	 * l'index de chaque cases.
 	 * 
 	 */
 	public void decoupageImage() {
-		//Largeur et hauteur des sous-images
-		int height = this.image.getHeight()/this.TAILLE;
-		int width = this.image.getWidth()/this.TAILLE;
-		//Parcours de la grille
-		for(int i=0;i<this.TAILLE;i++) {
-			for(int j=0;j<this.TAILLE;j++) {
-				//Initialisation de la sous image
-				BufferedImage subImg;
-				if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
-					subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
-					this.grille[j][i].setImage(subImg);
-				}else {
-					subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
-				}
-				/*
-				 File outputfile = new File("image"+this.grille[j][i].getIndex()+".jpg"); //DEBUG
-				try {
-					ImageIO.write(subImg, "jpg", outputfile); //DEBUG
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				 */
-			}
-		}
+		// TODO
 	}
 
 	/**
