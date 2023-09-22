@@ -75,6 +75,12 @@ public class TestDAOPartie implements TestCRUD {
 
 		Assertions.assertEquals(dao.trouver(p.getId()).getDureeSecondes(), 0);
 		Assertions.assertEquals(dao.trouver(p.getId()).getTailleGrille(), 0);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@AfterAll

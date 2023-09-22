@@ -109,6 +109,12 @@ public class TestDAOPartieCompetitive implements TestCRUD {
 		listeParties.add(p.getIdPartie());
 
 		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getIdVainqueur(), idJoueur4);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
