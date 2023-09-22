@@ -14,12 +14,6 @@ public class TestConnexion {
 
 	@Test
 	public void testGetInstance() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		instance = Connexion.getInstance();
 		Assertions.assertNotNull(instance, "L'instance de la connexion est nulle.");
 	}

@@ -108,12 +108,6 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		listeParties.add(p.getIdPartie());
 
 		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), val2);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Test

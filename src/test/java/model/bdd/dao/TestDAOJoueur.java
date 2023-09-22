@@ -68,12 +68,6 @@ public class TestDAOJoueur implements TestCRUD {
 		dao.supprimer(dao.trouver(j.getId()));
 
 		Assertions.assertNull(dao.trouver(j.getId()).getPseudo());
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@AfterAll
