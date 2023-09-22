@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Locale;
 
+import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.beans.PartieSQL;
 
 /**
@@ -61,7 +62,7 @@ public class DAOPartie extends DAO<PartieSQL> {
 	@Override
 	public PartieSQL trouver(long id) {
 		PartieSQL partie = new PartieSQL();
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try {
 			try (PreparedStatement pstmt = connexion.prepareStatement(
 					"SELECT * FROM " + PARTIE + " WHERE " + ID + " = ?;", ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -91,7 +92,7 @@ public class DAOPartie extends DAO<PartieSQL> {
 	 */
 	@Override
 	public PartieSQL creer(PartieSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try {
 			try (PreparedStatement pstmt1 = connexion
 					.prepareStatement("SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES " + "WHERE table_name = '"
@@ -131,7 +132,7 @@ public class DAOPartie extends DAO<PartieSQL> {
 	 */
 	@Override
 	public PartieSQL maj(PartieSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("UPDATE " + PARTIE + " SET " + ID + " = ?, "
 				+ DUREE_SECONDES + " = ?, " + TAILLE_GRILLE + " = ? WHERE " + ID + " = ?")) {
 			pstmt.setLong(1, partie.getId());
@@ -152,7 +153,7 @@ public class DAOPartie extends DAO<PartieSQL> {
 	 */
 	@Override
 	public void supprimer(PartieSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("DELETE FROM " + PARTIE + " WHERE " + ID + " = ?;")) {
 			pstmt.setLong(1, partie.getId());
 			pstmt.execute();

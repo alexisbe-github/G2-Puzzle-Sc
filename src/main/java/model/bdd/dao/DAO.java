@@ -10,12 +10,6 @@ import main.java.model.bdd.Connexion;
  */
 public abstract class DAO<T> {
 
-	/**
-	 * La connexion
-	 *
-	 * @see main.java.model.bdd.Connexion
-	 */
-	public Connexion connexion = Connexion.getInstance();
 
 	/**
 	 * Permet de récupérer un objet via son identifiant.

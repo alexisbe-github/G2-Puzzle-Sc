@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 
 /**
@@ -47,7 +48,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	@Override
 	public JoueurSQL trouver(long id) {
 		JoueurSQL joueur = new JoueurSQL();
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + JOUEUR + " WHERE " + ID + " = ?;",
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 			pstmt.setLong(1, id);
@@ -72,7 +73,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	 */
 	@Override
 	public JoueurSQL creer(JoueurSQL joueur) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try {
 			try (PreparedStatement pstmt1 = connexion
 					.prepareStatement("SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES " + "WHERE table_name = '"
@@ -106,7 +107,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	 */
 	@Override
 	public JoueurSQL maj(JoueurSQL joueur) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion
 				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ? WHERE " + ID + " = ?")) {
 			pstmt.setString(1, joueur.getPseudo());
@@ -125,7 +126,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	 */
 	@Override
 	public void supprimer(JoueurSQL joueur) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("DELETE FROM " + JOUEUR + " WHERE " + ID + " = ?;")) {
 			pstmt.setLong(1, joueur.getId());
 			pstmt.execute();
