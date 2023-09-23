@@ -2,11 +2,12 @@ package main.java.model;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
 import main.java.utils.Utils;
 
-public class Puzzle {
+public class Puzzle implements Serializable{
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;

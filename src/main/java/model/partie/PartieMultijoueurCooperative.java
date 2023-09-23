@@ -1,7 +1,12 @@
 package main.java.model.partie;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
@@ -18,37 +23,55 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	 * 
 	 * @param joueurHote
 	 */
-	public PartieMultijoueurCooperative(Joueur joueurHote) {
+	public PartieMultijoueurCooperative() {
 		indexJoueurCourant = 0;
 		joueurs = new ArrayList<>();
-		joueurs.add(joueurHote);
+		tablePuzzleDesJoueurs = new HashMap<>();
+		tableSocketDesJoueurs = new HashMap<>();
 	}
 
 	@Override
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		puzzleCommun = new Puzzle(taillePuzzle);
+		for (Joueur j : joueurs) {
+			tablePuzzleDesJoueurs.put(j, puzzleCommun);
+		}
 		System.out.println(this.getJoueurCourant().getNom() + " doit jouer");
 	}
 
 	/**
 	 * Incrémente l'index du joueur qui joue son tour dans la liste de joueurs
+	 * 
+	 * @throws IOException
 	 */
-	private void passerAuJoueurSuivant() {
+	private void passerAuJoueurSuivant() throws IOException {
 		this.indexJoueurCourant++;
 		this.indexJoueurCourant %= joueurs.size();
+		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+			Joueur j = mapEntry.getKey();
+			Socket s = mapEntry.getValue();
+
+			Puzzle puzzle = getPuzzleDuJoueur(j);
+			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+			fluxSortant.println(puzzle);
+		}
 	}
 
 	/**
 	 * 
 	 * @param dp        EDeplacement de la case
 	 * @param numJoueur numero du joueur dans la liste
+	 * @throws IOException
 	 */
-	public void deplacerCase(EDeplacement dp, int numJoueur) {
-		if (numJoueur == this.indexJoueurCourant - 1) {
+	public void deplacerCase(EDeplacement dp, int numJoueur) throws IOException {
+		if (numJoueur == this.indexJoueurCourant + 1) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
-			System.out.println(puzzleCommun);
 		}
+	}
+
+	public Puzzle getPuzzleCommun() {
+		return this.getPuzzleCommun();
 	}
 
 	private Joueur getJoueurCourant() {

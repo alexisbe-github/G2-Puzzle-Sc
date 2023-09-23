@@ -1,18 +1,26 @@
 package main.java.model.serveur;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
+import main.java.model.Puzzle;
+import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
 
 public class Serveur {
 
-	public static void lancerServeur(PartieMultijoueur partie) {
+	private static PartieMultijoueur partie;
+
+	public static void lancerServeur(PartieMultijoueur partieM) {
+		partie = partieM;
 		new Thread(() -> {
 			System.out.println("Lancement du serveur...");
 			String ip = getIP();
@@ -24,7 +32,7 @@ public class Serveur {
 				while (true) {
 					Socket clientSocket = serverSocket.accept();
 					noConnexion++;
-					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion);
+					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
 					st.start();
 				}
 

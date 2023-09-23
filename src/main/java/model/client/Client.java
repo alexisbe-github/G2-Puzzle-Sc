@@ -3,6 +3,7 @@ package main.java.model.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -14,8 +15,10 @@ public class Client {
 	private String ip = "";
 	private int port = -1;
 	private Socket socket;
+	private Joueur joueur;
 
-	public Client() {
+	public Client(Joueur joueur) {
+		this.joueur = joueur;
 	}
 	
 	private void setConnection() {
@@ -32,6 +35,7 @@ public class Client {
 			this.ip = ip;
 			this.port = port;
 			setConnection();
+			ajouterJoueur();
 		} catch (IOException e) {
 			connecte = false;
 		}
@@ -48,6 +52,11 @@ public class Client {
 		fluxSortant.println(requete); // envoi de la requete au serveur
 		String reponse = fluxEntrant.readLine(); // reception de la reponse
 		System.out.println(reponse);
+	}
+	
+	private void ajouterJoueur() throws IOException {
+		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+		outputStream.writeObject(joueur);
 	}
 
 }

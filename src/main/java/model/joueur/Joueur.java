@@ -1,8 +1,9 @@
 package main.java.model.joueur;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public class Joueur {
+public class Joueur implements Serializable{
 
 	private String nom;
 	private BufferedImage image;
@@ -23,6 +24,11 @@ public class Joueur {
 
 	public BufferedImage getImage() {
 		return image;
+	}
+	
+	@Override
+	public String toString() {
+		return this.nom;
 	}
 
 }
