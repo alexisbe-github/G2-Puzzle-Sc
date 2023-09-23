@@ -335,26 +335,25 @@ public class TestPuzzle {
 			Case caseTmp = puzzle.getCase(xAbsurde, y);
 		});
 	}
-	
+
 	@Test
 	public void testDecoupageImage() {
 		BufferedImage img;
 		try {
 			img = ImageIO.read(new File("src/main/resources/testimg.jpg"));
-			Puzzle pTest = new Puzzle(4,img);
-			for(int i = 0; i<pTest.getTaille(); i++) {
-				for(int j = 0; j<pTest.getTaille(); j++) {
+			Puzzle pTest = new Puzzle(4, img);
+			for (int i = 0; i < pTest.getTaille(); i++) {
+				for (int j = 0; j < pTest.getTaille(); j++) {
 					Assertions.assertTrue(
-							Utils.comparerImages(
-									pTest.getCase(j, i).getImage(), 
-									ImageIO.read(new File("src/main/resources/test/image"+pTest.getCase(j, i).getIndex()+".png"))),
-							"Les images ne correspondent pas aux images attendues en x: "+j+" y: "+i+"."
-					);
+							Utils.comparerImages(pTest.getCase(j, i).getImage(),
+									ImageIO.read(new File("src/main/resources/test/image"
+											+ pTest.getCase(j, i).getIndex() + ".png"))),
+							"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i + ".");
 				}
 			}
 		} catch (IOException e) {
 			fail("Erreur lors du chargement de l'image");
 			e.printStackTrace();
-		}		
+		}
 	}
 }

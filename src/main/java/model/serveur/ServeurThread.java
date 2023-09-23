@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
-
 public class ServeurThread extends Thread {
 
 	private Socket socket;
@@ -15,9 +14,9 @@ public class ServeurThread extends Thread {
 	private PrintStream fluxSortant;
 
 	/**
-	 * Suppose socket deje connecte vers le client n noConnexion
+	 * Suppose socket dejà connectée vers le client num noConnexion
 	 * 
-	 * @param noConnexion : n du client
+	 * @param noConnexion : num du client
 	 */
 	public ServeurThread(Socket socket, ThreadGroup groupe, int noConnexion) throws IOException {
 		super(groupe, "ReceveurEnvoyeur");
@@ -42,7 +41,6 @@ public class ServeurThread extends Thread {
 				System.out.println(ligne); // echo de la question sur la console
 
 				reponse = ligne; // calcul de la reponse
-				
 
 				fluxSortant.println(reponse); // envoi de la reponse au client
 				sleep(5);

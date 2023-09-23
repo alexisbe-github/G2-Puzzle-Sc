@@ -8,9 +8,11 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import main.java.model.partie.PartieMultijoueur;
+
 public class Serveur {
 
-	public static void lancerServeur() {
+	public void lancerServeur(PartieMultijoueur partie) {
 		System.out.println("Lancement du serveur...");
 		String ip = getIP();
 		try {

@@ -15,6 +15,9 @@ public class Client {
 	private int port = -1;
 	private Socket socket;
 
+	public Client() {
+	}
+	
 	private void setConnection() {
 		connecte = true;
 	}
