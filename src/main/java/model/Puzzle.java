@@ -36,7 +36,6 @@ public class Puzzle {
 	public Puzzle(int taille, BufferedImage image) {
 		this(taille);
 		this.image = image;
-		this.initGrille();
 		this.decoupageImage();
 		this.nbCoups = 0;
 	}

@@ -13,27 +13,28 @@ import main.java.model.partie.PartieMultijoueur;
 public class Serveur {
 
 	public static void lancerServeur(PartieMultijoueur partie) {
-		System.out.println("Lancement du serveur...");
-		String ip = getIP();
-		try {
-			ThreadGroup groupe = new ThreadGroup("socketsClients");
-			ServerSocket serverSocket = new ServerSocket(8080);
-			System.out.println("\n\n\nServeur lancé:\nIP: " + ip + "\nPort: " + serverSocket.getLocalPort());
-			int noConnexion = 0;
-			while(true) {
-				Socket clientSocket = serverSocket.accept();
-				noConnexion++;
-				ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion);
-				st.start();
+		new Thread(() -> {
+			System.out.println("Lancement du serveur...");
+			String ip = getIP();
+			try {
+				ThreadGroup groupe = new ThreadGroup("socketsClients");
+				ServerSocket serverSocket = new ServerSocket(8080);
+				System.out.println("\n\n\nServeur lancé:\nIP: " + ip + "\nPort: " + serverSocket.getLocalPort());
+				int noConnexion = 0;
+				while (true) {
+					Socket clientSocket = serverSocket.accept();
+					noConnexion++;
+					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion);
+					st.start();
+				}
+
+			} catch (NumberFormatException | IOException e) {
+				e.printStackTrace();
 			}
-		
-			
-		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
-		}
-		
+		}).start();
+
 	}
-	
+
 	/**
 	 * @return the IPv4 of the machine (String)
 	 */

@@ -47,7 +47,8 @@ public class ServeurThread extends Thread {
 			} // while
 		} catch (InterruptedException erreur) {
 			/* le thread s'arrete */} catch (IOException erreur) {
-			System.err.println(" on ne peut pas lire sur le socket provenant du client");
+			//System.err.println("On ne peut pas lire sur le socket provenant du client");
+				System.out.println("Deconnexion du client numéro " + this.noConnexion);
 		}
 	}// run
 

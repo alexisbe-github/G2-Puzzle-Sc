@@ -16,10 +16,12 @@ public class TestClient {
 		c.seConnecter(ip, port);
 		String message;
 		Scanner sc = new Scanner(System.in);
-		message = sc.nextLine();
-		c.lancerRequete(message);
+		while (true) {
+			message = sc.nextLine();
+			c.lancerRequete(message);
+		}
 	}
-	
+
 	/**
 	 * @return the IPv4 of the machine (String)
 	 */
