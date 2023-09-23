@@ -45,7 +45,7 @@ public class Puzzle implements Serializable{
 	 * Initialise la grille avec des cases de valeurs allant de 0 à
 	 */
 	private void initGrille() {
-		int compteur = 1;
+		int compteur = 0;
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
 				this.grille[j][i] = new Case(compteur);
@@ -201,16 +201,22 @@ public class Puzzle implements Serializable{
 		// Largeur et hauteur des sous-images
 		int height = this.image.getHeight() / this.TAILLE;
 		int width = this.image.getWidth() / this.TAILLE;
+		int index = -1;
 		// Parcours de la grille
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
 				// Initialisation de la sous image
 				BufferedImage subImg;
-				if (!(j == this.getYCaseVide() && i == this.getXCaseVide())) { // Si la case n'est pas la case vide
-					subImg = this.image.getSubimage(width * j, height * i, width, height); // "Découpe" de l'image
+				index = this.grille[j][i].getIndex();
+				if ( index!=-1 ) { // Si la case n'est pas la case vide
+					System.out.println(index);
+					System.out.println(index%this.TAILLE+"\n");
+					subImg = this.image.getSubimage(
+							width * (index % this.TAILLE), 
+							height * (index / this.TAILLE), 
+							width, height); // "Découpe" de l'image
 				} else {
-					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même
-																					// taille
+					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même													// taille
 				}
 				this.grille[j][i].setImage(subImg);
 			}
