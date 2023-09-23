@@ -197,10 +197,10 @@ public class Puzzle {
 						BufferedImage subImg;
 						if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
 							subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
-							this.grille[j][i].setImage(subImg);
 						}else {
 							subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
-						}	
+						}
+						this.grille[j][i].setImage(subImg);
 					}
 				}
 	}

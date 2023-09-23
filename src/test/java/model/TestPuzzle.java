@@ -1,5 +1,7 @@
 package test.java.model;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -337,29 +339,22 @@ public class TestPuzzle {
 	@Test
 	public void testDecoupageImage() {
 		BufferedImage img;
-		boolean res=true;
 		try {
 			img = ImageIO.read(new File("src/main/resources/testimg.jpg"));
 			Puzzle pTest = new Puzzle(4,img);
 			for(int i = 0; i<pTest.getTaille(); i++) {
 				for(int j = 0; j<pTest.getTaille(); j++) {
-					if(!(i==pTest.getYCaseVide() && j==pTest.getXCaseVide())) {
-						boolean b = 
-								Utils.comparerImages(pTest.getCase(j, i).getImage(), 
-								ImageIO.read(new File("src/main/resources/test/image_"+pTest.getCase(j, i).getIndex()+".jpg")) 
-								);
-						System.out.println(pTest.getCase(j, i).getIndex());
-						System.out.println(b);
-						if(!b) res=false;
-					}
+					Assertions.assertTrue(
+							Utils.comparerImages(
+									pTest.getCase(j, i).getImage(), 
+									ImageIO.read(new File("src/main/resources/test/image"+pTest.getCase(j, i).getIndex()+".png"))),
+							"Les images ne correspondent pas aux images attendues en x: "+j+" y: "+i+"."
+					);
 				}
 			}
 		} catch (IOException e) {
+			fail("Erreur lors du chargement de l'image");
 			e.printStackTrace();
-			res=false;
-		}
-		
-		Assertions.assertTrue(res, "Les images ne correspondent pas aux images attendues.");
-		
+		}		
 	}
 }
