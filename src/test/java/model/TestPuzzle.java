@@ -38,7 +38,7 @@ public class TestPuzzle {
 
 	@Test
 	public void testConstructor3() {
-		int bonneTaille = 4;
+		int bonneTaille = 5;
 		Puzzle p = new Puzzle(bonneTaille);
 		Assertions.assertEquals(p.getTaille(), bonneTaille,
 				"La taille du puzzle devrait être " + bonneTaille + ", actuellement:" + p.getTaille());

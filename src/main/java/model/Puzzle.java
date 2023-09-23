@@ -1,13 +1,10 @@
 package main.java.model;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
+import main.java.utils.Utils;
 
 public class Puzzle {
 
@@ -51,6 +48,7 @@ public class Puzzle {
 			}
 		}
 		this.grille[0][0] = new Case(Case.INDEX_CASE_VIDE);
+		this.melanger();
 	}
 
 	/**
@@ -61,14 +59,25 @@ public class Puzzle {
 		int tempi;
 		int tempj;
 		do {
-			for (int i = 0; i < this.TAILLE; i++) {
-				for (int j = 0; j < this.TAILLE; j++) {
-					tempi = rd.nextInt(this.TAILLE);
-					tempj = rd.nextInt(this.TAILLE);
-					this.echangerCase(new Point(i, j), new Point(tempi, tempj));
+			for (int i = 0; i < Math.pow(this.TAILLE,4) ; i++) {
+				int x = Utils.getRandomNumberInRange(0, 3);
+				switch(x) {
+				case 0:
+					this.deplacerCase(EDeplacement.HAUT);
+					break;
+				case 1:
+					this.deplacerCase(EDeplacement.BAS);
+					break;
+				case 2:
+					this.deplacerCase(EDeplacement.GAUCHE);
+					break;
+				case 3:
+					this.deplacerCase(EDeplacement.DROITE);
+					break;
 				}
 			}
 		} while (this.verifierGrille()); // Permet d'éviter de se retrouver avec une grille ordonnée malgré le mélange
+		System.out.println(this);
 	}
 
 	/**
@@ -126,10 +135,8 @@ public class Puzzle {
 		int last = -1;
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
-				System.out.println(this.grille[j][i]);
-				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1)) {
+				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1))
 					return false;
-				}
 				last = this.grille[j][i].getIndex();
 			}
 		}
