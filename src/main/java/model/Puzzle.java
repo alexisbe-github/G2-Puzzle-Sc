@@ -52,16 +52,17 @@ public class Puzzle {
 	}
 
 	/**
-	 * Mélange la grille (place chaque case à une place aléatoire).
+	 * Mélange la grille (déplace la case vide de TAILLE^4 dans une direction
+	 * aléatoire pour laisser le taquin soluble).
 	 */
 	public void melanger() {
 		Random rd = new Random();
 		int tempi;
 		int tempj;
 		do {
-			for (int i = 0; i < Math.pow(this.TAILLE,4) ; i++) {
+			for (int i = 0; i < Math.pow(this.TAILLE, 4); i++) {
 				int x = Utils.getRandomNumberInRange(0, 3);
-				switch(x) {
+				switch (x) {
 				case 0:
 					this.deplacerCase(EDeplacement.HAUT);
 					break;
