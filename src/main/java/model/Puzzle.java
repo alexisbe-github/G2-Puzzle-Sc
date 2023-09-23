@@ -1,13 +1,19 @@
 package main.java.model;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Puzzle {
+import main.java.utils.Utils;
+
+public class Puzzle implements Serializable{
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
 	private Case[][] grille;
+	private BufferedImage image;
+	private int nbCoups;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -18,6 +24,21 @@ public class Puzzle {
 		this.TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
 		this.grille = new Case[this.TAILLE][this.TAILLE];
 		this.initGrille();
+		this.nbCoups = 0;
+	}
+
+	/**
+	 * Définit l'image et la taille du puzzle : si inferieur à 3, remise
+	 * automatiquement à 3.
+	 * 
+	 * @param imgSrc : image du puzzle
+	 * @param taille du Puzzle (si 4 -> 4x4).
+	 */
+	public Puzzle(int taille, BufferedImage image) {
+		this(taille);
+		this.image = image;
+		this.decoupageImage();
+		this.nbCoups = 0;
 	}
 
 	/**
@@ -31,22 +52,33 @@ public class Puzzle {
 				compteur++;
 			}
 		}
-		this.grille[0][0] = new Case(Case.INDEX_CASE_VIDE);
+
+		this.grille[this.TAILLE - 1][this.TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
+		this.melanger();
 	}
 
 	/**
-	 * Mélange la grille (place chaque case à une place aléatoire).
+	 * Mélange la grille (déplace la case vide de TAILLE^4 dans une direction
+	 * aléatoire pour laisser le taquin soluble).
 	 */
 	public void melanger() {
 		Random rd = new Random();
-		int tempi;
-		int tempj;
 		do {
-			for (int i = 0; i < this.TAILLE; i++) {
-				for (int j = 0; j < this.TAILLE; j++) {
-					tempi = rd.nextInt(this.TAILLE);
-					tempj = rd.nextInt(this.TAILLE);
-					this.echangerCase(new Point(i, j), new Point(tempi, tempj));
+			for (int i = 0; i < Math.pow(this.TAILLE, 4); i++) {
+				int x = Utils.getRandomNumberInRange(0, 3);
+				switch (x) {
+				case 0:
+					this.deplacerCase(EDeplacement.HAUT);
+					break;
+				case 1:
+					this.deplacerCase(EDeplacement.BAS);
+					break;
+				case 2:
+					this.deplacerCase(EDeplacement.GAUCHE);
+					break;
+				case 3:
+					this.deplacerCase(EDeplacement.DROITE);
+					break;
 				}
 			}
 		} while (this.verifierGrille()); // Permet d'éviter de se retrouver avec une grille ordonnée malgré le mélange
@@ -93,30 +125,29 @@ public class Puzzle {
 			Case tempCase = grille[p1.x][p1.y];
 			this.grille[p1.x][p1.y] = this.grille[p2.x][p2.y];
 			this.grille[p2.x][p2.y] = tempCase;
+			this.nbCoups++;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// Ne pas déplacer les cases si les coordonnées sont éronnées
 		}
-
 	}
 
 	/**
+	 * Vérifie si la grille est dans son état final.
 	 * 
 	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
 	public boolean verifierGrille() {
-		boolean res = true;
-		int last = this.grille[0][0].getIndex();
-
-		for (int i = 0; i < this.TAILLE && res == true; i++) {
-			for (int j = 0; j < this.TAILLE && res == true; j++) {
-				if (this.grille[j][i].getIndex() >= last) {
-					last = this.grille[j][i].getIndex();
-				} else
-					res = false;
+		int last = -1;
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1))
+					return false;
+				last = this.grille[j][i].getIndex();
 			}
 		}
-
-		return res;
+		if (this.grille[TAILLE - 1][TAILLE - 1].getIndex() != -1)
+			return false;
+		return true;
 	}
 
 	public Case[][] getGrille() {
@@ -162,6 +193,37 @@ public class Puzzle {
 	}
 
 	/**
+	 * Permet de découper l'image en images de tailles égales correspondant a
+	 * l'index de chaque cases.
+	 * 
+	 */
+	public void decoupageImage() {
+		// Largeur et hauteur des sous-images
+		int height = this.image.getHeight() / this.TAILLE;
+		int width = this.image.getWidth() / this.TAILLE;
+		int index = -1;
+		// Parcours de la grille
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				// Initialisation de la sous image
+				BufferedImage subImg;
+				index = this.grille[j][i].getIndex();
+				if ( index!=-1 ) { // Si la case n'est pas la case vide
+					System.out.println(index);
+					System.out.println(index%this.TAILLE+"\n");
+					subImg = this.image.getSubimage(
+							width * (index % this.TAILLE), 
+							height * (index / this.TAILLE), 
+							width, height); // "Découpe" de l'image
+				} else {
+					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même													// taille
+				}
+				this.grille[j][i].setImage(subImg);
+			}
+		}
+	}
+
+	/**
 	 * Récupération de la Case a une coordonnée
 	 * 
 	 * @param x : Coordonnée x de la case (de gauche à droite)
@@ -192,4 +254,7 @@ public class Puzzle {
 		return res;
 	}
 
+	public int getNbCoups() {
+		return this.nbCoups;
+	}
 }

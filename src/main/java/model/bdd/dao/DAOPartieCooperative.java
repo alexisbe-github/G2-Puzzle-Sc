@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.beans.PartieCooperativeSQL;
 
 /**
@@ -56,7 +57,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 	@Override
 	public PartieCooperativeSQL trouver(long id) {
 		PartieCooperativeSQL partie = new PartieCooperativeSQL();
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try {
 			try (PreparedStatement pstmt = connexion.prepareStatement(
 					"SELECT * FROM " + PARTIE_COOPERATIVE + " WHERE " + ID_PARTIE + " = ?;",
@@ -85,7 +86,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 	 */
 	@Override
 	public PartieCooperativeSQL creer(PartieCooperativeSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 
 		try (PreparedStatement pstmt = connexion
 				.prepareStatement("INSERT INTO " + PARTIE_COOPERATIVE + " VALUES (?, ?, ?);")) {
@@ -108,7 +109,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 	 */
 	@Override
 	public PartieCooperativeSQL maj(PartieCooperativeSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("UPDATE " + PARTIE_COOPERATIVE + " SET " + NB_COUPS
 				+ " = ? WHERE " + ID_JOUEUR + " = ? AND " + ID_PARTIE + " = ?")) {
 			pstmt.setInt(1, partie.getNbCoups());
@@ -128,7 +129,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 	 */
 	@Override
 	public void supprimer(PartieCooperativeSQL partie) {
-		Connection connexion = this.connexion.getConnexion();
+		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement(
 				"DELETE FROM " + PARTIE_COOPERATIVE + " WHERE " + ID_JOUEUR + " = ? AND " + ID_PARTIE + " = ?;")) {
 			pstmt.setLong(1, partie.getIdJoueur());
