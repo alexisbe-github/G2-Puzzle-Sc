@@ -346,7 +346,7 @@ public class TestPuzzle {
 				for (int j = 0; j < pTest.getTaille(); j++) {
 					Assertions.assertTrue(
 							Utils.comparerImages(pTest.getCase(j, i).getImage(),
-									ImageIO.read(new File("src/main/resources/test/image"
+									ImageIO.read(new File("src/test/resources/image"
 											+ pTest.getCase(j, i).getIndex() + ".png"))),
 							"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i + ".");
 				}

@@ -19,10 +19,16 @@ public class Utils {
 	     return bufferedImage;
 	  }
 	
+	/**
+	 * Génére un int entre min et max inclus
+	 * @param min
+	 * @param max
+	 * @return
+	 */
 	public static int getRandomNumberInRange(int min, int max) {
 
 		if (min >= max) {
-			throw new IllegalArgumentException("max must be greater than min");
+			throw new IllegalArgumentException("Max doit être supérieur à min");
 		}
 
 		Random r = new Random();

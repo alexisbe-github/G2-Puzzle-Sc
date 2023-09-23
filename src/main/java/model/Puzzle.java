@@ -34,6 +34,7 @@ public class Puzzle {
 	public Puzzle(int taille, BufferedImage image) {
 		this(taille);
 		this.image = image;
+		this.initGrille();
 		this.decoupageImage();
 	}
 
@@ -51,7 +52,6 @@ public class Puzzle {
 
 		this.grille[this.TAILLE - 1][this.TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
 		this.melanger();
-		System.out.println(this);
 	}
 
 	/**
