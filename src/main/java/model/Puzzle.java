@@ -12,6 +12,7 @@ public class Puzzle {
 	private final int TAILLE;
 	private Case[][] grille;
 	private BufferedImage image;
+	private int nbCoups;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -22,6 +23,7 @@ public class Puzzle {
 		this.TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
 		this.grille = new Case[this.TAILLE][this.TAILLE];
 		this.initGrille();
+		this.nbCoups = 0;
 	}
 
 	/**
@@ -36,6 +38,7 @@ public class Puzzle {
 		this.image = image;
 		this.initGrille();
 		this.decoupageImage();
+		this.nbCoups = 0;
 	}
 
 	/**
@@ -122,6 +125,7 @@ public class Puzzle {
 			Case tempCase = grille[p1.x][p1.y];
 			this.grille[p1.x][p1.y] = this.grille[p2.x][p2.y];
 			this.grille[p2.x][p2.y] = tempCase;
+			this.nbCoups++;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// Ne pas déplacer les cases si les coordonnées sont éronnées
 		}
@@ -244,4 +248,7 @@ public class Puzzle {
 		return res;
 	}
 
+	public int getNbCoups() {
+		return this.nbCoups;
+	}
 }

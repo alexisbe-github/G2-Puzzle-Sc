@@ -340,7 +340,7 @@ public class TestPuzzle {
 	public void testDecoupageImage() {
 		BufferedImage img;
 		try {
-			img = ImageIO.read(new File("src/main/resources/testimg.jpg"));
+			img = ImageIO.read(new File("src/test/resources/testimg.jpg"));
 			Puzzle pTest = new Puzzle(4, img);
 			for (int i = 0; i < pTest.getTaille(); i++) {
 				for (int j = 0; j < pTest.getTaille(); j++) {
