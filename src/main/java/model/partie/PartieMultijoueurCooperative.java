@@ -1,6 +1,7 @@
 package main.java.model.partie;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
@@ -19,12 +20,13 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	 */
 	public PartieMultijoueurCooperative(Joueur joueurHote) {
 		indexJoueurCourant = 0;
+		joueurs = new ArrayList<>();
 		joueurs.add(joueurHote);
 	}
 
 	@Override
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
-		puzzleCommun = new Puzzle(taillePuzzle, image);
+		puzzleCommun = new Puzzle(taillePuzzle);
 	}
 
 	/**

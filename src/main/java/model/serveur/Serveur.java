@@ -12,7 +12,7 @@ import main.java.model.partie.PartieMultijoueur;
 
 public class Serveur {
 
-	public void lancerServeur(PartieMultijoueur partie) {
+	public static void lancerServeur(PartieMultijoueur partie) {
 		System.out.println("Lancement du serveur...");
 		String ip = getIP();
 		try {
