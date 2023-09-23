@@ -1,13 +1,21 @@
 package main.java.model;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import main.java.utils.Utils;
 
 public class Puzzle {
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
 	private Case[][] grille;
+	private BufferedImage image;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -21,6 +29,19 @@ public class Puzzle {
 	}
 
 	/**
+	 * Définit l'image et la taille du puzzle : si inferieur à 3, remise
+	 * automatiquement à 3.
+	 * 
+	 * @param imgSrc : image du puzzle
+	 * @param taille du Puzzle (si 4 -> 4x4).
+	 */
+	public Puzzle(int taille, BufferedImage image) {
+		this(taille);
+		this.image = image;
+		this.decoupageImage();
+	}
+
+	/**
 	 * Initialise la grille avec des cases de valeurs allant de 0 à
 	 */
 	private void initGrille() {
@@ -31,7 +52,7 @@ public class Puzzle {
 				compteur++;
 			}
 		}
-		this.grille[0][0] = new Case(Case.INDEX_CASE_VIDE);
+		this.grille[this.TAILLE-1][this.TAILLE-1] = new Case(Case.INDEX_CASE_VIDE);
 	}
 
 	/**
@@ -96,27 +117,26 @@ public class Puzzle {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// Ne pas déplacer les cases si les coordonnées sont éronnées
 		}
-
 	}
 
 	/**
+	 * Vérifie si la grille est dans son état final.
 	 * 
 	 * @return TRUE si la grille est terminée, FALSE sinon
 	 */
 	public boolean verifierGrille() {
-		boolean res = true;
-		int last = this.grille[0][0].getIndex();
-
-		for (int i = 0; i < this.TAILLE && res == true; i++) {
-			for (int j = 0; j < this.TAILLE && res == true; j++) {
-				if (this.grille[j][i].getIndex() >= last) {
-					last = this.grille[j][i].getIndex();
-				} else
-					res = false;
+		int last = -1;
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1)) {
+					return false;
+				}
+				last = this.grille[j][i].getIndex();
 			}
 		}
-
-		return res;
+		if (this.grille[TAILLE - 1][TAILLE - 1].getIndex() != -1)
+			return false;
+		return true;
 	}
 
 	public Case[][] getGrille() {
@@ -159,6 +179,30 @@ public class Puzzle {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Permet de découper l'image en images de tailles égales correspondant a
+	 * l'index de chaque cases.
+	 * 
+	 */
+	public void decoupageImage() {
+		//Largeur et hauteur des sous-images
+				int height = this.image.getHeight()/this.TAILLE;
+				int width = this.image.getWidth()/this.TAILLE;
+				//Parcours de la grille
+				for(int i=0;i<this.TAILLE;i++) {
+					for(int j=0;j<this.TAILLE;j++) {
+						//Initialisation de la sous image
+						BufferedImage subImg;
+						if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
+							subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
+						}else {
+							subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
+						}
+						this.grille[j][i].setImage(subImg);
+					}
+				}
 	}
 
 	/**
