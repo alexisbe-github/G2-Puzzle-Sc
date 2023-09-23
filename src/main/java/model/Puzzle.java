@@ -6,6 +6,8 @@ import java.util.Random;
 
 import main.java.utils.Utils;
 
+import main.java.utils.Utils;
+
 public class Puzzle {
 
 	public static final int TAILLE_MINI = 3;
@@ -34,6 +36,7 @@ public class Puzzle {
 	public Puzzle(int taille, BufferedImage image) {
 		this(taille);
 		this.image = image;
+		this.decoupageImage();
 	}
 
 	/**
@@ -47,7 +50,8 @@ public class Puzzle {
 				compteur++;
 			}
 		}
-		this.grille[0][0] = new Case(Case.INDEX_CASE_VIDE);
+
+		this.grille[this.TAILLE-1][this.TAILLE-1] = new Case(Case.INDEX_CASE_VIDE);
 		this.melanger();
 	}
 
@@ -78,7 +82,6 @@ public class Puzzle {
 				}
 			}
 		} while (this.verifierGrille()); // Permet d'éviter de se retrouver avec une grille ordonnée malgré le mélange
-		System.out.println(this);
 	}
 
 	/**
@@ -194,7 +197,22 @@ public class Puzzle {
 	 * 
 	 */
 	public void decoupageImage() {
-		// TODO
+		//Largeur et hauteur des sous-images
+				int height = this.image.getHeight()/this.TAILLE;
+				int width = this.image.getWidth()/this.TAILLE;
+				//Parcours de la grille
+				for(int i=0;i<this.TAILLE;i++) {
+					for(int j=0;j<this.TAILLE;j++) {
+						//Initialisation de la sous image
+						BufferedImage subImg;
+						if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
+							subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
+						}else {
+							subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
+						}
+						this.grille[j][i].setImage(subImg);
+					}
+				}
 	}
 
 	/**
