@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="458.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane prefHeight="459.0" prefWidth="597.0" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" percentHeight="22.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Nouvelle Partie" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <GridPane alignment="CENTER" prefHeight="310.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-radius: 200; -fx-border-radius: 200; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 5, 0, 0, 0); -fx-background-color: rgba(255, 238, 22, 1);" text="Créer" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <padding>
+                        <Insets bottom="20.0" left="15.0" right="15.0" top="20.0" />
+                     </padding>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="79.0" mnemonicParsing="false" text="Lancer Partie" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Button>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Image Personnalisé :" VBox.vgrow="ALWAYS" />
+                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <viewport>
+                              <Rectangle2D height="100.0" width="100.0" />
+                           </viewport>
+                           <image>
+                              <Image url="@../Pictures/tatoo/png-transparent-unreal-engine-4-htc-vive-unreal-match-3-others-miscellaneous-text-trademark%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
+                  <ComboBox prefWidth="150.0" promptText="Choix Profil" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </GridPane.margin>
+                  </ComboBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <children>
+                        <Label text="Profil Choisi :" />
+                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <viewport>
+                              <Rectangle2D height="70.0" width="70.0" />
+                           </viewport>
+                           <image>
+                              <Image url="@../Pictures/tatoo/png-transparent-unreal-engine-4-htc-vive-unreal-match-3-others-miscellaneous-text-trademark%20(1).png" />
+                           </image>
+                        </ImageView>
+                        <Label text="popsimoke" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <children>
+                        <RadioButton mnemonicParsing="false" text="Solo" />
+                        <RadioButton mnemonicParsing="false" text="Multijoueur" />
+                        <RadioButton mnemonicParsing="false" text="Jeu Contre IA" />
+                        <CheckBox mnemonicParsing="false" text="Chrono" />
+                        <TextField>
+                           <VBox.margin>
+                              <Insets left="40.0" right="40.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</VBox>

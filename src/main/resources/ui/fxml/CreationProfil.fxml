@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="127.0" prefWidth="415.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <image>
+            <Image url="@../Pictures/tatoo/png-transparent-unreal-engine-4-htc-vive-unreal-match-3-others-miscellaneous-text-trademark%20(1).png" />
+         </image>
+      </ImageView>
+      <TextField promptText="SAISIR PSEUDO" GridPane.columnIndex="1" />
+      <Button mnemonicParsing="false" style="-fx-border-radius: 200; -fx-background-radius: 200; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 5, 0, 0, 0);" text="Créer" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <padding>
+            <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+         </padding>
+      </Button>
+   </children>
+</GridPane>
