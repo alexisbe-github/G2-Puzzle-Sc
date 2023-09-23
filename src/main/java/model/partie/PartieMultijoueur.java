@@ -12,5 +12,8 @@ public abstract class PartieMultijoueur implements StrategyPartie{
 		return this.joueurs;
 	}
 	
+	public void ajouterJoueur(Joueur j) {
+		joueurs.add(j);
+	}
 	
 }

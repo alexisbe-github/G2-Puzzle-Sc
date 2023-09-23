@@ -27,6 +27,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	@Override
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		puzzleCommun = new Puzzle(taillePuzzle);
+		System.out.println(this.getJoueurCourant().getNom() + " doit jouer");
 	}
 
 	/**
@@ -48,6 +49,11 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			passerAuJoueurSuivant();
 			System.out.println(puzzleCommun);
 		}
+	}
+
+	private Joueur getJoueurCourant() {
+		Joueur joueurCourant = joueurs.get(indexJoueurCourant);
+		return joueurCourant;
 	}
 
 }

@@ -23,10 +23,10 @@ public class ServeurThread extends Thread {
 		this.socket = socket;
 		this.noConnexion = noConnexion;
 		fluxEntrant = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		/* e present fluxEntrant est pret pour lire du texte provenant du client */
+		/* à present fluxEntrant est pret pour lire du texte provenant du client */
 		fluxSortant = new PrintStream(this.socket.getOutputStream());
 		/*
-		 * e present fluxSortant est pret pour renvoyer des reponses textuelles au
+		 * à present le fluxSortant est pret pour renvoyer des reponses textuelles au
 		 * client
 		 */
 	}

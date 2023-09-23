@@ -7,9 +7,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import main.java.model.joueur.Joueur;
+
 public class TestClient {
 
 	public static void main(String[] args) throws IOException {
+		Joueur j = new Joueur("Client",null);
 		String ip = getIP();
 		int port = 8080;
 		Client c = new Client();
