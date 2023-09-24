@@ -209,8 +209,6 @@ public class Puzzle implements Serializable{
 				BufferedImage subImg;
 				index = this.grille[j][i].getIndex();
 				if ( index!=-1 ) { // Si la case n'est pas la case vide
-					System.out.println(index);
-					System.out.println(index%this.TAILLE+"\n");
 					subImg = this.image.getSubimage(
 							width * (index % this.TAILLE), 
 							height * (index / this.TAILLE), 
