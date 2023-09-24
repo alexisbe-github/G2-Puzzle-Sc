@@ -36,7 +36,22 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 		for (Joueur j : joueurs) {
 			tablePuzzleDesJoueurs.put(j, puzzleCommun);
 		}
-		System.out.println(this.getJoueurCourant().getNom() + " doit jouer");
+		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+			Joueur j = mapEntry.getKey();
+			Socket s = mapEntry.getValue();
+
+			try {
+				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+				fluxSortant.println();
+				Puzzle puzzle = getPuzzleDuJoueur(j);
+				fluxSortant.println(puzzle);
+				fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
+				fluxSortant.println();
+				fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -54,6 +69,10 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			Puzzle puzzle = getPuzzleDuJoueur(j);
 			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
 			fluxSortant.println(puzzle);
+			fluxSortant.println();
+			fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
+			fluxSortant.println();
+			fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
 		}
 	}
 
@@ -64,9 +83,18 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	 * @throws IOException
 	 */
 	public void deplacerCase(EDeplacement dp, int numJoueur) throws IOException {
-		if (numJoueur == this.indexJoueurCourant + 1) {
+		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
+		}
+		if(puzzleCommun.verifierGrille()) {
+			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+				Joueur j = mapEntry.getKey();
+				Socket s = mapEntry.getValue();
+				
+				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN "+puzzleCommun.getNbCoups() +" COUPS!");
+			}
 		}
 	}
 
