@@ -17,10 +17,7 @@ import main.java.model.partie.PartieMultijoueur;
 
 public class Serveur {
 
-	private static PartieMultijoueur partie;
-
-	public static void lancerServeur(PartieMultijoueur partieM) {
-		partie = partieM;
+	public static void lancerServeur(PartieMultijoueur partie) {
 		new Thread(() -> {
 			System.out.println("Lancement du serveur...");
 			String ip = getIP();
