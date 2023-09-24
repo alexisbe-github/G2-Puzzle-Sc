@@ -86,7 +86,7 @@
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="10.0" layoutY="79.0" mnemonicParsing="false" text="Lancer Partie" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Button onAction="#lancerPartie" mnemonicParsing="false" text="Lancer Partie" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
