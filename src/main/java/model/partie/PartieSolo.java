@@ -24,4 +24,12 @@ public class PartieSolo implements StrategyPartie {
 		puzzle.deplacerCase(dp);
 	}
 
+	public Puzzle getPuzzle() {
+		return this.puzzle;
+	}
+	
+	public Joueur getJoueur() {
+		return this.joueur;
+	}
+	
 }
