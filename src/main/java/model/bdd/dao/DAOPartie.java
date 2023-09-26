@@ -47,10 +47,14 @@ public class DAOPartie extends DAO<PartieSQL> {
 	 */
 	private final String TAILLE_GRILLE = "taille_grille";
 	/**
-	 * Colonne <code><i>id_vainqueur</i></code>, correspondant à la date de création
-	 * de la partie.
+	 * Colonne <code><i>nb_coups</i></code>, correspondant au nombre de coups joués.
 	 */
-	private final String TIMESTAMP = "id_vainqueur";
+	private final String NB_COUPS = "nb_coups";
+	/**
+	 * Colonne <code><i>timestamp</i></code>, correspondant à la date de création de
+	 * la partie.
+	 */
+	private final String TIMESTAMP = "timestamp";
 
 	/**
 	 * {@inheritDoc}
@@ -74,6 +78,7 @@ public class DAOPartie extends DAO<PartieSQL> {
 						partie.setId(id);
 						partie.setDureeSecondes(rs.getInt(DUREE_SECONDES));
 						partie.setTailleGrille(rs.getInt(TAILLE_GRILLE));
+						partie.setNbCoups(rs.getInt(NB_COUPS));
 						partie.setTimestamp(rs.getTimestamp(TIMESTAMP));
 					}
 				}
@@ -110,11 +115,12 @@ public class DAOPartie extends DAO<PartieSQL> {
 			}
 
 			try (PreparedStatement pstmt2 = connexion
-					.prepareStatement("INSERT INTO " + PARTIE + " VALUES (?, ?, ?, ?);")) {
+					.prepareStatement("INSERT INTO " + PARTIE + " VALUES (?, ?, ?, ?, ?);")) {
 				pstmt2.setLong(1, partie.getId());
 				pstmt2.setInt(2, partie.getDureeSecondes());
 				pstmt2.setInt(3, partie.getTailleGrille());
-				pstmt2.setTimestamp(4, new Timestamp(System.currentTimeMillis()), Calendar.getInstance(Locale.FRANCE));
+				pstmt2.setInt(4, partie.getNbCoups());
+				pstmt2.setTimestamp(5, new Timestamp(System.currentTimeMillis()), Calendar.getInstance(Locale.FRANCE));
 				pstmt2.execute();
 			}
 
@@ -134,11 +140,12 @@ public class DAOPartie extends DAO<PartieSQL> {
 	public PartieSQL maj(PartieSQL partie) {
 		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("UPDATE " + PARTIE + " SET " + ID + " = ?, "
-				+ DUREE_SECONDES + " = ?, " + TAILLE_GRILLE + " = ? WHERE " + ID + " = ?")) {
+				+ DUREE_SECONDES + " = ?, " + TAILLE_GRILLE + " = ?, " + NB_COUPS + " = ? WHERE " + ID + " = ?")) {
 			pstmt.setLong(1, partie.getId());
 			pstmt.setInt(2, partie.getDureeSecondes());
 			pstmt.setInt(3, partie.getTailleGrille());
-			pstmt.setLong(4, partie.getId());
+			pstmt.setInt(4, partie.getNbCoups());
+			pstmt.setLong(5, partie.getId());
 			pstmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
