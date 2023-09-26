@@ -255,4 +255,6 @@ public class Puzzle implements Serializable{
 	public int getNbCoups() {
 		return this.nbCoups;
 	}
+	
+	
 }

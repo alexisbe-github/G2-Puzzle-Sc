@@ -1,5 +1,7 @@
 package main.java.controlleur;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,16 +25,15 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import main.java.model.EDeplacement;
 import main.java.model.partie.PartieSolo;
 
-public class JeuSoloControlleur implements Initializable{
+public class JeuSoloControlleur implements Initializable, PropertyChangeListener{
 
 	private Stage owner;
 	private PartieSolo partie;
-	private Scene mainScene;
 	
 	@FXML
 	Label chrono;
@@ -71,6 +71,8 @@ public class JeuSoloControlleur implements Initializable{
 		this.initGridPane();
 		this.initJoueur();
 		
+		this.partie.addPropertyChangeListener(this);
+		
 	}
 	
 	
@@ -81,21 +83,14 @@ public class JeuSoloControlleur implements Initializable{
 	private void initGridPane() {
 		//Définition de la taille d'une case
 		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
-		//Initialisation des contraintes des cases (tailles colomnes et lignes)
+		
+		//Initialisation des contraintes des cases (centrage Label)
 		ColumnConstraints cc = new ColumnConstraints();
-		cc.setPrefWidth(largeurCase);
-		cc.setMinWidth(largeurCase);
-		cc.setMaxWidth(largeurCase);
 		cc.setHalignment(HPos.CENTER);
-		RowConstraints rc = new RowConstraints();
-		rc.setPrefHeight(largeurCase);
-		rc.setMinHeight(largeurCase);
-		rc.setMaxHeight(largeurCase);
-		//Appliquation des contraintes
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			this.grille.getColumnConstraints().add(cc);
-			this.grille.getRowConstraints().add(rc);
 		}
+		
 		this.updateImages();
 	}
 	
@@ -103,6 +98,7 @@ public class JeuSoloControlleur implements Initializable{
 		//Définition de la taille d'une case
 		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
 		Image image;
+		grille.getChildren().clear();
 		//Ajout de l'image correspondant à chaque case de la grille.
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			for(int j = 0;j<partie.getPuzzle().getTaille();j++) {
@@ -113,10 +109,9 @@ public class JeuSoloControlleur implements Initializable{
 				iv.setId("case"+this.partie.getPuzzle().getCase(j, i).getIndex());
 				this.grille.add(iv, j, i);
 				if(this.partie.getPuzzle().getCase(j,i).getIndex()!=-1) {
-					Label li = new Label(""+this.partie.getPuzzle().getCase(j, i).getIndex());
+					Label li = new Label(""+((int) this.partie.getPuzzle().getCase(j, i).getIndex()+1));
 					li.setFont(new Font(18));
 					li.setTextFill(Color.YELLOW);
-					li.setAlignment(Pos.CENTER);
 					this.grille.add(li, j, i);
 				}
 			}
@@ -170,16 +165,16 @@ public class JeuSoloControlleur implements Initializable{
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
 	                case UP:
-	                	System.out.println("move up");
+	                	partie.deplacerCase(EDeplacement.HAUT);
 	                	break;
 	                case DOWN:
-	                	System.out.println("move down");
+	                	partie.deplacerCase(EDeplacement.BAS);
 	                	break;
 	                case LEFT:
-	                	System.out.println("move left");
+	                	partie.deplacerCase(EDeplacement.GAUCHE);
 	                	break;
 	                case RIGHT:
-	                	System.out.println("move right");
+	                	partie.deplacerCase(EDeplacement.DROITE);
 	                	break;
 					default:
 						break;
@@ -197,6 +192,13 @@ public class JeuSoloControlleur implements Initializable{
 	@FXML
 	private void pauseButton(ActionEvent event) {
 		System.out.println("pause");//TODO not implemented
+	}
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		this.updateImages();
+		this.updateInfos();
 	}
 	
 }
