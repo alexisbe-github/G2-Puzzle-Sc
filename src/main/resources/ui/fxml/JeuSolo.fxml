@@ -67,9 +67,9 @@
                   <Label fx:id="pseudoJoueur" text="pop simoke" />
                </children>
             </VBox>
-            <Button mnemonicParsing="false" text="Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button fx:id="boutonUndo" mnemonicParsing="false" text="Undo" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Label fx:id="nBCoups" text="Nb de coups : 21" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button onAction="#pauseButton" fx:id="boutonPause" mnemonicParsing="false" text="Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button onAction="#undoButton" fx:id="boutonUndo" mnemonicParsing="false" text="Undo" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Label fx:id="nbCoups" text="Nb de coups : 21" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label fx:id="chrono" text="00:00" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font size="24.0" />

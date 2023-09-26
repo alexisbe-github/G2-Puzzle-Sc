@@ -9,23 +9,31 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.model.partie.PartieSolo;
 
 public class JeuSoloControlleur implements Initializable{
 
-	Stage owner;
-	PartieSolo partie;
+	private Stage owner;
+	private PartieSolo partie;
+	private Scene mainScene;
 	
 	@FXML
 	Label chrono;
@@ -40,10 +48,13 @@ public class JeuSoloControlleur implements Initializable{
 	Button boutonUndo;
 	
 	@FXML
-	Label nBCoups;
+	Label nbCoups;
 	
 	@FXML
 	GridPane grille; 
+	
+	@FXML
+	Button boutonPause;
 	
 	public JeuSoloControlleur(Stage stage, PartieSolo partie) throws IOException {
 		this.owner = stage;
@@ -54,38 +65,67 @@ public class JeuSoloControlleur implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		boutonPause.setFocusTraversable(false);
+		boutonUndo.setFocusTraversable(false);
+		
 		this.initGridPane();
 		this.initJoueur();
+		
 	}
 	
 	
 	
-	
+	/**
+	 * Initialise la grille et les images à l'intérieur. 
+	 */
 	private void initGridPane() {
+		//Définition de la taille d'une case
+		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
+		//Initialisation des contraintes des cases (tailles colomnes et lignes)
 		ColumnConstraints cc = new ColumnConstraints();
-		cc.setPercentWidth(100/partie.getPuzzle().getTaille());
+		cc.setPrefWidth(largeurCase);
+		cc.setMinWidth(largeurCase);
+		cc.setMaxWidth(largeurCase);
+		cc.setHalignment(HPos.CENTER);
 		RowConstraints rc = new RowConstraints();
-		rc.setPercentHeight(100/partie.getPuzzle().getTaille());
-		
+		rc.setPrefHeight(largeurCase);
+		rc.setMinHeight(largeurCase);
+		rc.setMaxHeight(largeurCase);
+		//Appliquation des contraintes
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			this.grille.getColumnConstraints().add(cc);
 			this.grille.getRowConstraints().add(rc);
 		}
+		this.updateImages();
+	}
+	
+	private void updateImages() {
+		//Définition de la taille d'une case
+		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
 		Image image;
+		//Ajout de l'image correspondant à chaque case de la grille.
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			for(int j = 0;j<partie.getPuzzle().getTaille();j++) {
 				image = SwingFXUtils.toFXImage(this.partie.getPuzzle().getCase(j, i).getImage(), null);
 				ImageView iv = new ImageView(image);
-				iv.setFitWidth(50);
-				iv.setFitHeight(50);
+				iv.setFitWidth(largeurCase);
+				iv.setFitHeight(largeurCase);
 				iv.setId("case"+this.partie.getPuzzle().getCase(j, i).getIndex());
 				this.grille.add(iv, j, i);
-				this.grille.add(new Label(""+this.partie.getPuzzle().getCase(j, i).getIndex()), j, i);
+				if(this.partie.getPuzzle().getCase(j,i).getIndex()!=-1) {
+					Label li = new Label(""+this.partie.getPuzzle().getCase(j, i).getIndex());
+					li.setFont(new Font(18));
+					li.setTextFill(Color.YELLOW);
+					li.setAlignment(Pos.CENTER);
+					this.grille.add(li, j, i);
+				}
 			}
 		}
-		this.resizeImages();
-		this.nBCoups.setText("case:");
 	}
+	
+	
+	
+	/*
 	
 	//Bug : probablement du à la méthode GetNodeByCoordinate en dessous : comment calculer la width ?
 	private void resizeImages() {
@@ -112,17 +152,51 @@ public class JeuSoloControlleur implements Initializable{
 	    }
 	    return null;
 	}
+	*/
 	
 	private void initJoueur() {
 		Image image = SwingFXUtils.toFXImage(this.partie.getJoueur().getImage(), null);
 		this.logoJoueur.setImage(image);
+		this.updateInfos();
+	}
+	
+	private void updateInfos() {
+		this.nbCoups.setText("nbCoups : "+this.partie.getPuzzle().getNbCoups());
+	}
+	
+	public void setKeyController() {
+		this.owner.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+	                case UP:
+	                	System.out.println("move up");
+	                	break;
+	                case DOWN:
+	                	System.out.println("move down");
+	                	break;
+	                case LEFT:
+	                	System.out.println("move left");
+	                	break;
+	                case RIGHT:
+	                	System.out.println("move right");
+	                	break;
+					default:
+						break;
+				}
+			}
+		});
 	}
 	
 	
+	@FXML
+	private void undoButton(ActionEvent event) {
+		 System.out.println("undo");//TODO not implemented
+	}
 	
 	@FXML
-	private void lancerPartie(ActionEvent event) {
-		 System.exit(0); // Exit with status code 0 (normal exit)
+	private void pauseButton(ActionEvent event) {
+		System.out.println("pause");//TODO not implemented
 	}
 	
 }

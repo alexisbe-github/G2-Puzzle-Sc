@@ -3,10 +3,13 @@ package main.java.vue;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.java.controlleur.JeuSoloControlleur;
 import main.java.controlleur.NouvellePartieControlleur;
@@ -16,16 +19,20 @@ public class VueJeuSolo extends Stage{
 
 	public VueJeuSolo(PartieSolo partie) throws IOException {
 		this.initModality(Modality.NONE);
-		//this.initStyle(StageStyle.DECORATED);
-        
-		JeuSoloControlleur controller = new JeuSoloControlleur(this, partie);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
+		
+		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
+        this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
+        this.setResizable(false);
+        JeuSoloControlleur controller = new JeuSoloControlleur(this, partie);
         loader.setController(controller);
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         
+        Parent root = loader.load();
+        Scene scene = new Scene(root);        
+        
+        //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         this.setScene(scene);
+        controller.setKeyController();
         this.show();
 	}
 	
