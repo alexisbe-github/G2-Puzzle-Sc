@@ -18,10 +18,8 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	private int indexJoueurCourant; // index qui indique quel joueur de la List<Joueur> joueurs doit jouer son tour
 
 	/**
-	 * Construit une partie multijoueur cooperative se jouant tour par tour à partir
-	 * d'un joueur hôte
+	 * Construit une partie multijoueur cooperative se jouant tour par tour
 	 * 
-	 * @param joueurHote
 	 */
 	public PartieMultijoueurCooperative() {
 		indexJoueurCourant = 0;
@@ -82,18 +80,18 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	 * @param numJoueur numero du joueur dans la liste
 	 * @throws IOException
 	 */
-	public void deplacerCase(EDeplacement dp, int numJoueur) throws IOException {
+	public void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException {
 		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
 		}
-		if(puzzleCommun.verifierGrille()) {
+		if (puzzleCommun.verifierGrille()) {
 			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 				Joueur j = mapEntry.getKey();
 				Socket s = mapEntry.getValue();
-				
+
 				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN "+puzzleCommun.getNbCoups() +" COUPS!");
+				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
 			}
 		}
 	}

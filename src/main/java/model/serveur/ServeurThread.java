@@ -19,6 +19,7 @@ public class ServeurThread extends Thread {
 	private PrintStream fluxSortant;
 	private PartieMultijoueur partie;
 	private boolean flagJoueurAjoute = false;
+	private Joueur joueur;
 
 	/**
 	 * Suppose socket dejà connectée vers le client num noConnexion
@@ -48,8 +49,8 @@ public class ServeurThread extends Thread {
 
 				if (!flagJoueurAjoute) {
 					ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-					Joueur j = (Joueur) inputStream.readObject();
-					partie.ajouterJoueur(j, socket);
+					this.joueur = (Joueur) inputStream.readObject();
+					partie.ajouterJoueur(joueur, socket);
 					flagJoueurAjoute = true;
 				} else {
 					ligne = fluxEntrant.readLine(); // saisit le texte du client
@@ -58,18 +59,18 @@ public class ServeurThread extends Thread {
 
 					reponse = ligne; // calcul de la reponse
 					char c = reponse.charAt(0);
-					switch(c) {
+					switch (c) {
 					case 'h':
-						partie.deplacerCase(EDeplacement.HAUT, this.noConnexion);
+						partie.deplacerCase(EDeplacement.HAUT, joueur, this.noConnexion);
 						break;
 					case 'b':
-						partie.deplacerCase(EDeplacement.BAS, this.noConnexion);
+						partie.deplacerCase(EDeplacement.BAS, joueur, this.noConnexion);
 						break;
 					case 'g':
-						partie.deplacerCase(EDeplacement.GAUCHE, this.noConnexion);
+						partie.deplacerCase(EDeplacement.GAUCHE, joueur, this.noConnexion);
 						break;
 					case 'd':
-						partie.deplacerCase(EDeplacement.DROITE, this.noConnexion);
+						partie.deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 						break;
 					}
 					// fluxSortant.println(partie); // envoi de la reponse au client

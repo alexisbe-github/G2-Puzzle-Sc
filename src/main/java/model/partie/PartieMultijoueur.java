@@ -19,7 +19,7 @@ public abstract class PartieMultijoueur implements StrategyPartie{
 		return this.joueurs;
 	}
 	
-	public abstract void deplacerCase(EDeplacement dp, int numJoueur) throws IOException;
+	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
 	
 	public Puzzle getPuzzleDuJoueur(Joueur j) {
 		return tablePuzzleDesJoueurs.get(j);
