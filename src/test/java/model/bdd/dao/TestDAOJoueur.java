@@ -69,6 +69,22 @@ public class TestDAOJoueur implements TestCRUD {
 
 		Assertions.assertNull(dao.trouver(j.getId()).getPseudo());
 	}
+	
+	@Test
+	@Override
+	public void testFindAll() {
+		JoueurSQL j1 = new JoueurSQL();
+		JoueurSQL j2 = new JoueurSQL();
+		JoueurSQL j3 = new JoueurSQL();
+		dao.creer(j1);
+		dao.creer(j2);
+		dao.creer(j3);
+		List<JoueurSQL> joueurs = dao.trouverTout();
+		
+		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(0))));
+		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(1))));
+		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(2))));
+	}
 
 	@AfterAll
 	public static void cleanUp() {

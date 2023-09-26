@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import main.java.model.bdd.dao.DAOPartie;
 import main.java.model.bdd.dao.beans.PartieSQL;
+import main.java.model.bdd.dao.beans.PartieSQL;
 
 public class TestDAOPartie implements TestCRUD {
 
@@ -82,6 +83,22 @@ public class TestDAOPartie implements TestCRUD {
 		Assertions.assertEquals(dao.trouver(p.getId()).getDureeSecondes(), 0);
 		Assertions.assertEquals(dao.trouver(p.getId()).getTailleGrille(), 0);
 		Assertions.assertEquals(dao.trouver(p.getId()).getNbCoups(), 0);
+	}
+	
+	@Test
+	@Override
+	public void testFindAll() {
+		PartieSQL p1 = new PartieSQL();
+		PartieSQL p2 = new PartieSQL();
+		PartieSQL p3 = new PartieSQL();
+		dao.creer(p1);
+		dao.creer(p2);
+		dao.creer(p3);
+		List<PartieSQL> parties = dao.trouverTout();
+		
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
 	}
 
 	@AfterAll

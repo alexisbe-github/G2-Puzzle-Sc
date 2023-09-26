@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import main.java.model.bdd.Connexion;
+import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.bdd.dao.beans.PartieSQL;
 
 /**
@@ -87,6 +90,32 @@ public class DAOPartie extends DAO<PartieSQL> {
 
 		}
 		return partie;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return Une liste contenant tous les joueurs sauvegardés dans la base de
+	 *         données
+	 * 
+	 */
+	@Override
+	public List<PartieSQL> trouverTout() {
+		final String ID = "id";
+		List<PartieSQL> res = new ArrayList<>();
+		Connection connexion = Connexion.getInstance().getConnection();
+		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE,
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					long id = rs.getLong(ID);
+					res.add(this.trouver(id));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	/**

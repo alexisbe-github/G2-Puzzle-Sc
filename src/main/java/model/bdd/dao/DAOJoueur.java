@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.beans.JoueurSQL;
@@ -63,6 +65,32 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 			e.printStackTrace();
 		}
 		return joueur;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return Une liste contenant tous les joueurs sauvegardés dans la base de
+	 *         données
+	 * 
+	 */
+	@Override
+	public List<JoueurSQL> trouverTout() {
+		final String ID = "id";
+		List<JoueurSQL> res = new ArrayList<>();
+		Connection connexion = Connexion.getInstance().getConnection();
+		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + JOUEUR,
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					long id = rs.getLong(ID);
+					res.add(this.trouver(id));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	/**
@@ -134,5 +162,5 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

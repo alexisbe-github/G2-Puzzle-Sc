@@ -12,6 +12,7 @@ import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.DAOPartie;
 import main.java.model.bdd.dao.DAOPartieCooperative;
 import main.java.model.bdd.dao.beans.JoueurSQL;
+import main.java.model.bdd.dao.beans.PartieCompetitiveSQL;
 import main.java.model.bdd.dao.beans.PartieCooperativeSQL;
 import main.java.model.bdd.dao.beans.PartieSQL;
 
@@ -122,6 +123,22 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		dao.supprimer(dao.trouver(p.getIdPartie()));
 
 		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), 0);
+	}
+	
+	@Test
+	@Override
+	public void testFindAll() {
+		PartieCooperativeSQL p1 = new PartieCooperativeSQL();
+		PartieCooperativeSQL p2 = new PartieCooperativeSQL();
+		PartieCooperativeSQL p3 = new PartieCooperativeSQL();
+		dao.creer(p1);
+		dao.creer(p2);
+		dao.creer(p3);
+		List<PartieCooperativeSQL> parties = dao.trouverTout();
+		
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
+		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
 	}
 
 	@AfterAll

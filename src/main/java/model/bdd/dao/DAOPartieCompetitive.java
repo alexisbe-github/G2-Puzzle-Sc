@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.model.bdd.Connexion;
+import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.bdd.dao.beans.PartieCompetitiveSQL;
 
 /**
@@ -76,6 +79,32 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 		return partie;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return Une liste contenant tous les joueurs sauvegardés dans la base de
+	 *         données
+	 * 
+	 */
+	@Override
+	public List<PartieCompetitiveSQL> trouverTout() {
+		final String ID = "id";
+		List<PartieCompetitiveSQL> res = new ArrayList<>();
+		Connection connexion = Connexion.getInstance().getConnection();
+		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE_COMPETITIVE,
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					long id = rs.getLong(ID);
+					res.add(this.trouver(id));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
