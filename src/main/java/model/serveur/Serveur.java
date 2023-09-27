@@ -18,7 +18,7 @@ public class Serveur {
 		noConnexion = 0;
 	}
 
-	public synchronized void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
+	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
 		UtilsNetwork.checkPort(port);
 		serverOn = true;
 		new Thread(() -> {
