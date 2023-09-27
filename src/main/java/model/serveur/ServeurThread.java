@@ -33,12 +33,7 @@ public class ServeurThread extends Thread {
 		this.socket = socket;
 		this.noConnexion = noConnexion;
 		fluxEntrant = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		/* à present fluxEntrant est pret pour lire du texte provenant du client */
 		fluxSortant = new PrintStream(this.socket.getOutputStream());
-		/*
-		 * à present le fluxSortant est pret pour renvoyer des reponses textuelles au
-		 * client
-		 */
 	}
 
 	public void run() {
@@ -73,15 +68,14 @@ public class ServeurThread extends Thread {
 						partie.deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 						break;
 					}
-					// fluxSortant.println(partie); // envoi de la reponse au client
 				}
 
 				sleep(5);
 			} // while
 		} catch (InterruptedException erreur) {
 			/* le thread s'arrete */} catch (IOException erreur) {
-			// System.err.println("On ne peut pas lire sur le socket provenant du client");
-			System.out.println("Deconnexion du client numéro " + this.noConnexion);
+			System.out.println("Déconnexion du client numéro " + this.noConnexion);
+			partie.deconnecterJoueur(joueur); // cas où le cient n'est plus connecté au serveur
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

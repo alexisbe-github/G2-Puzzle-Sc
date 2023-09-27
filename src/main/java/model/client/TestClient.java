@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import main.java.model.joueur.Joueur;
+import main.java.utils.Utils;
+import main.java.utils.UtilsNetwork;
 
 public class TestClient {
 
@@ -20,7 +22,7 @@ public class TestClient {
 	}
 	
 	public static void lancerClient(Joueur j) throws IOException {
-		String ip = getIP();
+		String ip = UtilsNetwork.getServeurIPV4(true);
 		int port = 8080;
 		Client c = new Client(j);
 		c.seConnecter(ip, port);
@@ -47,17 +49,5 @@ public class TestClient {
 		}
 	}
 
-	/**
-	 * @return the IPv4 of the machine (String)
-	 */
-	public static String getIP() {
-		String ip = "";
-		try (final DatagramSocket socket = new DatagramSocket()) {
-			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-			ip = socket.getLocalAddress().getHostAddress();
-		} catch (SocketException | UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return ip;
-	}
+
 }
