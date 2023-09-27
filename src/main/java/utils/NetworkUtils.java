@@ -10,7 +10,7 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-public class UtilsNetwork {
+public class NetworkUtils {
 
 	/**
 	 * @return String l'IPv4 de la machine

@@ -10,17 +10,16 @@ import java.net.Socket;
 import main.java.model.joueur.Joueur;
 
 public class Client {
-	
-	private boolean connecte = false;
-	private String ip = "";
-	private int port = -1;
+
+	private boolean connecte;
 	private Socket socket;
 	private Joueur joueur;
 
 	public Client(Joueur joueur) {
 		this.joueur = joueur;
+		this.connecte = false;
 	}
-	
+
 	private void setConnection() {
 		connecte = true;
 	}
@@ -29,17 +28,10 @@ public class Client {
 		return connecte;
 	}
 
-	public void seConnecter(String ip, int port) {
-		try {
-			socket = new Socket(ip, port);
-			this.ip = ip;
-			this.port = port;
-			setConnection();
-			ajouterJoueur();
-		} catch (IOException e) {
-			connecte = false;
-			e.printStackTrace();
-		}
+	public void seConnecter(String ip, int port) throws IOException {
+		socket = new Socket(ip, port);
+		setConnection();
+		ajouterJoueur();
 	}
 
 	public Socket getSocket() {
@@ -54,7 +46,7 @@ public class Client {
 		String reponse = fluxEntrant.readLine(); // reception de la reponse
 		System.out.println(reponse);
 	}
-	
+
 	private void ajouterJoueur() throws IOException {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		outputStream.writeObject(joueur);

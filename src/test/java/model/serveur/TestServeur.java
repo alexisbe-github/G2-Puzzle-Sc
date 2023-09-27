@@ -1,9 +1,14 @@
 package test.java.model.serveur;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
@@ -11,8 +16,9 @@ import main.java.model.partie.PartieMultijoueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
-import main.java.utils.UtilsNetwork;
+import main.java.utils.NetworkUtils;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestServeur {
 
 	private static Client client;
@@ -20,7 +26,8 @@ public class TestServeur {
 	private static PartieMultijoueur partieMultiCoop;
 	private static Serveur serveur;
 	private final int PORT_VALIDE = InvalidPortException.PORT_MAX;
-	private final int PORT_INVALIDE = InvalidPortException.PORT_MAX + 1;
+	private final int PORT_INVALIDE1 = InvalidPortException.PORT_MAX + 1;
+	private final int PORT_INVALIDE2 = InvalidPortException.PORT_MIN - 1;
 
 	@BeforeAll
 	public static void setUp() {
@@ -32,28 +39,44 @@ public class TestServeur {
 
 	@Test
 	@Order(1)
-	public void testLancerServeurPortInvalide() {
+	public void testLancerServeurPortInvalide1() {
 		Assertions.assertThrows(InvalidPortException.class, () -> {
-			serveur.lancerServeur(partieMultiCoop, PORT_INVALIDE);
+			serveur.lancerServeur(partieMultiCoop, PORT_INVALIDE1);
 		});
 	}
 
 	@Test
-	@Order(2)
-	public void testLancerServeur() {
+	@Order(1)
+	public void testLancerServeurPortInvalide2() {
+		Assertions.assertThrows(InvalidPortException.class, () -> {
+			serveur.lancerServeur(partieMultiCoop, PORT_INVALIDE2);
+		});
+	}
+
+	@Test
+	@Order(3)
+	public void testLancerServeur() throws IOException, InvalidPortException {
 		Assertions.assertDoesNotThrow(() -> {
 			serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		});
-		
+
 		int nombreDeConnexions = serveur.getNoConnexion();
-		int nombreDeConnexionsAttendus = 0; //il doit y avoir 0 connexion au serveur
-		Assertions.assertEquals(nombreDeConnexions, nombreDeConnexionsAttendus);
-		
-		nombreDeConnexionsAttendus = 1; //il doit y avoir 1 connexion au serveur
-		client.seConnecter(UtilsNetwork.getServeurIPV4(true), PORT_VALIDE);
+		int nombreDeConnexionsAttendus = 0; // il doit y avoir 0 connexion au serveur
+		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
+
+		nombreDeConnexionsAttendus = 1; // il doit y avoir 1 connexion au serveur
+		client.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
 		nombreDeConnexions = serveur.getNoConnexion();
-		Assertions.assertEquals(nombreDeConnexions, nombreDeConnexionsAttendus);
+		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
+		serveur.stopServeur();
 	}
 
+	@Test
+	@Order(4)
+	public void testStopServeur() throws InvalidPortException, IOException {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			client.lancerRequete("Requête vide");
+		});
+	}
 
 }

@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 
 import main.java.utils.Utils;
 
-class TestUtils {
+public class TestUtils {
 	
 	@Test
 	public void testComparerImage() {
 		BufferedImage imgTest;
 		try {
-			imgTest = ImageIO.read(new File("src/main/resources/testimg.jpg"));
+			imgTest = ImageIO.read(new File("src/test/resources/testimg.jpg"));
 			Assertions.assertTrue(Utils.comparerImages(imgTest, imgTest),"Deux images similaires devraient retourner true, mais elles retournent false.");	
 			Assertions.assertTrue(!Utils.comparerImages(imgTest, imgTest.getSubimage(0, 0, 5, 5)),"Deux images différentes devraient retourner false, mais elles retournent true");
 		} catch (IOException e) {
@@ -32,7 +32,7 @@ class TestUtils {
 	public void testCreateTransparentBufferedImage() {
 		BufferedImage imgTest;
 		try {
-			imgTest = ImageIO.read(new File("src/main/resources/test/image-1.png"));
+			imgTest = ImageIO.read(new File("src/test/resources/image-1.png"));
 			Assertions.assertTrue(
 					Utils.comparerImages(imgTest, Utils.createTransparentBufferedImage(imgTest.getWidth(), imgTest.getHeight())),
 					"l'image transparente crée ne correspond pas à l'image attendue"

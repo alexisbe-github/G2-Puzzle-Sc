@@ -14,13 +14,9 @@ public abstract class PartieMultijoueur implements StrategyPartie {
 	protected List<Joueur> joueurs;
 	protected Map<Joueur, Puzzle> tablePuzzleDesJoueurs;
 	protected Map<Joueur, Socket> tableSocketDesJoueurs;
-
-	public List<Joueur> getJoueurs() {
-		return this.joueurs;
-	}
-
+	
 	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
-
+	
 	public Puzzle getPuzzleDuJoueur(Joueur j) {
 		return tablePuzzleDesJoueurs.get(j);
 	}
@@ -35,6 +31,18 @@ public abstract class PartieMultijoueur implements StrategyPartie {
 		joueurs.remove(j);
 		tablePuzzleDesJoueurs.remove(j);
 		tableSocketDesJoueurs.remove(j);
+	}
+
+	public List<Joueur> getJoueurs() {
+		return this.joueurs;
+	}
+	
+	public Map<Joueur, Puzzle> getTablePuzzleDesJoueurs() {
+		return tablePuzzleDesJoueurs;
+	}
+
+	public Map<Joueur, Socket> getTableSocketDesJoueurs() {
+		return tableSocketDesJoueurs;
 	}
 
 }

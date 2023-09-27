@@ -19,9 +19,17 @@ public class PartieSolo implements StrategyPartie {
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		this.puzzle = new Puzzle(taillePuzzle, image);
 	}
-	
+
 	public void deplacerCase(EDeplacement dp) {
 		puzzle.deplacerCase(dp);
+	}
+
+	public Puzzle getPuzzle() {
+		return puzzle;
+	}
+
+	public Joueur getJoueur() {
+		return joueur;
 	}
 
 }

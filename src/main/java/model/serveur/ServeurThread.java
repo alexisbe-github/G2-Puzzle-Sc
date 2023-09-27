@@ -41,7 +41,6 @@ public class ServeurThread extends Thread {
 		String reponse;
 		try {
 			while (!isInterrupted()) {
-
 				if (!flagJoueurAjoute) {
 					ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 					this.joueur = (Joueur) inputStream.readObject();
@@ -49,24 +48,26 @@ public class ServeurThread extends Thread {
 					flagJoueurAjoute = true;
 				} else {
 					ligne = fluxEntrant.readLine(); // saisit le texte du client
-					System.out.println("Le client numéro " + this.noConnexion + " a envoye : ");
-					System.out.println(ligne); // echo de la question sur la console
+					if (ligne != null) {
+						System.out.println("Le client numéro " + this.noConnexion + " a envoye : ");
+						System.out.println(ligne); // echo de la question sur la console
 
-					reponse = ligne; // calcul de la reponse
-					char c = reponse.charAt(0);
-					switch (c) {
-					case 'h':
-						partie.deplacerCase(EDeplacement.HAUT, joueur, this.noConnexion);
-						break;
-					case 'b':
-						partie.deplacerCase(EDeplacement.BAS, joueur, this.noConnexion);
-						break;
-					case 'g':
-						partie.deplacerCase(EDeplacement.GAUCHE, joueur, this.noConnexion);
-						break;
-					case 'd':
-						partie.deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
-						break;
+						reponse = ligne; // calcul de la reponse
+						char c = reponse.charAt(0);
+						switch (c) {
+						case 'h':
+							partie.deplacerCase(EDeplacement.HAUT, joueur, this.noConnexion);
+							break;
+						case 'b':
+							partie.deplacerCase(EDeplacement.BAS, joueur, this.noConnexion);
+							break;
+						case 'g':
+							partie.deplacerCase(EDeplacement.GAUCHE, joueur, this.noConnexion);
+							break;
+						case 'd':
+							partie.deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
+							break;
+						}
 					}
 				}
 

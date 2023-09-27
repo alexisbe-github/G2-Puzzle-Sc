@@ -49,7 +49,7 @@ public class TestPuzzle {
 	public void testConstructor3() {
 		int bonneTaille = 5;
 		Puzzle p = new Puzzle(bonneTaille);
-		Assertions.assertEquals(p.getTaille(), bonneTaille,
+		Assertions.assertEquals(bonneTaille, p.getTaille(),
 				"La taille du puzzle devrait être " + bonneTaille + ", actuellement:" + p.getTaille());
 	}
 
@@ -344,11 +344,13 @@ public class TestPuzzle {
 			Puzzle pTest = new Puzzle(4, img);
 			for (int i = 0; i < pTest.getTaille(); i++) {
 				for (int j = 0; j < pTest.getTaille(); j++) {
-					Assertions.assertTrue(
-							Utils.comparerImages(pTest.getCase(j, i).getImage(),
-									ImageIO.read(new File("src/test/resources/image"
-											+ pTest.getCase(j, i).getIndex() + ".png"))),
-							"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i + ".");
+					Assertions
+							.assertTrue(
+									Utils.comparerImages(pTest.getCase(j, i).getImage(),
+											ImageIO.read(new File("src/test/resources/image"
+													+ pTest.getCase(j, i).getIndex() + ".png"))),
+									"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i
+											+ ".");
 				}
 			}
 		} catch (IOException e) {
