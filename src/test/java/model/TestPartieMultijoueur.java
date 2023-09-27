@@ -25,7 +25,7 @@ public class TestPartieMultijoueur {
 	private static PartieMultijoueurCompetitive partieMultiCompetitive;
 	private static Serveur serveur;
 	private final String ip = NetworkUtils.getServeurIPV4(true);
-	private final static int PORT_VALIDE = InvalidPortException.PORT_MAX;
+	private final static int PORT_VALIDE = 8083;
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException {

@@ -32,7 +32,7 @@ public class TestPartieMultijoueurCooperative {
 	private static Serveur serveur;
 	private final static int TAILLE = 3;
 	private final static String ip = NetworkUtils.getServeurIPV4(true);
-	private final static int PORT_VALIDE = InvalidPortException.PORT_MAX;
+	private final static int PORT_VALIDE = 8085;
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException, IOException, InterruptedException {
