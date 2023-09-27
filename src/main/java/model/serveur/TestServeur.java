@@ -17,7 +17,8 @@ public class TestServeur {
 		PartieMultijoueurCooperative pmCoop = new PartieMultijoueurCooperative();
 		cp.setStrategy(pmCoop);
 		try {
-			Serveur.lancerServeur(pmCoop, 8080);
+			Serveur s = new Serveur();
+			s.lancerServeur(pmCoop, 8080);
 		} catch (InvalidPortException e1) {
 
 		}

@@ -38,6 +38,7 @@ public class Client {
 			ajouterJoueur();
 		} catch (IOException e) {
 			connecte = false;
+			e.printStackTrace();
 		}
 	}
 
