@@ -13,9 +13,12 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -29,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.model.EDeplacement;
 import main.java.model.partie.PartieSolo;
+import main.java.vue.VueMenu;
 
 public class JeuSoloControlleur implements Initializable, PropertyChangeListener{
 
@@ -185,8 +189,12 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 	
 	
 	@FXML
-	private void undoButton(ActionEvent event) {
-		 System.out.println("undo");//TODO not implemented
+	private void undoButton(ActionEvent event) throws IOException {
+
+		System.out.println("undo");
+
+		//TODO not implemented
+
 	}
 	
 	@FXML
