@@ -12,14 +12,11 @@ import main.java.model.joueur.Joueur;
 public abstract class PartieMultijoueur implements StrategyPartie {
 
 	protected List<Joueur> joueurs;
-	protected Map<Joueur, Puzzle> tablePuzzleDesJoueurs;
 	protected Map<Joueur, Socket> tableSocketDesJoueurs;
-	
+
 	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
-	
-	public Puzzle getPuzzleDuJoueur(Joueur j) {
-		return tablePuzzleDesJoueurs.get(j);
-	}
+
+	public abstract void deconnecterJoueur(Joueur j);
 
 	public void ajouterJoueur(Joueur j, Socket s) {
 		joueurs.add(j);
@@ -27,18 +24,8 @@ public abstract class PartieMultijoueur implements StrategyPartie {
 		System.out.println(joueurs);
 	}
 
-	public void deconnecterJoueur(Joueur j) {
-		joueurs.remove(j);
-		tablePuzzleDesJoueurs.remove(j);
-		tableSocketDesJoueurs.remove(j);
-	}
-
 	public List<Joueur> getJoueurs() {
 		return this.joueurs;
-	}
-	
-	public Map<Joueur, Puzzle> getTablePuzzleDesJoueurs() {
-		return tablePuzzleDesJoueurs;
 	}
 
 	public Map<Joueur, Socket> getTableSocketDesJoueurs() {

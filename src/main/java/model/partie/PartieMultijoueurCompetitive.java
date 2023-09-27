@@ -13,6 +13,8 @@ import main.java.model.joueur.Joueur;
 
 public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 
+	private Map<Joueur, Puzzle> tablePuzzleDesJoueurs;
+
 	public PartieMultijoueurCompetitive() {
 		joueurs = new ArrayList<>();
 		tablePuzzleDesJoueurs = new HashMap<>();
@@ -35,10 +37,12 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 
 	/**
 	 * Vérifie si un joueur de la partie a gagné
+	 * 
 	 * @return boolean si un joueur a gagné
 	 */
 	public boolean unJoueurAGagne() {
-		//parcours de tous les joueurs et si une grille est vérifiée alors la partie est finie et on return true
+		// parcours de tous les joueurs et si une grille est vérifiée alors la partie
+		// est finie et on return true
 		for (Map.Entry<Joueur, Puzzle> mapEntry : tablePuzzleDesJoueurs.entrySet()) {
 			Joueur j = mapEntry.getKey();
 			Puzzle p = mapEntry.getValue();
@@ -47,6 +51,21 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void deconnecterJoueur(Joueur j) {
+		joueurs.remove(j);
+		tablePuzzleDesJoueurs.remove(j);
+		tableSocketDesJoueurs.remove(j);
+	}
+
+	public Puzzle getPuzzleDuJoueur(Joueur j) {
+		return tablePuzzleDesJoueurs.get(j);
+	}
+
+	public Map<Joueur, Puzzle> getTablePuzzleDesJoueurs() {
+		return tablePuzzleDesJoueurs;
 	}
 
 }

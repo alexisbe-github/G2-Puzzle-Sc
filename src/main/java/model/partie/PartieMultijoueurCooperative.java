@@ -24,16 +24,12 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	public PartieMultijoueurCooperative() {
 		indexJoueurCourant = 0;
 		joueurs = new ArrayList<>();
-		tablePuzzleDesJoueurs = new HashMap<>();
 		tableSocketDesJoueurs = new HashMap<>();
 	}
 
 	@Override
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		puzzleCommun = new Puzzle(taillePuzzle);
-		for (Joueur j : joueurs) {
-			tablePuzzleDesJoueurs.put(j, puzzleCommun);
-		}
 		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 			Joueur j = mapEntry.getKey();
 			Socket s = mapEntry.getValue();
@@ -41,8 +37,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			try {
 				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
 				fluxSortant.println();
-				Puzzle puzzle = getPuzzleDuJoueur(j);
-				fluxSortant.println(puzzle);
+				fluxSortant.println(puzzleCommun);
 				fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
 				fluxSortant.println();
 				fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
@@ -50,6 +45,12 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void deconnecterJoueur(Joueur j) {
+		joueurs.remove(j);
+		tableSocketDesJoueurs.remove(j);
 	}
 
 	/**
@@ -64,9 +65,8 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			Joueur j = mapEntry.getKey();
 			Socket s = mapEntry.getValue();
 
-			Puzzle puzzle = getPuzzleDuJoueur(j);
 			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-			fluxSortant.println(puzzle);
+			fluxSortant.println(puzzleCommun);
 			fluxSortant.println();
 			fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
 			fluxSortant.println();
@@ -95,14 +95,22 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			}
 		}
 	}
+	
+	public boolean partieFinie() {
+		return puzzleCommun.verifierGrille();
+	}
 
 	public Puzzle getPuzzleCommun() {
-		return this.getPuzzleCommun();
+		return this.puzzleCommun;
 	}
 
 	private Joueur getJoueurCourant() {
 		Joueur joueurCourant = joueurs.get(indexJoueurCourant);
 		return joueurCourant;
+	}
+
+	public int getIndexJoueurCourant() {
+		return indexJoueurCourant;
 	}
 
 }

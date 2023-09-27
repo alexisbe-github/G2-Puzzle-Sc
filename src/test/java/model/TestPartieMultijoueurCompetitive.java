@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import main.java.model.Case;
+import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
@@ -70,7 +71,7 @@ public class TestPartieMultijoueurCompetitive {
 		oldX = puzzleJ1.getXCaseVide();
 		oldY = puzzleJ1.getYCaseVide();
 
-		client1.lancerRequete("h");
+		partieMultiCompetitive.deplacerCase(EDeplacement.HAUT, joueur1, 1);
 		newX = puzzleJ1.getXCaseVide();
 		newY = puzzleJ1.getYCaseVide();
 
@@ -78,4 +79,18 @@ public class TestPartieMultijoueurCompetitive {
 		Assertions.assertEquals(oldY + 1, newY);
 	}
 
+	@Test
+	@Order(3)
+	public void testUnJoueurAGagne() {
+		Case[][] grille = new Case[][] { { new Case(1), new Case(4), new Case(7) },
+				{ new Case(2), new Case(5), new Case(8) }, { new Case(3), new Case(6), new Case(-1) } }; // initialisation
+																											// de la
+																											// grille gagnante
+		Puzzle puzzleJ1 = partieMultiCompetitive.getTablePuzzleDesJoueurs().get(joueur1);
+		puzzleJ1.setGrille(grille); //on fait gagner le joueur 1
+		
+		boolean j1AGagne = partieMultiCompetitive.unJoueurAGagne();
+		
+		Assertions.assertTrue(j1AGagne);
+	}
 }
