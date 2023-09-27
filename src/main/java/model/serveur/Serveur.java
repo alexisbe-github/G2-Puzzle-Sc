@@ -46,11 +46,11 @@ public class Serveur {
 		}).start();
 	}
 	
-	public synchronized void stopServeur() {
+	public void stopServeur() {
 		this.serverOn = false;
 	}
 	
-	public synchronized int getNoConnexion() {
+	public int getNoConnexion() {
 		return this.noConnexion;
 	}
 
