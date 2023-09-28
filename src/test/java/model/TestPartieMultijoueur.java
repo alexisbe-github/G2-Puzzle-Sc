@@ -78,7 +78,7 @@ public class TestPartieMultijoueur {
 	}
 	
 	@AfterAll
-	public static void cleanUp() throws UnknownHostException, IOException {
+	public void cleanUp() throws UnknownHostException, IOException {
 		serveur.stopServeur(PORT_VALIDE);
 	}
 
