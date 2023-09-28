@@ -12,5 +12,7 @@ public interface TestCRUD {
 	void testUpdate();
 	
 	void testDelete();
+	
+	void testFindAll();
 
 }

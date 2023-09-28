@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.model.bdd.Connexion;
+import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.bdd.dao.beans.PartieCooperativeSQL;
 
 /**
@@ -78,6 +81,32 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 		return partie;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return Une liste contenant tous les joueurs sauvegardés dans la base de
+	 *         données
+	 * 
+	 */
+	@Override
+	public List<PartieCooperativeSQL> trouverTout() {
+		final String ID = ID_PARTIE;
+		List<PartieCooperativeSQL> res = new ArrayList<>();
+		Connection connexion = Connexion.getInstance().getConnection();
+		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE_COOPERATIVE,
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					long id = rs.getLong(ID);
+					res.add(this.trouver(id));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
