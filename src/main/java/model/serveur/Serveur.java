@@ -16,13 +16,11 @@ public class Serveur {
 
 	private boolean serverOn;
 	private int noConnexion;
-	private List<ServeurThread> serveursThread;
 	private ServerSocket serverSocket;
 
 	public Serveur() {
 		serverOn = false;
 		noConnexion = 0;
-		serveursThread = new ArrayList<>();
 	}
 
 	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
@@ -42,13 +40,11 @@ public class Serveur {
 				// group
 				while (serverOn) {
 					try {
-					Socket clientSocket = serverSocket.accept();
-					noConnexion++;
-					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
-					clientSocket.setOption(StandardSocketOptions.SO_REUSEPORT, true);
-					this.serveursThread.add(st);
-					st.start();
-					}catch(SocketException se) {
+						Socket clientSocket = serverSocket.accept();
+						noConnexion++;
+						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
+						st.start();
+					} catch (SocketException se) {
 						this.serverOn = false;
 					}
 
@@ -57,14 +53,6 @@ public class Serveur {
 				e.printStackTrace();
 			}
 		}).start();
-	}
-
-	public void stopServeur() throws IOException {
-		this.serverOn = false;
-		this.noConnexion = 0;
-		serverSocket.close();
-		this.serveursThread.clear();
-
 	}
 
 	public int getNoConnexion() {

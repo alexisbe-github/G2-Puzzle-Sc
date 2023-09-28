@@ -25,7 +25,7 @@ public class TestPartieMultijoueur {
 	private static PartieMultijoueurCompetitive partieMultiCompetitive;
 	private static Serveur serveur;
 	private final String ip = NetworkUtils.getServeurIPV4(true);
-	private final static int PORT_VALIDE = 8083;
+	private final static int PORT_VALIDE = 8090;
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException {
@@ -54,7 +54,7 @@ public class TestPartieMultijoueur {
 	@Test
 	@Order(2)
 	public void testDeconnecterJoueur() throws IOException, InterruptedException {
-		//on le fait pour 1 joueur
+		// on le fait pour 1 joueur
 		try {
 			client1.getSocket().close();
 		} catch (NullPointerException npe) {
@@ -64,7 +64,7 @@ public class TestPartieMultijoueur {
 			Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
 		}
 
-		//puis le deuxieme
+		// puis le deuxieme
 		try {
 			client2.getSocket().close();
 		} catch (NullPointerException npe) {

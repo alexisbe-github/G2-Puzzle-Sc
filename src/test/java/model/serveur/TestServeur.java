@@ -25,7 +25,7 @@ public class TestServeur {
 	private static Joueur joueur;
 	private static PartieMultijoueur partieMultiCoop;
 	private static Serveur serveur;
-	private final int PORT_VALIDE = 8090;
+	private final int PORT_VALIDE = 8091;
 	private final int PORT_INVALIDE1 = InvalidPortException.PORT_MAX + 1;
 	private final int PORT_INVALIDE2 = InvalidPortException.PORT_MIN - 1;
 
@@ -55,7 +55,7 @@ public class TestServeur {
 
 	@Test
 	@Order(3)
-	public void testLancerServeur() throws IOException, InvalidPortException {
+	public void testLancerServeur() throws IOException, InvalidPortException, InterruptedException {
 		Assertions.assertDoesNotThrow(() -> {
 			serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		});
@@ -66,9 +66,9 @@ public class TestServeur {
 
 		nombreDeConnexionsAttendus = 1; // il doit y avoir 1 connexion au serveur
 		client.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
+		TimeUnit.SECONDS.sleep(1);
 		nombreDeConnexions = serveur.getNoConnexion();
 		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
 	}
-
 
 }

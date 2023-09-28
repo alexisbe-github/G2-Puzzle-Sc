@@ -43,8 +43,6 @@ public class Client {
 		PrintStream fluxSortant = new PrintStream(socket.getOutputStream());
 		String requete = content;
 		fluxSortant.println(requete); // envoi de la requete au serveur
-		String reponse = fluxEntrant.readLine(); // reception de la reponse
-		System.out.println(reponse);
 	}
 
 	private void ajouterJoueur() throws IOException {
