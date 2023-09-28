@@ -28,7 +28,7 @@ public class TestPartieMultijoueur {
 	private final static int PORT_VALIDE = 8083;
 
 	@BeforeAll
-	public static void setUp() throws InvalidPortException {
+	public static void setUp() throws InvalidPortException, InterruptedException {
 		joueur1 = new Joueur("Joueur hôte", null);
 		client1 = new Client(joueur1);
 		joueur2 = new Joueur("Joueur 2", null);
@@ -36,6 +36,7 @@ public class TestPartieMultijoueur {
 		partieMultiCompetitive = new PartieMultijoueurCompetitive();
 		serveur = new Serveur();
 		serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
+		TimeUnit.SECONDS.sleep(1);
 	}
 
 	@Test

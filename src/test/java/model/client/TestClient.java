@@ -1,6 +1,7 @@
 package test.java.model.client;
 
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +30,7 @@ public class TestClient {
 	private final int PORT_INVALIDE2 = -1;
 
 	@BeforeAll
-	public static void setUp() throws InvalidPortException {
+	public static void setUp() throws InvalidPortException, InterruptedException {
 		joueur1 = new Joueur("Joueur hôte", null);
 		client1 = new Client(joueur1);
 		joueur2 = new Joueur("Joueur 2", null);
@@ -37,6 +38,7 @@ public class TestClient {
 		partieMultiCoop = new PartieMultijoueurCooperative();
 		serveur = new Serveur();
 		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
+		TimeUnit.SECONDS.sleep(1);
 	}
 
 	@Test
