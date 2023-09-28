@@ -32,7 +32,7 @@ public class TestPartieMultijoueurCompetitive {
 	private static Serveur serveur;
 	private final int TAILLE = 3;
 	private final static String ip = NetworkUtils.getServeurIPV4(true);
-	private final static int PORT_VALIDE = 8084;
+	private final static int PORT_VALIDE = 8085;
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException, IOException, InterruptedException {
