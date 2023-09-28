@@ -14,7 +14,7 @@ public class PartieSQL implements Serializable {
 	private static final long serialVersionUID = 1974972864521019924L;
 
 	private long id;
-	private int duree_secondes, taille_grille;
+	private int duree_secondes, taille_grille, nb_coups;
 	private Timestamp timestamp;
 
 	/**
@@ -57,6 +57,20 @@ public class PartieSQL implements Serializable {
 	 */
 	public void setTailleGrille(int taille_grille) {
 		this.taille_grille = taille_grille;
+	}
+
+	/**
+	 * @return Le nombre de coups
+	 */
+	public int getNbCoups() {
+		return nb_coups;
+	}
+
+	/**
+	 * @param nb_coups Le nombre de coups à mettre à jour
+	 */
+	public void setNbCoups(int nb_coups) {
+		this.nb_coups = nb_coups;
 	}
 
 	/**

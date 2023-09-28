@@ -1,6 +1,6 @@
 package main.java.model.bdd.dao;
 
-import main.java.model.bdd.Connexion;
+import java.util.List;
 
 /**
  * La couche <code>DAO</code> principale dont vont hériter tous les
@@ -18,6 +18,13 @@ public abstract class DAO<T> {
 	 * @return L'objet correspondant à l'identifiant
 	 */
 	public abstract T trouver(long id);
+	
+	/**
+	 * Permet de récupérer tous les objets de la base de données.
+	 *
+	 * @return Une liste d'objets correspondants
+	 */
+	public abstract List<T> trouverTout();
 
 	/**
 	 * Permet de créer une entrée dans la base de données.
