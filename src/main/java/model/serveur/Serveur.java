@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.StandardSocketOptions;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class Serveur {
 					Socket clientSocket = serverSocket.accept();
 					noConnexion++;
 					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
+					clientSocket.setOption(StandardSocketOptions.SO_REUSEPORT, true);
 					this.serveursThread.add(st);
 					st.start();
 					}catch(SocketException se) {
