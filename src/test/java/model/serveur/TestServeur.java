@@ -1,10 +1,8 @@
 package test.java.model.serveur;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -71,11 +69,6 @@ public class TestServeur {
 		TimeUnit.SECONDS.sleep(1);
 		nombreDeConnexions = serveur.getNoConnexion();
 		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
-	}
-	
-	@AfterAll
-	public void cleanUp() throws UnknownHostException, IOException {
-		serveur.stopServeur(PORT_VALIDE);
 	}
 
 }

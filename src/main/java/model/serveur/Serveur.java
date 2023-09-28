@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.StandardSocketOptions;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.model.partie.PartieMultijoueur;
 import main.java.utils.InvalidPortException;
@@ -44,6 +46,7 @@ public class Serveur {
 						st.start();
 					} catch (SocketException se) {
 						this.serverOn = false;
+						System.exit(0);
 					}
 
 				}
@@ -53,11 +56,6 @@ public class Serveur {
 		}).start();
 	}
 
-	public void stopServeur(int port) throws UnknownHostException, IOException {
-		this.serverOn = false;
-		Socket socket = new Socket(NetworkUtils.getServeurIPV4(true),port);
-	}
-	
 	public int getNoConnexion() {
 		return this.noConnexion;
 	}

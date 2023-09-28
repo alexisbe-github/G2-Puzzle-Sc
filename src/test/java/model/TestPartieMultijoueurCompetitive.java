@@ -2,12 +2,10 @@ package test.java.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -94,10 +92,5 @@ public class TestPartieMultijoueurCompetitive {
 		boolean j1AGagne = partieMultiCompetitive.unJoueurAGagne();
 		
 		Assertions.assertTrue(j1AGagne);
-	}
-	
-	@AfterAll
-	public void cleanUp() throws UnknownHostException, IOException {
-		serveur.stopServeur(PORT_VALIDE);
 	}
 }
