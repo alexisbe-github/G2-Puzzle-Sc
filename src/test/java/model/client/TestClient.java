@@ -75,7 +75,7 @@ public class TestClient {
 	}
 	
 	@AfterAll
-	public void cleanUp() throws UnknownHostException, IOException {
+	public static void cleanUp() throws UnknownHostException, IOException {
 		serveur.stopServeur(PORT_VALIDE);
 	}
 
