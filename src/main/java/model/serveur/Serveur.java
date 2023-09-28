@@ -46,6 +46,7 @@ public class Serveur {
 						st.start();
 					} catch (SocketException se) {
 						this.serverOn = false;
+						System.exit(0);
 					}
 
 				}
