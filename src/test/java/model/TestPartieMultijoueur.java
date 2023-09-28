@@ -1,8 +1,10 @@
 package test.java.model;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -73,6 +75,11 @@ public class TestPartieMultijoueur {
 
 			Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
 		}
+	}
+	
+	@AfterAll
+	public void cleanUp() throws UnknownHostException, IOException {
+		serveur.stopServeur(PORT_VALIDE);
 	}
 
 }

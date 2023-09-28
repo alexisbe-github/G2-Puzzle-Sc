@@ -1,7 +1,10 @@
 package test.java.model.client;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -69,6 +72,11 @@ public class TestClient {
 		Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
 		Assertions.assertNotNull(socketClient1, "La socket du premier client ne devrait pas être null!");
 		Assertions.assertNotNull(socketClient2, "La socket du deuxième client ne devrait pas être null!");
+	}
+	
+	@AfterAll
+	public void cleanUp() throws UnknownHostException, IOException {
+		serveur.stopServeur(PORT_VALIDE);
 	}
 
 }
