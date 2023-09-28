@@ -36,7 +36,6 @@ public class ServeurThread extends Thread {
 		fluxSortant = new PrintStream(this.socket.getOutputStream());
 	}
 
-	@Override
 	public void run() {
 		String ligne;
 		String reponse;

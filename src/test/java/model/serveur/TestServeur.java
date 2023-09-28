@@ -30,12 +30,11 @@ public class TestServeur {
 	private final int PORT_INVALIDE2 = InvalidPortException.PORT_MIN - 1;
 
 	@BeforeAll
-	public static void setUp() throws InterruptedException {
+	public static void setUp() {
 		joueur = new Joueur("Joueur hôte", null);
 		client = new Client(joueur);
 		partieMultiCoop = new PartieMultijoueurCooperative();
 		serveur = new Serveur();
-		TimeUnit.SECONDS.sleep(1);
 	}
 
 	@Test
