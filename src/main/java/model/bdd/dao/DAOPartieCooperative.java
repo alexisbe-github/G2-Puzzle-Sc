@@ -90,7 +90,7 @@ public class DAOPartieCooperative extends DAO<PartieCooperativeSQL> {
 	 */
 	@Override
 	public List<PartieCooperativeSQL> trouverTout() {
-		final String ID = "id";
+		final String ID = ID_PARTIE;
 		List<PartieCooperativeSQL> res = new ArrayList<>();
 		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE_COOPERATIVE,

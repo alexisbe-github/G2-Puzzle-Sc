@@ -35,11 +35,13 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 	 */
 	private final String PARTIE_COMPETITIVE = "partie_competitive";
 	/**
-	 * Colonne <code><i>id_joueur</i></code>, correspondant à l'identifiant du joueur.
+	 * Colonne <code><i>id_joueur</i></code>, correspondant à l'identifiant du
+	 * joueur.
 	 */
 	private final String ID_JOUEUR = "id_joueur";
 	/**
-	 * Colonne <code><i>id_partie</i></code>, correspondant à l'identifiant de la partie.
+	 * Colonne <code><i>id_partie</i></code>, correspondant à l'identifiant de la
+	 * partie.
 	 */
 	private final String ID_PARTIE = "id_partie";
 	/**
@@ -88,7 +90,7 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 	 */
 	@Override
 	public List<PartieCompetitiveSQL> trouverTout() {
-		final String ID = "id";
+		final String ID = ID_PARTIE;
 		List<PartieCompetitiveSQL> res = new ArrayList<>();
 		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE_COMPETITIVE,
@@ -104,7 +106,7 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -123,7 +125,7 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 			pstmt.execute();
 
 		} catch (SQLException e) {
-			System.err.println("Erreur lors de la création : \n" + e.getMessage());
+			e.printStackTrace();
 		}
 		return partie;
 	}
@@ -166,5 +168,5 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
