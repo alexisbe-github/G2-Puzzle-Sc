@@ -28,10 +28,6 @@ jobs:
 
      - name: Compilation
        run: mvn package -DskipTests
-       
-     - name: Troubleshoot Ports
-       run: |
-        netstat -tuln
 
      - name: Run Tests
        run: mvn test
