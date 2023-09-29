@@ -24,7 +24,7 @@ public class Serveur {
 	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException, IOException {
 		NetworkUtils.checkPort(port);
 		serverOn = true;
-		serverSocket = new ServerSocket(port); // on fait un serveur socket sur le port pour les
+		serverSocket = new ServerSocket(); // on fait un serveur socket sur le port pour les
 		// connexions qu'on transforme en socket
 		serverSocket.setReuseAddress(true);
 		serverSocket.bind(new InetSocketAddress(port));
