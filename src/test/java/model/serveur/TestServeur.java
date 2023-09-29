@@ -25,7 +25,7 @@ public class TestServeur {
 	private static Joueur joueur;
 	private static PartieMultijoueur partieMultiCoop;
 	private static Serveur serveur;
-	private final int PORT_VALIDE = 8091;
+	private final int PORT_VALIDE = 10000;
 	private final int PORT_INVALIDE1 = InvalidPortException.PORT_MAX + 1;
 	private final int PORT_INVALIDE2 = InvalidPortException.PORT_MIN - 1;
 
