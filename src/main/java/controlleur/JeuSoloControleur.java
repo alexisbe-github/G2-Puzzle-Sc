@@ -64,10 +64,10 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie) throws IOException {
+	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
-		partie.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), 4);
+		partie.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), taille);
 	}
 	
 	
