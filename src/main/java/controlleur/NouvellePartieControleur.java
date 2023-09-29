@@ -16,11 +16,11 @@ import main.java.model.partie.PartieSolo;
 import main.java.utils.Utils;
 import main.java.vue.VueJeuSolo;
 
-public class NouvellePartieControlleur implements Initializable{
+public class NouvellePartieControleur implements Initializable{
 
 	Stage owner;
 
-	public NouvellePartieControlleur(Stage stage) {
+	public NouvellePartieControleur(Stage stage) {
 		this.owner = stage;
 	}
 	

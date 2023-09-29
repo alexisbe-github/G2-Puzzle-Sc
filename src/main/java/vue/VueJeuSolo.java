@@ -11,8 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import main.java.controlleur.JeuSoloControlleur;
-import main.java.controlleur.NouvellePartieControlleur;
+import main.java.controlleur.JeuSoloControleur;
+import main.java.controlleur.NouvellePartieControleur;
 import main.java.model.partie.PartieSolo;
 
 public class VueJeuSolo extends Stage{
@@ -24,7 +24,7 @@ public class VueJeuSolo extends Stage{
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
-        JeuSoloControlleur controller = new JeuSoloControlleur(this, partie);
+        JeuSoloControleur controller = new JeuSoloControleur(this, partie);
         loader.setController(controller);
         
         Parent root = loader.load();
@@ -37,7 +37,7 @@ public class VueJeuSolo extends Stage{
 	}
 	
 	public void changerVue(String fxmlPath) throws IOException {
-		NouvellePartieControlleur controller = new NouvellePartieControlleur(this);
+		NouvellePartieControleur controller = new NouvellePartieControleur(this);
 		FXMLLoader loader = new FXMLLoader(Paths.get(fxmlPath).toUri().toURL());
         loader.setController(controller);
         Parent root = loader.load();

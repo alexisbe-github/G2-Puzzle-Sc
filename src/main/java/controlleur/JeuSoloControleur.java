@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 import main.java.model.EDeplacement;
 import main.java.model.partie.PartieSolo;
 
-public class JeuSoloControlleur implements Initializable, PropertyChangeListener{
+public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 
 	private Stage owner;
 	private PartieSolo partie;
@@ -58,7 +58,13 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 	@FXML
 	Button boutonPause;
 	
-	public JeuSoloControlleur(Stage stage, PartieSolo partie) throws IOException {
+	/**
+	 * 
+	 * @param stage : fenêtre dans laquelle la scene est affichée
+	 * @param partie : partie jouée
+	 * @throws IOException : Exception lors d'un problème de lecture de l'image
+	 */
+	public JeuSoloControleur(Stage stage, PartieSolo partie) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
 		partie.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), 4);
@@ -70,34 +76,17 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 		boutonPause.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
 		
-		this.initGridPane();
+		this.updateImages();
 		this.initJoueur();
 		
 		this.partie.addPropertyChangeListener(this);
 		
 	}
 	
-	
-	
+
 	/**
-	 * Initialise la grille et les images à l'intérieur. 
+	 * mise a jour des images affichées en fonction de la position des cases dans la grille
 	 */
-	private void initGridPane() {
-		//Définition de la taille d'une case
-		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
-		
-		//Initialisation des contraintes des cases (centrage Label)
-		/*
-		ColumnConstraints cc = new ColumnConstraints();
-		cc.setHalignment(HPos.CENTER);
-		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
-			this.grille.getColumnConstraints().add(cc);
-		}
-		*/
-		
-		this.updateImages();
-	}
-	
 	private void updateImages() {
 		//Définition de la taille d'une case
 		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
@@ -106,7 +95,9 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 		
 		for(int i=0;i<partie.getPuzzle().getTaille();i++) {
 			for(int j=0;j<partie.getPuzzle().getTaille();j++) {
-				Label l = new Label(""+partie.getPuzzle().getCase(j,i).getIndex()+1);
+				Label l = new Label();
+				if(partie.getPuzzle().getCase(j, i).getIndex()!=-1)
+					l.setText(""+((int)partie.getPuzzle().getCase(j,i).getIndex()+1));
 				l.setFont(new Font(18));
 				l.setTextFill(Color.YELLOW);
 				l.setPrefWidth(largeurCase);
@@ -122,25 +113,6 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 				grille.getChildren().add(l);
 			}
 		}
-		/*
-		//Ajout de l'image correspondant à chaque case de la grille.
-		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
-			for(int j = 0;j<partie.getPuzzle().getTaille();j++) {
-				image = SwingFXUtils.toFXImage(this.partie.getPuzzle().getCase(j, i).getImage(), null);
-				ImageView iv = new ImageView(image);
-				iv.setFitWidth(largeurCase);
-				iv.setFitHeight(largeurCase);
-				iv.setId("case"+this.partie.getPuzzle().getCase(j, i).getIndex());
-				this.grille.add(iv, j, i);
-				if(this.partie.getPuzzle().getCase(j,i).getIndex()!=-1) {
-					Label li = new Label(""+((int) this.partie.getPuzzle().getCase(j, i).getIndex()+1));
-					li.setFont(new Font(18));
-					li.setTextFill(Color.YELLOW);
-					this.grille.add(li, j, i);
-				}
-			}
-		}
-		*/
 	}
 	
 	

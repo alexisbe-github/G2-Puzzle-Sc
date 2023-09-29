@@ -10,11 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 import main.java.vue.VueMenu;
 
-public class MenuControlleur implements Initializable{
+public class MenuControleur implements Initializable{
 	
 	Stage owner;
 
-	public MenuControlleur(Stage stage) {
+	public MenuControleur(Stage stage) {
 		this.owner = stage;
 	}
 	
@@ -30,7 +30,7 @@ public class MenuControlleur implements Initializable{
 	
 	@FXML
 	private void nouvellePartie(ActionEvent event) throws IOException {
-		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/NouvellePartie.fxml");
+		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/NouvellePartie.fxml", new NouvellePartieControleur(this.owner));
 	}
 	
 	@FXML
@@ -39,8 +39,8 @@ public class MenuControlleur implements Initializable{
 	}
 	
 	@FXML
-	private void recherchePartie(ActionEvent event) {
-		System.out.println("Recherche Partie");
+	private void recherchePartie(ActionEvent event) throws IOException {
+		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/Connexion.fxml", new RecherchePartieControleur(this.owner));
 	}
 	
 	@FXML

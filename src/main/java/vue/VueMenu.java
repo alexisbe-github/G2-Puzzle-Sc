@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.controlleur.MenuControlleur;
-import main.java.controlleur.NouvellePartieControlleur;
+import main.java.controlleur.MenuControleur;
+import main.java.controlleur.NouvellePartieControleur;
 
 public class VueMenu extends Stage{
 
@@ -17,7 +18,7 @@ public class VueMenu extends Stage{
 		this.initModality(Modality.NONE);
 		//this.initStyle(StageStyle.DECORATED);
         
-		MenuControlleur controller = new MenuControlleur(this);
+		MenuControleur controller = new MenuControleur(this);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/MenuPrincipal.fxml").toUri().toURL());
         loader.setController(controller);
         Parent root = loader.load();
@@ -30,8 +31,7 @@ public class VueMenu extends Stage{
         this.show();
 	}
 	
-	public void changerVue(String fxmlPath) throws IOException {
-		NouvellePartieControlleur controller = new NouvellePartieControlleur(this);
+	public void changerVue(String fxmlPath, Initializable controller) throws IOException {
 		FXMLLoader loader = new FXMLLoader(Paths.get(fxmlPath).toUri().toURL());
         loader.setController(controller);
         Parent root = loader.load();

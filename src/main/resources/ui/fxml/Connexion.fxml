@@ -24,13 +24,13 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Adresse IP :" />
-                  <TextField promptText="192.168.1.X" />
+                  <TextField fx:id="saisieIP" promptText="192.168.1.X" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Port :" />
-                  <TextField prefHeight="25.0" prefWidth="148.0" promptText="12345" />
+                  <TextField fx:id="saisiePort" prefHeight="25.0" prefWidth="148.0" promptText="12345" text="8081" />
                </children>
             </HBox>
          </children>
@@ -38,6 +38,6 @@
             <Insets bottom="20.0" top="20.0" />
          </GridPane.margin>
       </VBox>
-      <Button mnemonicParsing="false" prefWidth="73.0" text="Connexion" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+      <Button onAction="#connexion" mnemonicParsing="false" prefWidth="73.0" text="Connexion" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
