@@ -14,16 +14,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -51,7 +53,7 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 	Label nbCoups;
 	
 	@FXML
-	GridPane grille; 
+	AnchorPane grille; 
 	
 	@FXML
 	Button boutonPause;
@@ -85,11 +87,13 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
 		
 		//Initialisation des contraintes des cases (centrage Label)
+		/*
 		ColumnConstraints cc = new ColumnConstraints();
 		cc.setHalignment(HPos.CENTER);
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			this.grille.getColumnConstraints().add(cc);
 		}
+		*/
 		
 		this.updateImages();
 	}
@@ -99,6 +103,26 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
 		Image image;
 		grille.getChildren().clear();
+		
+		for(int i=0;i<partie.getPuzzle().getTaille();i++) {
+			for(int j=0;j<partie.getPuzzle().getTaille();j++) {
+				Label l = new Label(""+partie.getPuzzle().getCase(j,i).getIndex()+1);
+				l.setFont(new Font(18));
+				l.setTextFill(Color.YELLOW);
+				l.setPrefWidth(largeurCase);
+				l.setPrefHeight(largeurCase);
+				l.setAlignment(Pos.CENTER);
+				l.setLayoutX(j*largeurCase);
+				l.setLayoutY(i*largeurCase);
+				image = SwingFXUtils.toFXImage(partie.getPuzzle().getCase(j, i).getImage(), null);
+				Background bgi = new Background(new BackgroundImage(image,
+				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+				          new BackgroundSize(100, 100, true, true , true, false) ));
+				l.setBackground( bgi );
+				grille.getChildren().add(l);
+			}
+		}
+		/*
 		//Ajout de l'image correspondant à chaque case de la grille.
 		for(int i = 0;i<partie.getPuzzle().getTaille();i++) {
 			for(int j = 0;j<partie.getPuzzle().getTaille();j++) {
@@ -116,6 +140,7 @@ public class JeuSoloControlleur implements Initializable, PropertyChangeListener
 				}
 			}
 		}
+		*/
 	}
 	
 	
