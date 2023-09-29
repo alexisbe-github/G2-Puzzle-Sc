@@ -33,6 +33,7 @@ public class Serveur {
 																		// multiples connexion au serveur
 				serverSocket = new ServerSocket(port); // on fait un serveur socket sur le port pour les
 														// connexions qu'on transforme en socket
+				serverSocket.setReuseAddress(true);
 				noConnexion = 0;
 
 				// on accepte les connexion sur la server socket et on incrémente le nombre de
