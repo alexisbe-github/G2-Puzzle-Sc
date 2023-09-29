@@ -1,12 +1,10 @@
 package main.java.model.serveur;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.StandardSocketOptions;
-import java.util.ArrayList;
-import java.util.List;
 
 import main.java.model.partie.PartieMultijoueur;
 import main.java.utils.InvalidPortException;
@@ -31,9 +29,10 @@ public class Serveur {
 			try {
 				ThreadGroup groupe = new ThreadGroup("socketsClients"); // on fait un groupe de thread pour gérer les
 																		// multiples connexion au serveur
-				serverSocket = new ServerSocket(port); // on fait un serveur socket sur le port pour les
+				serverSocket = new ServerSocket(); // on fait un serveur socket sur le port pour les
 														// connexions qu'on transforme en socket
 				serverSocket.setReuseAddress(true);
+				serverSocket.bind(new InetSocketAddress(port));
 				noConnexion = 0;
 
 				// on accepte les connexion sur la server socket et on incrémente le nombre de
