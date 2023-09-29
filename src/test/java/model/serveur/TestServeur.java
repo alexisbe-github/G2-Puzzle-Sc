@@ -65,7 +65,7 @@ public class TestServeur {
 		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
 
 		nombreDeConnexionsAttendus = 1; // il doit y avoir 1 connexion au serveur
-		client.seConnecter("localhost", PORT_VALIDE);
+		client.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1);
 		nombreDeConnexions = serveur.getNoConnexion();
 		Assertions.assertEquals(nombreDeConnexionsAttendus, nombreDeConnexions);
