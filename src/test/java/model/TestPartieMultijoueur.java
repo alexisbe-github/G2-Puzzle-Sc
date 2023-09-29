@@ -28,7 +28,7 @@ public class TestPartieMultijoueur {
 	private final static int PORT_VALIDE = 8090;
 
 	@BeforeAll
-	public static void setUp() throws InvalidPortException, IOException {
+	public static void setUp() throws InvalidPortException {
 		joueur1 = new Joueur("Joueur hôte", null);
 		client1 = new Client(joueur1);
 		joueur2 = new Joueur("Joueur 2", null);

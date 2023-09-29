@@ -1,6 +1,5 @@
 package test.java.model.client;
 
-import java.io.IOException;
 import java.net.Socket;
 
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +29,7 @@ public class TestClient {
 	private final int PORT_INVALIDE2 = -1;
 
 	@BeforeAll
-	public static void setUp() throws InvalidPortException, IOException {
+	public static void setUp() throws InvalidPortException {
 		joueur1 = new Joueur("Joueur hôte", null);
 		client1 = new Client(joueur1);
 		joueur2 = new Joueur("Joueur 2", null);

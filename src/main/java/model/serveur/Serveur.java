@@ -21,19 +21,17 @@ public class Serveur {
 		noConnexion = 0;
 	}
 
-	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException, IOException {
+	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
 		NetworkUtils.checkPort(port);
 		serverOn = true;
-		serverSocket = new ServerSocket(); // on fait un serveur socket sur le port pour les
-		// connexions qu'on transforme en socket
-		serverSocket.setReuseAddress(true);
-		serverSocket.bind(new InetSocketAddress(port));
 		new Thread(() -> {
 			System.out.println("Lancement du serveur...");
 			try {
 				ThreadGroup groupe = new ThreadGroup("socketsClients"); // on fait un groupe de thread pour gérer les
 																		// multiples connexion au serveur
-
+				serverSocket = new ServerSocket(); // on fait un serveur socket sur le port pour les
+														// connexions qu'on transforme en socket
+				serverSocket.setReuseAddress(true);
 				noConnexion = 0;
 
 				// on accepte les connexion sur la server socket et on incrémente le nombre de
@@ -47,6 +45,7 @@ public class Serveur {
 						st.start();
 					} catch (SocketException se) {
 						this.serverOn = false;
+						serverSocket.close();
 					}
 
 				}
