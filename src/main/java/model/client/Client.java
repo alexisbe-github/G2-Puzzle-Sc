@@ -11,7 +11,7 @@ import main.java.model.joueur.Joueur;
 
 public class Client {
 
-	private boolean connecte;
+	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
 
