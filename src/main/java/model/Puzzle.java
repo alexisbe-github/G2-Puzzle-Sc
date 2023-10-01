@@ -38,7 +38,6 @@ public class Puzzle implements Serializable{
 		this(taille);
 		this.image = image;
 		this.decoupageImage();
-		this.nbCoups = 0;
 	}
 
 	/**
