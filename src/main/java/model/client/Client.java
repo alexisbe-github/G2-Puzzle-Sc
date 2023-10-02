@@ -17,15 +17,15 @@ public class Client {
 
 	public Client(Joueur joueur) {
 		this.joueur = joueur;
-		this.connecte = false;
+		this.estConnecte = false;
 	}
 
 	private void setConnection() {
-		connecte = true;
+		estConnecte = true;
 	}
 
-	public boolean getConnecte() {
-		return connecte;
+	public boolean getEstConnecte() {
+		return estConnecte;
 	}
 
 	public void seConnecter(String ip, int port) throws IOException {
