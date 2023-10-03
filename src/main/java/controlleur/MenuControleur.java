@@ -44,8 +44,9 @@ public class MenuControleur implements Initializable{
 	}
 	
 	@FXML
-	private void statistiques(ActionEvent event) {
-		System.out.println("Statistiques");
+	private void statistiques(ActionEvent event) throws IOException {
+		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/Statistiques.fxml", new StatistiquesControleur(this.owner));
+
 	}
 	
 	@FXML

@@ -18,7 +18,6 @@ public class VueJeuSolo extends Stage{
 	public VueJeuSolo(PartieSolo partie, int taille) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
-		
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
@@ -31,17 +30,8 @@ public class VueJeuSolo extends Stage{
         //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         this.setScene(scene);
         controller.setKeyController();
+        //TODO Ameliorable : loader.getController.setKeyController() -> Permettrait de gérer cette fenetre comme les autres
         this.show();
-	}
-	
-	public void changerVue(String fxmlPath) throws IOException {
-		NouvellePartieControleur controller = new NouvellePartieControleur(this);
-		FXMLLoader loader = new FXMLLoader(Paths.get(fxmlPath).toUri().toURL());
-        loader.setController(controller);
-        Parent root = loader.load();
-		
-        Scene scene = new Scene(root);
-        this.setScene(scene);
 	}
 	
 }

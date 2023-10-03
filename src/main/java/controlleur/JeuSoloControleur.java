@@ -36,9 +36,13 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 
 	private Stage owner;
 	private PartieSolo partie;
+	private boolean estEnPause = false;
 	
 	@FXML
 	Label chrono;
+	
+	@FXML
+	Label labelVictoire;
 	
 	@FXML
 	ImageView logoJoueur;
@@ -115,36 +119,15 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		}
 	}
 	
-	
-	
-	/*
-	
-	//Bug : probablement du à la méthode GetNodeByCoordinate en dessous : comment calculer la width ?
-	private void resizeImages() {
-		for(int i=0;i<partie.getPuzzle().getTaille();i++) {
-			for(int j=0;j<partie.getPuzzle().getTaille();j++) {
-				ImageView iv = (ImageView) this.getNodeByCoordinate(j, i);
-				if(iv!=null) {
-					int width = 100;
-					iv.setFitHeight(width);//TODO Trouver un moyen d'avoir une taille cohérente
-					iv.setFitWidth(width);//(si possible taille affichée de la case)
-				}
-			}
-		}
+	private void updateJeu() {
+	if(this.partie.getPuzzle().verifierGrille());
+		else this.updateImages();
 	}
 	
-	//Bug : marche que sur la premiere ligne (ou pas ? peut etre resizeImages)
-	private Node getNodeByCoordinate(Integer row, Integer column) {
-	    for (Node node : grille.getChildren()) {
-	    	if(node instanceof ImageView) {
-		        if(GridPane.getColumnIndex(node) == row && GridPane.getColumnIndex(node) == column){
-		            return node;
-		        }
-	    	}
-	    }
-	    return null;
+	private void updateVictoire(){
+		labelVictoire.setVisible(true);
+		this.estEnPause = true;
 	}
-	*/
 	
 	private void initJoueur() {
 		Image image = SwingFXUtils.toFXImage(this.partie.getJoueur().getImage(), null);
@@ -160,21 +143,23 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		this.owner.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-	                case UP:
-	                	partie.deplacerCase(EDeplacement.HAUT);
-	                	break;
-	                case DOWN:
-	                	partie.deplacerCase(EDeplacement.BAS);
-	                	break;
-	                case LEFT:
-	                	partie.deplacerCase(EDeplacement.GAUCHE);
-	                	break;
-	                case RIGHT:
-	                	partie.deplacerCase(EDeplacement.DROITE);
-	                	break;
-					default:
-						break;
+				if(!estEnPause) {
+					switch (event.getCode()) {
+		                case UP:
+		                	partie.deplacerCase(EDeplacement.HAUT);
+		                	break;
+		                case DOWN:
+		                	partie.deplacerCase(EDeplacement.BAS);
+		                	break;
+		                case LEFT:
+		                	partie.deplacerCase(EDeplacement.GAUCHE);
+		                	break;
+		                case RIGHT:
+		                	partie.deplacerCase(EDeplacement.DROITE);
+		                	break;
+						default:
+							break;
+					}
 				}
 			}
 		});
@@ -183,18 +168,20 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	
 	@FXML
 	private void undoButton(ActionEvent event) {
-		 System.out.println("undo");//TODO not implemented
+		 System.out.println("undo");
+		 //TODO not implemented
 	}
 	
 	@FXML
 	private void pauseButton(ActionEvent event) {
-		System.out.println("pause");//TODO not implemented
+		System.out.println("pause");
+		//TODO not implemented
 	}
 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		this.updateImages();
+		this.updateJeu();
 		this.updateInfos();
 	}
 	

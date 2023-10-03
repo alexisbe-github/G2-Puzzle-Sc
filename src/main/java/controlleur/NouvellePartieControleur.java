@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -19,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieSolo;
@@ -81,8 +84,17 @@ public class NouvellePartieControleur implements Initializable{
 	private void updateListeProfils(List<Joueur> joueurs) {
 		menuProfils.getItems().clear();
 		for(Joueur j : joueurs) {
-			menuProfils.getItems().add(new MenuItem(j.getNom()));
+			MenuItem item = new MenuItem(j.getNom());
+			item.setOnAction( value -> {
+				this.setJoueurChoisi(j);
+			});
+			menuProfils.getItems().add(item);
 		}
+	}
+	
+	private void setJoueurChoisi(Joueur j) {
+		this.joueurChoisi = j;
+		this.updateInfosJoueur();
 	}
 	
 	@FXML
@@ -91,6 +103,10 @@ public class NouvellePartieControleur implements Initializable{
 			if(soloRadio.isSelected()) {
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				new VueJeuSolo(new PartieSolo(joueurChoisi), taille);
+			}else if(multiCoopRadio.isSelected()){
+				//TODO
+			}else if(multiCompetRadio.isSelected()) {
+				
 			}
 		}catch(NumberFormatException e) {
 			

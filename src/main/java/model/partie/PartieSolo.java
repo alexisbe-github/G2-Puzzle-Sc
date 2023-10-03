@@ -4,9 +4,11 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
+import main.java.utils.Utils;
 
 public class PartieSolo implements StrategyPartie {
 
