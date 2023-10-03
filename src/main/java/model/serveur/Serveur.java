@@ -28,7 +28,7 @@ public class Serveur {
 			try {
 				ThreadGroup groupe = new ThreadGroup("socketsClients"); // on fait un groupe de thread pour gérer les
 																		// multiples connexion au serveur
-				serverSocket = new ServerSocket(); // on fait un serveur socket sur le port pour les
+				serverSocket = new ServerSocket(port); // on fait un serveur socket sur le port pour les
 													// connexions qu'on transforme en socket
 				noConnexion = 0;
 
