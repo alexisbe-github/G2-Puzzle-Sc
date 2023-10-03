@@ -80,7 +80,10 @@ public class TestDAOJoueur implements TestCRUD {
 		dao.creer(j2);
 		dao.creer(j3);
 		List<JoueurSQL> joueurs = dao.trouverTout();
-		
+		listeJoueurs.add(j1.getId());
+		listeJoueurs.add(j2.getId());
+		listeJoueurs.add(j3.getId());
+
 		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(0))));
 		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(1))));
 		Assertions.assertTrue(joueurs.stream().anyMatch(item -> item.equals(joueurs.get(2))));
