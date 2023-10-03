@@ -18,7 +18,6 @@ public class Serveur {
 	public Serveur() {
 		serverOn = false;
 		noConnexion = 0;
-
 	}
 
 	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
