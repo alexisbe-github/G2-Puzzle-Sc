@@ -5,8 +5,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
@@ -16,6 +18,7 @@ import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestServeur {
 
 	private static Client client;
