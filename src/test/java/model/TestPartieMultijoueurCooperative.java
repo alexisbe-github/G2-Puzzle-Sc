@@ -22,6 +22,7 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
+import test.java.utils.TestServeur;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestPartieMultijoueurCooperative {
@@ -32,7 +33,7 @@ public class TestPartieMultijoueurCooperative {
 	private static Serveur serveur;
 	private final static int TAILLE = 3;
 	private final static String ip = NetworkUtils.getServeurIPV4(true);
-	private final static int PORT_VALIDE = 8087;
+	private final static int PORT_VALIDE = 8090;
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException, IOException, InterruptedException {
@@ -41,8 +42,9 @@ public class TestPartieMultijoueurCooperative {
 		joueur2 = new Joueur("Joueur 2", null);
 		client2 = new Client(joueur2);
 		partieMultiCoop = new PartieMultijoueurCooperative();
-		serveur = new Serveur();
-		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
+//		serveur = new Serveur();
+//		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
+		TestServeur.serveur.setPartie(partieMultiCoop);
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs

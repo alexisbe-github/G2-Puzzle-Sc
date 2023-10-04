@@ -14,6 +14,7 @@ public class Serveur {
 	private boolean serverOn;
 	private int noConnexion;
 	private ServerSocket serverSocket;
+	private PartieMultijoueur partie;
 
 	public Serveur() {
 		serverOn = false;
@@ -23,6 +24,7 @@ public class Serveur {
 	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
 		NetworkUtils.checkPort(port);
 		serverOn = true;
+		this.partie = partie;
 		new Thread(() -> {
 			System.out.println("Lancement du serveur...");
 			try {
@@ -39,7 +41,7 @@ public class Serveur {
 					try {
 						Socket clientSocket = serverSocket.accept();
 						noConnexion++;
-						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
+						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, this);
 						st.start();
 					} catch (SocketException se) {
 						// this.serverOn = false;
@@ -54,6 +56,15 @@ public class Serveur {
 
 	public int getNoConnexion() {
 		return this.noConnexion;
+	}
+	
+	public PartieMultijoueur getPartie() {
+		return partie;
+	}
+
+	public void setPartie(PartieMultijoueur partie) {
+		this.partie = partie;
+		this.noConnexion = 0;
 	}
 
 }

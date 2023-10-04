@@ -17,21 +17,21 @@ public class ServeurThread extends Thread {
 	private int noConnexion; // numero du client distant
 	private BufferedReader fluxEntrant;
 	private PrintStream fluxSortant;
-	private PartieMultijoueur partie;
 	private boolean flagJoueurAjoute = false;
 	private Joueur joueur;
+	private Serveur serveur;
 
 	/**
 	 * Suppose socket dejà connectée vers le client num noConnexion
 	 * 
 	 * @param noConnexion : num du client
 	 */
-	public ServeurThread(Socket socket, ThreadGroup groupe, int noConnexion, PartieMultijoueur partie)
+	public ServeurThread(Socket socket, ThreadGroup groupe, int noConnexion, Serveur serveur)
 			throws IOException {
 		super(groupe, "ReceveurEnvoyeur");
-		this.partie = partie;
 		this.socket = socket;
 		this.noConnexion = noConnexion;
+		this.serveur = serveur;
 		fluxEntrant = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 		fluxSortant = new PrintStream(this.socket.getOutputStream());
 	}
@@ -45,7 +45,7 @@ public class ServeurThread extends Thread {
 				if (!flagJoueurAjoute) {
 					ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 					this.joueur = (Joueur) inputStream.readObject();
-					partie.ajouterJoueur(joueur, socket);
+					serveur.getPartie().ajouterJoueur(joueur, socket);
 					flagJoueurAjoute = true;
 				} else {
 					ligne = fluxEntrant.readLine(); // saisit le texte du client
@@ -57,16 +57,16 @@ public class ServeurThread extends Thread {
 						char c = reponse.charAt(0);
 						switch (c) {
 						case 'h':
-							partie.deplacerCase(EDeplacement.HAUT, joueur, this.noConnexion);
+							serveur.getPartie().deplacerCase(EDeplacement.HAUT, joueur, this.noConnexion);
 							break;
 						case 'b':
-							partie.deplacerCase(EDeplacement.BAS, joueur, this.noConnexion);
+							serveur.getPartie().deplacerCase(EDeplacement.BAS, joueur, this.noConnexion);
 							break;
 						case 'g':
-							partie.deplacerCase(EDeplacement.GAUCHE, joueur, this.noConnexion);
+							serveur.getPartie().deplacerCase(EDeplacement.GAUCHE, joueur, this.noConnexion);
 							break;
 						case 'd':
-							partie.deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
+							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
 						}
 					}
@@ -77,7 +77,7 @@ public class ServeurThread extends Thread {
 		} catch (InterruptedException erreur) {
 			/* le thread s'arrete */} catch (IOException erreur) {
 			System.out.println("Déconnexion du client numéro " + this.noConnexion);
-			partie.deconnecterJoueur(joueur); // cas où le cient n'est plus connecté au serveur
+			serveur.getPartie().deconnecterJoueur(joueur); // cas où le cient n'est plus connecté au serveur
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package test.java.model.serveur;
+package test.java.utils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -24,8 +24,8 @@ public class TestServeur {
 	private static Client client;
 	private static Joueur joueur;
 	private static PartieMultijoueur partieMultiCoop;
-	private static Serveur serveur;
-	private final int PORT_VALIDE = 8091;
+	public static Serveur serveur;
+	private final int PORT_VALIDE = 8090;
 	private final int PORT_INVALIDE1 = InvalidPortException.PORT_MAX + 1;
 	private final int PORT_INVALIDE2 = InvalidPortException.PORT_MIN - 1;
 
