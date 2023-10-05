@@ -35,7 +35,10 @@ public class TestPartieMultijoueur {
 		joueur2 = new Joueur("Joueur 2", null);
 		client2 = new Client(joueur2);
 		partieMultiCompetitive = new PartieMultijoueurCompetitive();
-		TestServeur.serveur.setPartie(partieMultiCompetitive);
+		if(TestServeur.serveur == null) {
+			TestServeur.serveur = new Serveur();
+			serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
+		}
 		//serveur = new Serveur();
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 	}
