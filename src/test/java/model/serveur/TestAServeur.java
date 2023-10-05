@@ -19,7 +19,7 @@ import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ATestServeur {
+public class TestAServeur {
 
 	private static Client client;
 	private static Joueur joueur;
