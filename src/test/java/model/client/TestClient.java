@@ -40,9 +40,9 @@ public class TestClient {
 		partieMultiCoop = new PartieMultijoueurCooperative();
 		if(TestServeur.serveur == null) {
 			TestServeur.serveur = new Serveur();
+			TestServeur.serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		}
 		serveur = TestServeur.serveur;
-		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		serveur.setPartie(partieMultiCoop);
 //		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 	}
