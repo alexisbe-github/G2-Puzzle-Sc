@@ -36,7 +36,6 @@ public class TestClient {
 		joueur2 = new Joueur("Joueur 2", null);
 		client2 = new Client(joueur2);
 		partieMultiCoop = new PartieMultijoueurCooperative();
-		TestServeur.serveur.setPartie(partieMultiCoop);
 		if(TestServeur.serveur == null) {
 			TestServeur.serveur = new Serveur();
 			serveur = TestServeur.serveur;
