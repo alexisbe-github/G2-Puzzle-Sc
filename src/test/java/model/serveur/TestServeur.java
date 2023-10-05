@@ -1,4 +1,4 @@
-package test.java.utils;
+package test.java.model.serveur;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

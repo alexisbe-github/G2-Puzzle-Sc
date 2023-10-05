@@ -16,10 +16,10 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
-import test.java.utils.TestServeur;
+import test.java.model.serveur.TestServeur;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TestClient {
+public class TestAClient {
 
 	private static Client client1, client2;
 	private static Joueur joueur1, joueur2;

@@ -30,9 +30,7 @@ jobs:
        run: mvn package -DskipTests
       
      - name: Run Tests
-       run: | 
-         mvn test -Dtest="TestServeur"
-         mvn test
+       run: mvn test
 
      - name: Setup git credentials
        uses: de-vri-es/setup-git-credentials@v2
