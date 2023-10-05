@@ -65,6 +65,7 @@ public class TestPartieMultijoueur {
 		// on le fait pour 1 joueur
 		try {
 			client1.getSocket().close();
+			TimeUnit.SECONDS.sleep(1);
 		} catch (NullPointerException npe) {
 			int nbConnexionsAttendues = 1;
 			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
@@ -75,6 +76,7 @@ public class TestPartieMultijoueur {
 		// puis le deuxieme
 		try {
 			client2.getSocket().close();
+			TimeUnit.SECONDS.sleep(1);
 		} catch (NullPointerException npe) {
 			int nbConnexionsAttendues = 0;
 			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
