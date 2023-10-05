@@ -59,7 +59,7 @@ public class TestClient {
 	}
 
 	@Test
-	@Order(3)
+	@Order(2)
 	public void testSeConnecter() {
 		Assertions.assertDoesNotThrow(() -> {
 			client1.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
