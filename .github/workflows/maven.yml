@@ -28,12 +28,11 @@ jobs:
 
      - name: Compilation
        run: mvn package -DskipTests
-
-     - name: Run server
-       run: mvn test -Dtest="TestServeur"
       
      - name: Run Tests
-       run: mvn test
+       run: | 
+         mvn test -Dtest="TestServeur"
+         mvn test
 
      - name: Setup git credentials
        uses: de-vri-es/setup-git-credentials@v2
