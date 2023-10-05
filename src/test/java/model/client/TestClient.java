@@ -44,6 +44,7 @@ public class TestClient {
 		}
 		serveur = TestServeur.serveur;
 		serveur.setPartie(partieMultiCoop);
+		
 //		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 	}
 
