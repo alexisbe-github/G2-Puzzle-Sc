@@ -16,10 +16,10 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
-import test.java.model.serveur.TestServeur;
+import test.java.model.serveur.ATestServeur;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TestAClient {
+public class TestClient {
 
 	private static Client client1, client2;
 	private static Joueur joueur1, joueur2;
@@ -36,7 +36,7 @@ public class TestAClient {
 		joueur2 = new Joueur("Joueur 2", null);
 		client2 = new Client(joueur2);
 		partieMultiCoop = new PartieMultijoueurCooperative();
-		TestServeur.serveur.setPartie(partieMultiCoop);
+		ATestServeur.serveur.setPartie(partieMultiCoop);
 //		serveur = new Serveur();
 //		serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 	}
@@ -62,7 +62,7 @@ public class TestAClient {
 			client2.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
 		});
 
-		int nbConnexions = TestServeur.serveur.getNoConnexion();
+		int nbConnexions = ATestServeur.serveur.getNoConnexion();
 		int nbConnexionsAttendues = 2;
 
 		Socket socketClient1 = client1.getSocket();
