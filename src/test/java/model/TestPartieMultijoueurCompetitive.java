@@ -22,7 +22,7 @@ import main.java.model.partie.PartieMultijoueurCompetitive;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
-import test.java.model.serveur.TestAServeur;
+import test.java.aserveur.TestServeur;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestPartieMultijoueurCompetitive {
@@ -44,7 +44,7 @@ public class TestPartieMultijoueurCompetitive {
 		partieMultiCompetitive = new PartieMultijoueurCompetitive();
 		serveur = new Serveur();
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
-		TestAServeur.serveur.setPartie(partieMultiCompetitive);
+		TestServeur.serveur.setPartie(partieMultiCompetitive);
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs

@@ -1,4 +1,4 @@
-package test.java.model.serveur;
+package test.java.aserveur;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +19,7 @@ import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TestAServeur {
+public class TestServeur {
 
 	private static Client client;
 	private static Joueur joueur;
