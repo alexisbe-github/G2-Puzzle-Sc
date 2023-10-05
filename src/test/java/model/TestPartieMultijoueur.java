@@ -8,7 +8,10 @@ import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
@@ -18,6 +21,8 @@ import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 import test.java.aserveur.TestServeur;
 
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestPartieMultijoueur {
 
 	private static Client client1, client2;
@@ -47,6 +52,7 @@ public class TestPartieMultijoueur {
 	}
 
 	@Test
+	@Order(1)
 	public void testAjouterJoueur() throws IOException, InterruptedException {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
@@ -56,6 +62,20 @@ public class TestPartieMultijoueur {
 		int nbConnexions = partieMultiCompetitive.getJoueurs().size();
 
 		Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
+	}
+
+	@Test
+	@Order(2)
+	public void testDeconnecterJoueur() throws IOException, InterruptedException {
+		// on le fait pour 1 joueur
+		try {
+			client1.getSocket().close();
+		} catch (NullPointerException npe) {
+			int nbConnexionsAttendues = 1;
+			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
+
+			Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
+		}
 	}
 
 }
