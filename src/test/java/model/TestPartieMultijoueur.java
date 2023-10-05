@@ -40,6 +40,7 @@ public class TestPartieMultijoueur {
 			serveur = TestServeur.serveur;
 			serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 		}
+		serveur.setPartie(partieMultiCompetitive);
 		//serveur = new Serveur();
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 	}

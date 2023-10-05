@@ -47,6 +47,7 @@ public class TestPartieMultijoueurCompetitive {
 			serveur = TestServeur.serveur;
 			serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 		}
+		serveur.setPartie(partieMultiCompetitive);
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
