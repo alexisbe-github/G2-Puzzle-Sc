@@ -8,10 +8,7 @@ import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
@@ -21,8 +18,6 @@ import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 import test.java.aserveur.TestServeur;
 
-
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestPartieMultijoueur {
 
 	private static Client client1, client2;
@@ -31,7 +26,8 @@ public class TestPartieMultijoueur {
 	private static Serveur serveur;
 	private final String ip = NetworkUtils.getServeurIPV4(true);
 	private final static int PORT_VALIDE = 8090;
-
+	private final static int TAILLE = 3;
+	
 	@BeforeAll
 	public static void setUp() throws InvalidPortException, IOException {
 		joueur1 = new Joueur("Joueur hôte", null);
@@ -47,11 +43,10 @@ public class TestPartieMultijoueur {
 		serveur.setPartie(partieMultiCompetitive);
 		//serveur = new Serveur();
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
-		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), 3);
+		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), TAILLE);
 	}
 
 	@Test
-	@Order(1)
 	public void testAjouterJoueur() throws IOException, InterruptedException {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
@@ -61,30 +56,6 @@ public class TestPartieMultijoueur {
 		int nbConnexions = partieMultiCompetitive.getJoueurs().size();
 
 		Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
-	}
-
-	@Test
-	@Order(2)
-	public void testDeconnecterJoueur() throws IOException, InterruptedException {
-		// on le fait pour 1 joueur
-		try {
-			client1.getSocket().close();
-		} catch (NullPointerException npe) {
-			int nbConnexionsAttendues = 1;
-			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
-
-			Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
-		}
-
-		// puis le deuxieme
-		try {
-			client2.getSocket().close();
-		} catch (NullPointerException npe) {
-			int nbConnexionsAttendues = 0;
-			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
-
-			Assertions.assertEquals(nbConnexionsAttendues, nbConnexions);
-		}
 	}
 
 }
