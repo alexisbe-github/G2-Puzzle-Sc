@@ -32,7 +32,7 @@ public class TestPartieMultijoueurCompetitive {
 	private static Joueur joueur1, joueur2;
 	private static PartieMultijoueurCompetitive partieMultiCompetitive;
 	private static Serveur serveur;
-	private final int TAILLE = 3;
+	private static final int TAILLE = 3;
 	private final static String ip = NetworkUtils.getServeurIPV4(true);
 	private final static int PORT_VALIDE = 8090;
 
@@ -53,13 +53,12 @@ public class TestPartieMultijoueurCompetitive {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs
+		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), TAILLE);
 	}
 
 	@Test
 	@Order(1)
 	public void testLancerPartie() throws IOException {
-		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), TAILLE);
-
 		int nbJoueursAvecPuzzle = partieMultiCompetitive.getTablePuzzleDesJoueurs().size();
 		int nbJoueursAvecPuzzleAttendus = 2;
 
