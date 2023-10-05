@@ -44,10 +44,10 @@ public class TestPartieMultijoueurCompetitive {
 		partieMultiCompetitive = new PartieMultijoueurCompetitive();
 		if(TestServeur.serveur == null) {
 			TestServeur.serveur = new Serveur();
+			serveur = TestServeur.serveur;
 			serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
 		}
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
-		TestServeur.serveur.setPartie(partieMultiCompetitive);
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs
