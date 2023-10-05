@@ -1,7 +1,10 @@
 package test.java.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +33,7 @@ public class TestPartieMultijoueur {
 	private final static int PORT_VALIDE = 8090;
 
 	@BeforeAll
-	public static void setUp() throws InvalidPortException {
+	public static void setUp() throws InvalidPortException, IOException {
 		joueur1 = new Joueur("Joueur hôte", null);
 		client1 = new Client(joueur1);
 		joueur2 = new Joueur("Joueur 2", null);
@@ -44,6 +47,7 @@ public class TestPartieMultijoueur {
 		serveur.setPartie(partieMultiCompetitive);
 		//serveur = new Serveur();
 		//serveur.lancerServeur(partieMultiCompetitive, PORT_VALIDE);
+		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), 3);
 	}
 
 	@Test
