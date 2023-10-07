@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieSolo;
@@ -140,11 +142,12 @@ public class NouvellePartieControleur implements Initializable{
 	@FXML
 	private void changerImageBouton(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG Images (*.jpg, *.jpeg)", "*.jpg", "*.jpeg"));
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if(file!=null) {
 			this.imageChoisie = ImageIO.read(file);
-			imageChoisie = Scalr.resize(imageChoisie, Scalr.Mode.FIT_EXACT, 500, 500);
+			imageChoisie = Scalr.resize(imageChoisie, Scalr.Mode.FIT_EXACT, 1000, 1000);
 			this.updateImagePartie();
 		}
 	}
