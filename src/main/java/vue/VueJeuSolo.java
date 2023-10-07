@@ -1,5 +1,6 @@
 package main.java.vue;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -10,18 +11,17 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.java.controlleur.JeuSoloControleur;
-import main.java.controlleur.NouvellePartieControleur;
 import main.java.model.partie.PartieSolo;
 
 public class VueJeuSolo extends Stage{
 
-	public VueJeuSolo(PartieSolo partie, int taille) throws IOException {
+	public VueJeuSolo(PartieSolo partie, int taille, BufferedImage img) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
-        JeuSoloControleur controller = new JeuSoloControleur(this, partie, taille);
+        JeuSoloControleur controller = new JeuSoloControleur(this, partie, taille, img);
         loader.setController(controller);
         
         Parent root = loader.load();

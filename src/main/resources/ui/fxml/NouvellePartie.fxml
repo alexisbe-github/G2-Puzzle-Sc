@@ -90,12 +90,12 @@
             <Insets left="50.0" right="50.0" />
          </VBox.margin>
       </GridPane>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="TOP_CENTER" spacing="20.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Label text="Image perso :" />
-                  <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button onAction="#changerImageBouton" text="Changer image" />
+                  <ImageView fx:id="imagePerso" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                   <TextField fx:id="saisieTaille" promptText="Taille">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />

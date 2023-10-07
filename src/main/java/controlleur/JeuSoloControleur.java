@@ -1,13 +1,11 @@
 package main.java.controlleur;
 
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -42,7 +40,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	Label chrono;
 	
 	@FXML
-	Label labelVictoire;
+	Label victoireLabel;
 	
 	@FXML
 	ImageView logoJoueur;
@@ -68,10 +66,10 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille) throws IOException {
+	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , BufferedImage img) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
-		partie.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), taille);
+		partie.lancerPartie(img, taille);
 	}
 	
 	
@@ -120,12 +118,12 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	}
 	
 	private void updateJeu() {
-	if(this.partie.getPuzzle().verifierGrille());
-		else this.updateImages();
+		this.updateImages();
+		if(this.partie.getPuzzle().verifierGrille()) this.updateVictoire();
 	}
 	
 	private void updateVictoire(){
-		labelVictoire.setVisible(true);
+		victoireLabel.setVisible(true);
 		this.estEnPause = true;
 	}
 	
@@ -174,8 +172,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	
 	@FXML
 	private void pauseButton(ActionEvent event) {
-		System.out.println("pause");
-		//TODO not implemented
+		if(!this.partie.getPuzzle().verifierGrille()) {
+			this.estEnPause = !estEnPause;
+		}
 	}
 
 
