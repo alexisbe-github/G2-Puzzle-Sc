@@ -1,4 +1,4 @@
-package test.java.aserveur;
+package test.java.model.client;
 
 import java.net.Socket;
 
@@ -16,6 +16,7 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
+import test.java.aserveur.TestServeur;
 
 
 
@@ -67,7 +68,7 @@ public class TestClient {
 			client2.seConnecter(NetworkUtils.getServeurIPV4(true), PORT_VALIDE);
 		});
 
-		int nbConnexions = serveur.getNoConnexion();
+		int nbConnexions = TestServeur.serveur.getNoConnexion();
 		int nbConnexionsAttendues = 2;
 
 		Socket socketClient1 = client1.getSocket();
