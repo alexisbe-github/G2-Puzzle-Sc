@@ -2,20 +2,18 @@ package main.java.model;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 import main.java.utils.Utils;
 
-public class Puzzle {
+public class Puzzle implements Serializable{
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
 	private Case[][] grille;
 	private BufferedImage image;
+	private int nbCoups;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -26,6 +24,7 @@ public class Puzzle {
 		this.TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
 		this.grille = new Case[this.TAILLE][this.TAILLE];
 		this.initGrille();
+		this.nbCoups = 0;
 	}
 
 	/**
@@ -52,22 +51,33 @@ public class Puzzle {
 				compteur++;
 			}
 		}
-		this.grille[this.TAILLE-1][this.TAILLE-1] = new Case(Case.INDEX_CASE_VIDE);
+
+		this.grille[this.TAILLE - 1][this.TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
+		this.melanger();
 	}
 
 	/**
-	 * Mélange la grille (place chaque case à une place aléatoire).
+	 * Mélange la grille (déplace la case vide de TAILLE^4 dans une direction
+	 * aléatoire pour laisser le taquin soluble).
 	 */
 	public void melanger() {
 		Random rd = new Random();
-		int tempi;
-		int tempj;
 		do {
-			for (int i = 0; i < this.TAILLE; i++) {
-				for (int j = 0; j < this.TAILLE; j++) {
-					tempi = rd.nextInt(this.TAILLE);
-					tempj = rd.nextInt(this.TAILLE);
-					this.echangerCase(new Point(i, j), new Point(tempi, tempj));
+			for (int i = 0; i < Math.pow(this.TAILLE, 4); i++) {
+				int x = Utils.getRandomNumberInRange(0, 3);
+				switch (x) {
+				case 0:
+					this.deplacerCase(EDeplacement.HAUT);
+					break;
+				case 1:
+					this.deplacerCase(EDeplacement.BAS);
+					break;
+				case 2:
+					this.deplacerCase(EDeplacement.GAUCHE);
+					break;
+				case 3:
+					this.deplacerCase(EDeplacement.DROITE);
+					break;
 				}
 			}
 		} while (this.verifierGrille()); // Permet d'éviter de se retrouver avec une grille ordonnée malgré le mélange
@@ -114,6 +124,7 @@ public class Puzzle {
 			Case tempCase = grille[p1.x][p1.y];
 			this.grille[p1.x][p1.y] = this.grille[p2.x][p2.y];
 			this.grille[p2.x][p2.y] = tempCase;
+			this.nbCoups++;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// Ne pas déplacer les cases si les coordonnées sont éronnées
 		}
@@ -128,9 +139,8 @@ public class Puzzle {
 		int last = -1;
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
-				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1)) {
+				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1))
 					return false;
-				}
 				last = this.grille[j][i].getIndex();
 			}
 		}
@@ -187,22 +197,27 @@ public class Puzzle {
 	 * 
 	 */
 	public void decoupageImage() {
-		//Largeur et hauteur des sous-images
-				int height = this.image.getHeight()/this.TAILLE;
-				int width = this.image.getWidth()/this.TAILLE;
-				//Parcours de la grille
-				for(int i=0;i<this.TAILLE;i++) {
-					for(int j=0;j<this.TAILLE;j++) {
-						//Initialisation de la sous image
-						BufferedImage subImg;
-						if(!(j==this.getYCaseVide()&&i==this.getXCaseVide())) { //Si la case n'est pas la case vide
-							subImg = this.image.getSubimage(width * j, height * i, width, height); //"Découpe" de l'image
-						}else {
-							subImg = Utils.createTransparentBufferedImage(width, height); //Sinon image transparent de la même taille
-						}
-						this.grille[j][i].setImage(subImg);
-					}
+		// Largeur et hauteur des sous-images
+		int height = this.image.getHeight() / this.TAILLE;
+		int width = this.image.getWidth() / this.TAILLE;
+		int index = -1;
+		// Parcours de la grille
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				// Initialisation de la sous image
+				BufferedImage subImg;
+				index = this.grille[j][i].getIndex();
+				if ( index!=-1 ) { // Si la case n'est pas la case vide
+					subImg = this.image.getSubimage(
+							width * (index % this.TAILLE), 
+							height * (index / this.TAILLE), 
+							width, height); // "Découpe" de l'image
+				} else {
+					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même													// taille
 				}
+				this.grille[j][i].setImage(subImg);
+			}
+		}
 	}
 
 	/**
@@ -236,4 +251,7 @@ public class Puzzle {
 		return res;
 	}
 
+	public int getNbCoups() {
+		return this.nbCoups;
+	}
 }

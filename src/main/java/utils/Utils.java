@@ -3,10 +3,20 @@ package main.java.utils;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Random;
 
 public class Utils {
 
-	static public BufferedImage createTransparentBufferedImage(int width, int height) {
+	public static BufferedImage createTransparentBufferedImage(int width, int height) {
 	     BufferedImage bufferedImage = new BufferedImage(width, height, 
 	                        BufferedImage.TYPE_INT_ARGB);
 	     Graphics2D graphics = bufferedImage.createGraphics();
@@ -18,6 +28,22 @@ public class Utils {
 	     return bufferedImage;
 	  }
 	
+	/**
+	 * Génére un int entre min et max inclus
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("Max doit être supérieur à min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
+
 	/**
 	 * Compare deux images pixel par pixel
 	 *
@@ -44,5 +70,6 @@ public class Utils {
 	  }
 	  return true;
 	}
+	
 	
 }
