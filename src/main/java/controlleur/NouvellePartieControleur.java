@@ -9,10 +9,10 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,8 +20,10 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieSolo;
@@ -32,6 +34,7 @@ public class NouvellePartieControleur implements Initializable{
 
 	Stage owner;
 	Joueur joueurChoisi;
+	ToggleGroup radioGroupe;
 	
 	@FXML
 	RadioButton soloRadio;
@@ -72,6 +75,14 @@ public class NouvellePartieControleur implements Initializable{
 			e.printStackTrace();
 		}
 		updateListeProfils(jtest);
+		
+		this.radioGroupe = new ToggleGroup();
+		
+		this.IARadio.setToggleGroup(radioGroupe);
+		this.multiCompetRadio.setToggleGroup(radioGroupe);
+		this.multiCoopRadio.setToggleGroup(radioGroupe);
+		this.soloRadio.setToggleGroup(radioGroupe);
+		
 	}
 	
 	
@@ -106,7 +117,9 @@ public class NouvellePartieControleur implements Initializable{
 			}else if(multiCoopRadio.isSelected()){
 				//TODO
 			}else if(multiCompetRadio.isSelected()) {
-				
+				//TODO
+			}else if(IARadio.isSelected()) {
+				//TODO
 			}
 		}catch(NumberFormatException e) {
 			
