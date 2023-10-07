@@ -71,6 +71,7 @@ public class TestPartieMultijoueur {
 		try {
 			client1.getSocket().close();
 		} catch (NullPointerException npe) {
+			TimeUnit.SECONDS.sleep(3); // attente de la connexion des joueurs
 			int nbConnexionsAttendues = 1;
 			int nbConnexions = partieMultiCompetitive.getJoueurs().size();
 
