@@ -41,13 +41,13 @@ public class MenuControleur implements Initializable{
 	@FXML
 	private void recherchePartie(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("src/main/resources/ui/fxml/Connexion.fxml", new RecherchePartieControleur(this.owner));
+		vm.changerVue("src/main/resources/ui/fxml/Connexion.fxml", new RecherchePartieControleur(vm));
 	}
 	
 	@FXML
 	private void statistiques(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("src/main/resources/ui/fxml/Statistiques.fxml", new StatistiquesControleur(this.owner));
+		vm.changerVue("src/main/resources/ui/fxml/Statistiques.fxml", new StatistiquesControleur(vm));
 
 	}
 	

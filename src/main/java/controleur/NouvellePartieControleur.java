@@ -146,8 +146,7 @@ public class NouvellePartieControleur implements Initializable{
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if(file!=null) {
-			this.imageChoisie = ImageIO.read(file);
-			imageChoisie = Scalr.resize(imageChoisie, Scalr.Mode.FIT_EXACT, 1000, 1000);
+			imageChoisie = Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_EXACT, 1000, 1000);
 			this.updateImagePartie();
 		}
 	}
@@ -155,7 +154,7 @@ public class NouvellePartieControleur implements Initializable{
 	@FXML
 	private void creerProfilBouton(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(this.owner));
+		vm.changerVue("src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(vm));
 	}
 	
 }
