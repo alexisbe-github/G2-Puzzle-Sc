@@ -78,6 +78,11 @@ public class NouvellePartieControleur implements Initializable{
 			jtest.add(new Joueur("emile2006", ImageIO.read(new File("src/main/resources/images/defaulticon.png"))));
 			jtest.add(new Joueur("alexsiuuu", ImageIO.read(new File("src/main/resources/images/defaulticon.png"))));
 			jtest.add(new Joueur("gustavo", ImageIO.read(new File("src/main/resources/images/defaulticon.png"))));
+			
+			for(int i=0;i<20;i++) {
+				jtest.add(new Joueur("test"+i, ImageIO.read(new File("src/main/resources/images/defaulticon.png"))));
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +133,7 @@ public class NouvellePartieControleur implements Initializable{
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				new VueJeuSolo(new PartieSolo(joueurChoisi), taille, imageChoisie);
 			}else if(multiCoopRadio.isSelected()){
-				//TODO
+				//TODO 
 			}else if(multiCompetRadio.isSelected()) {
 				//TODO
 			}else if(IARadio.isSelected()) {
@@ -154,7 +159,7 @@ public class NouvellePartieControleur implements Initializable{
 	@FXML
 	private void creerProfilBouton(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(vm));
+		vm.changerVue("Creation Profil", "src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(vm));
 	}
 	
 }

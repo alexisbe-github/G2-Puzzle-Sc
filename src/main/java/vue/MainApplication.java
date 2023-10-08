@@ -16,7 +16,7 @@ public class MainApplication extends Application{
         
         try {
         	VueGenerale frame = new VueGenerale(primaryStage);
-        	frame.changerVue("src/main/resources/ui/fxml/MenuPrincipal.fxml", new MenuControleur(frame));
+        	frame.changerVue("Menu" ,"src/main/resources/ui/fxml/MenuPrincipal.fxml", new MenuControleur(frame));
         }catch(Exception e) {
         	e.printStackTrace();
         }

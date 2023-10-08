@@ -18,13 +18,14 @@ public class VueGenerale extends Stage{
 		this.initModality(Modality.NONE);
 	}
 	
-	public void changerVue(String fxmlPath, Initializable controller) throws IOException {
+	public void changerVue(String titre, String fxmlPath, Initializable controller) throws IOException {
 		FXMLLoader loader = new FXMLLoader(Paths.get(fxmlPath).toUri().toURL());
         loader.setController(controller);
         Parent root = loader.load();
 		
         Scene scene = new Scene(root);
         this.setScene(scene);
+        this.setTitle("Taquin - "+titre);
         this.show();
 	}
 	

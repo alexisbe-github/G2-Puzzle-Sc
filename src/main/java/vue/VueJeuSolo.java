@@ -24,6 +24,7 @@ public class VueJeuSolo extends Stage{
         JeuSoloControleur controller = new JeuSoloControleur(this, partie, taille, img);
         loader.setController(controller);
         
+        this.setTitle("Taquin - Jeu Solo");
         Parent root = loader.load();
         Scene scene = new Scene(root);        
         

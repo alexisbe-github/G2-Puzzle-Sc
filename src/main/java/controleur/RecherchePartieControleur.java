@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.java.vue.VueGenerale;
 
 public class RecherchePartieControleur implements Initializable{
 
@@ -30,8 +31,9 @@ public class RecherchePartieControleur implements Initializable{
 	}
 	
 	@FXML
-	private void connexion(ActionEvent event){
+	private void connexion(ActionEvent event) throws IOException{
 		 System.out.println("Connexion ip:"+saisieIP.getText()+" Port:"+saisiePort.getText());
+		 ((VueGenerale) this.owner).changerVue("Lobby Multijoueur", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner)); 
 	}
 	
 }
