@@ -1,4 +1,4 @@
-package main.java.controlleur;
+package main.java.controleur;
 
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;

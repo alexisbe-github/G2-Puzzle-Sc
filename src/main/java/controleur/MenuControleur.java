@@ -1,4 +1,4 @@
-package main.java.controlleur;
+package main.java.controleur;
 
 import java.io.IOException;
 import java.net.URL;
@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
-import main.java.vue.VueMenu;
+import main.java.vue.VueGenerale;
 
 public class MenuControleur implements Initializable{
 	
@@ -30,7 +30,7 @@ public class MenuControleur implements Initializable{
 	
 	@FXML
 	private void nouvellePartie(ActionEvent event) throws IOException {
-		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/NouvellePartie.fxml", new NouvellePartieControleur(this.owner));
+		((VueGenerale) this.owner).changerVue("src/main/resources/ui/fxml/NouvellePartie.fxml", new NouvellePartieControleur(this.owner));
 	}
 	
 	@FXML
@@ -40,12 +40,14 @@ public class MenuControleur implements Initializable{
 	
 	@FXML
 	private void recherchePartie(ActionEvent event) throws IOException {
-		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/Connexion.fxml", new RecherchePartieControleur(this.owner));
+		VueGenerale vm = new VueGenerale(this.owner);
+		vm.changerVue("src/main/resources/ui/fxml/Connexion.fxml", new RecherchePartieControleur(this.owner));
 	}
 	
 	@FXML
 	private void statistiques(ActionEvent event) throws IOException {
-		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/Statistiques.fxml", new StatistiquesControleur(this.owner));
+		VueGenerale vm = new VueGenerale(this.owner);
+		vm.changerVue("src/main/resources/ui/fxml/Statistiques.fxml", new StatistiquesControleur(this.owner));
 
 	}
 	

@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import main.java.controlleur.JeuSoloControleur;
+import main.java.controleur.JeuSoloControleur;
 import main.java.model.partie.PartieSolo;
 
 public class VueJeuSolo extends Stage{

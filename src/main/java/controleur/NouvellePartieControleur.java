@@ -1,4 +1,4 @@
-package main.java.controlleur;
+package main.java.controleur;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieSolo;
 import main.java.vue.VueJeuSolo;
-import main.java.vue.VueMenu;
+import main.java.vue.VueGenerale;
 
 public class NouvellePartieControleur implements Initializable{
 
@@ -154,7 +154,8 @@ public class NouvellePartieControleur implements Initializable{
 	
 	@FXML
 	private void creerProfilBouton(ActionEvent event) throws IOException {
-		((VueMenu) this.owner).changerVue("src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(this.owner));
+		VueGenerale vm = new VueGenerale(this.owner);
+		vm.changerVue("src/main/resources/ui/fxml/CreationProfil.fxml", new CreerProfilControleur(this.owner));
 	}
 	
 }
