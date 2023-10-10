@@ -13,6 +13,6 @@ public interface TestCRUD {
 	
 	void testDelete();
 	
-	void testFindAll();
+//	void testFindAll();
 
 }

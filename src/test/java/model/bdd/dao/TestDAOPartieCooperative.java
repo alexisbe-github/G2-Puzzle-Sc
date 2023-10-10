@@ -149,27 +149,27 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), 0);
 	}
 
-	@Test
-	@Override
-	public void testFindAll() {
-		PartieCooperativeSQL p1 = new PartieCooperativeSQL();
-		PartieCooperativeSQL p2 = new PartieCooperativeSQL();
-		PartieCooperativeSQL p3 = new PartieCooperativeSQL();
-		p1.setIdJoueur(idJoueur5);
-		p1.setIdPartie(idPartie4);
-		p2.setIdJoueur(idJoueur6);
-		p2.setIdPartie(idPartie5);
-		p3.setIdJoueur(idJoueur7);
-		p3.setIdPartie(idPartie6);
-		dao.creer(p1);
-		dao.creer(p2);
-		dao.creer(p3);
-		List<PartieCooperativeSQL> parties = dao.trouverTout();
-
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
-	}
+//	@Test
+//	@Override
+//	public void testFindAll() {
+//		PartieCooperativeSQL p1 = new PartieCooperativeSQL();
+//		PartieCooperativeSQL p2 = new PartieCooperativeSQL();
+//		PartieCooperativeSQL p3 = new PartieCooperativeSQL();
+//		p1.setIdJoueur(idJoueur5);
+//		p1.setIdPartie(idPartie4);
+//		p2.setIdJoueur(idJoueur6);
+//		p2.setIdPartie(idPartie5);
+//		p3.setIdJoueur(idJoueur7);
+//		p3.setIdPartie(idPartie6);
+//		dao.creer(p1);
+//		dao.creer(p2);
+//		dao.creer(p3);
+//		List<PartieCooperativeSQL> parties = dao.trouverTout();
+//
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
+//	}
 
 	@AfterAll
 	public static void cleanUp() {

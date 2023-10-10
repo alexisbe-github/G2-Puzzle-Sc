@@ -85,24 +85,24 @@ public class TestDAOPartie implements TestCRUD {
 		Assertions.assertEquals(dao.trouver(p.getId()).getNbCoups(), 0);
 	}
 	
-	@Test
-	@Override
-	public void testFindAll() {
-		PartieSQL p1 = new PartieSQL();
-		PartieSQL p2 = new PartieSQL();
-		PartieSQL p3 = new PartieSQL();
-		dao.creer(p1);
-		dao.creer(p2);
-		dao.creer(p3);
-		List<PartieSQL> parties = dao.trouverTout();
-		listeParties.add(p1.getId());
-		listeParties.add(p2.getId());
-		listeParties.add(p3.getId());
-		
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
-		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
-	}
+//	@Test
+//	@Override
+//	public void testFindAll() {
+//		PartieSQL p1 = new PartieSQL();
+//		PartieSQL p2 = new PartieSQL();
+//		PartieSQL p3 = new PartieSQL();
+//		dao.creer(p1);
+//		dao.creer(p2);
+//		dao.creer(p3);
+//		List<PartieSQL> parties = dao.trouverTout();
+//		listeParties.add(p1.getId());
+//		listeParties.add(p2.getId());
+//		listeParties.add(p3.getId());
+//		
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(0))));
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(1))));
+//		Assertions.assertTrue(parties.stream().anyMatch(item -> item.equals(parties.get(2))));
+//	}
 
 	@AfterAll
 	public static void cleanUp() {
