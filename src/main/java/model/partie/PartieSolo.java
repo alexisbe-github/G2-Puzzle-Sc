@@ -25,7 +25,7 @@ public class PartieSolo implements StrategyPartie {
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		this.puzzle = new Puzzle(taillePuzzle, image);
 	}
-	
+
 	public void deplacerCase(EDeplacement dp) {
 		puzzle.deplacerCase(dp);
 		pcs.firePropertyChange("property", 1, 0);
@@ -54,4 +54,5 @@ public class PartieSolo implements StrategyPartie {
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 	        pcs.removePropertyChangeListener(pcl);
 	}
+
 }

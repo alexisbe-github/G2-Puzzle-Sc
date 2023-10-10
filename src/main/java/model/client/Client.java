@@ -10,35 +10,28 @@ import java.net.Socket;
 import main.java.model.joueur.Joueur;
 
 public class Client {
-	
-	private boolean connecte = false;
-	private String ip = "";
-	private int port = -1;
+
+	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
 
 	public Client(Joueur joueur) {
 		this.joueur = joueur;
+		this.estConnecte = false;
 	}
-	
+
 	private void setConnection() {
-		connecte = true;
+		estConnecte = true;
 	}
 
-	public boolean getConnecte() {
-		return connecte;
+	public boolean getEstConnecte() {
+		return estConnecte;
 	}
 
-	public void seConnecter(String ip, int port) {
-		try {
-			socket = new Socket(ip, port);
-			this.ip = ip;
-			this.port = port;
-			setConnection();
-			ajouterJoueur();
-		} catch (IOException e) {
-			connecte = false;
-		}
+	public void seConnecter(String ip, int port) throws IOException {
+		socket = new Socket(ip, port);
+		setConnection();
+		ajouterJoueur();
 	}
 
 	public Socket getSocket() {
@@ -50,10 +43,8 @@ public class Client {
 		PrintStream fluxSortant = new PrintStream(socket.getOutputStream());
 		String requete = content;
 		fluxSortant.println(requete); // envoi de la requete au serveur
-		String reponse = fluxEntrant.readLine(); // reception de la reponse
-		System.out.println(reponse);
 	}
-	
+
 	private void ajouterJoueur() throws IOException {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		outputStream.writeObject(joueur);

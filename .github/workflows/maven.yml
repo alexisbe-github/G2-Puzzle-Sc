@@ -28,9 +28,9 @@ jobs:
 
      - name: Compilation
        run: mvn package -DskipTests
-
+      
      - name: Run Tests
-       run: mvn test
+       run: mvn test -Dsurefire.runOrder=alphabetical
 
      - name: Setup git credentials
        uses: de-vri-es/setup-git-credentials@v2

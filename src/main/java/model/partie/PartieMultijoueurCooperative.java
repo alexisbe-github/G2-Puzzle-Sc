@@ -18,25 +18,39 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	private int indexJoueurCourant; // index qui indique quel joueur de la List<Joueur> joueurs doit jouer son tour
 
 	/**
-	 * Construit une partie multijoueur cooperative se jouant tour par tour à partir
-	 * d'un joueur hôte
+	 * Construit une partie multijoueur cooperative se jouant tour par tour
 	 * 
-	 * @param joueurHote
 	 */
 	public PartieMultijoueurCooperative() {
 		indexJoueurCourant = 0;
 		joueurs = new ArrayList<>();
-		tablePuzzleDesJoueurs = new HashMap<>();
 		tableSocketDesJoueurs = new HashMap<>();
 	}
 
 	@Override
 	public void lancerPartie(BufferedImage image, int taillePuzzle) {
 		puzzleCommun = new Puzzle(taillePuzzle);
-		for (Joueur j : joueurs) {
-			tablePuzzleDesJoueurs.put(j, puzzleCommun);
+		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+			Joueur j = mapEntry.getKey();
+			Socket s = mapEntry.getValue();
+
+			try {
+				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+				fluxSortant.println();
+				fluxSortant.println(puzzleCommun);
+				fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
+				fluxSortant.println();
+				fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		System.out.println(this.getJoueurCourant().getNom() + " doit jouer");
+	}
+
+	@Override
+	public void deconnecterJoueur(Joueur j) {
+		joueurs.remove(j);
+		tableSocketDesJoueurs.remove(j);
 	}
 
 	/**
@@ -51,9 +65,12 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			Joueur j = mapEntry.getKey();
 			Socket s = mapEntry.getValue();
 
-			Puzzle puzzle = getPuzzleDuJoueur(j);
 			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-			fluxSortant.println(puzzle);
+			fluxSortant.println(puzzleCommun);
+			fluxSortant.println();
+			fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
+			fluxSortant.println();
+			fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
 		}
 	}
 
@@ -63,20 +80,37 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	 * @param numJoueur numero du joueur dans la liste
 	 * @throws IOException
 	 */
-	public void deplacerCase(EDeplacement dp, int numJoueur) throws IOException {
-		if (numJoueur == this.indexJoueurCourant + 1) {
+	public void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException {
+		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
 		}
+		if (puzzleCommun.verifierGrille()) {
+			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+				Joueur j = mapEntry.getKey();
+				Socket s = mapEntry.getValue();
+
+				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
+			}
+		}
+	}
+	
+	public boolean partieFinie() {
+		return puzzleCommun.verifierGrille();
 	}
 
 	public Puzzle getPuzzleCommun() {
-		return this.getPuzzleCommun();
+		return this.puzzleCommun;
 	}
 
 	private Joueur getJoueurCourant() {
 		Joueur joueurCourant = joueurs.get(indexJoueurCourant);
 		return joueurCourant;
+	}
+
+	public int getIndexJoueurCourant() {
+		return indexJoueurCourant;
 	}
 
 }

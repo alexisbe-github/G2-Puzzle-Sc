@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.java.model.bdd.Connexion;
+import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.bdd.dao.beans.PartieCompetitiveSQL;
 
 /**
@@ -32,11 +35,13 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 	 */
 	private final String PARTIE_COMPETITIVE = "partie_competitive";
 	/**
-	 * Colonne <code><i>id_joueur</i></code>, correspondant à l'identifiant du joueur.
+	 * Colonne <code><i>id_joueur</i></code>, correspondant à l'identifiant du
+	 * joueur.
 	 */
 	private final String ID_JOUEUR = "id_joueur";
 	/**
-	 * Colonne <code><i>id_partie</i></code>, correspondant à l'identifiant de la partie.
+	 * Colonne <code><i>id_partie</i></code>, correspondant à l'identifiant de la
+	 * partie.
 	 */
 	private final String ID_PARTIE = "id_partie";
 	/**
@@ -79,6 +84,32 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @return Une liste contenant tous les joueurs sauvegardés dans la base de
+	 *         données
+	 * 
+	 */
+	@Override
+	public List<PartieCompetitiveSQL> trouverTout() {
+		final String ID = ID_PARTIE;
+		List<PartieCompetitiveSQL> res = new ArrayList<>();
+		Connection connexion = Connexion.getInstance().getConnection();
+		try (PreparedStatement pstmt = connexion.prepareStatement("SELECT * FROM " + PARTIE_COMPETITIVE,
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					long id = rs.getLong(ID);
+					res.add(this.trouver(id));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @param partie La partie à créer dans la base de données
 	 * @return La partie
 	 */
@@ -94,7 +125,7 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 			pstmt.execute();
 
 		} catch (SQLException e) {
-			System.err.println("Erreur lors de la création : \n" + e.getMessage());
+			e.printStackTrace();
 		}
 		return partie;
 	}
@@ -137,5 +168,5 @@ public class DAOPartieCompetitive extends DAO<PartieCompetitiveSQL> {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

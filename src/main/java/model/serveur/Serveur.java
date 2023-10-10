@@ -1,59 +1,70 @@
 package main.java.model.serveur;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
-import main.java.model.Puzzle;
-import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
+import main.java.utils.InvalidPortException;
+import main.java.utils.NetworkUtils;
 
 public class Serveur {
 
-	private static PartieMultijoueur partie;
+	private boolean serverOn;
+	private int noConnexion;
+	private ServerSocket serverSocket;
+	private PartieMultijoueur partie;
 
-	public static void lancerServeur(PartieMultijoueur partieM) {
-		partie = partieM;
+	public Serveur() {
+		serverOn = false;
+		noConnexion = 0;
+	}
+
+	public void lancerServeur(PartieMultijoueur partie, int port) throws InvalidPortException {
+		NetworkUtils.checkPort(port);
+		serverOn = true;
+		this.partie = partie;
 		new Thread(() -> {
 			System.out.println("Lancement du serveur...");
-			String ip = getIP();
 			try {
-				ThreadGroup groupe = new ThreadGroup("socketsClients");
-				ServerSocket serverSocket = new ServerSocket(8080);
-				System.out.println("\n\n\nServeur lancé:\nIP: " + ip + "\nPort: " + serverSocket.getLocalPort());
-				int noConnexion = 0;
-				while (true) {
-					Socket clientSocket = serverSocket.accept();
-					noConnexion++;
-					ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, partie);
-					st.start();
-				}
+				ThreadGroup groupe = new ThreadGroup("socketsClients"); // on fait un groupe de thread pour gérer les
+																		// multiples connexion au serveur
+				serverSocket = new ServerSocket(port); // on fait un serveur socket sur le port pour les
+													// connexions qu'on transforme en socket
+				noConnexion = 0;
 
+				// on accepte les connexion sur la server socket et on incrémente le nombre de
+				// connexions, à chaque connexion on démarre un serveurthread à l'aide du thread
+				// group
+				while (serverOn) {
+					try {
+						Socket clientSocket = serverSocket.accept();
+						noConnexion++;
+						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, this);
+						st.start();
+					} catch (SocketException se) {
+						// this.serverOn = false;
+					}
+
+				}
 			} catch (NumberFormatException | IOException e) {
 				e.printStackTrace();
 			}
 		}).start();
-
 	}
 
-	/**
-	 * @return the IPv4 of the machine (String)
-	 */
-	private static String getIP() {
-		String ip = "";
-		try (final DatagramSocket socket = new DatagramSocket()) {
-			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-			ip = socket.getLocalAddress().getHostAddress();
-		} catch (SocketException | UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return ip;
+	public int getNoConnexion() {
+		return this.noConnexion;
 	}
+	
+	public PartieMultijoueur getPartie() {
+		return partie;
+	}
+
+	public void setPartie(PartieMultijoueur partie) {
+		this.partie = partie;
+		this.noConnexion = 0;
+	}
+
 }
