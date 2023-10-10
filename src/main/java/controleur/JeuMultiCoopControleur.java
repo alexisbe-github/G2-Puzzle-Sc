@@ -7,20 +7,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -32,14 +28,14 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import main.java.model.EDeplacement;
-import main.java.model.partie.PartieSolo;
+import main.java.model.partie.PartieMultijoueurCooperative;
 
-public class JeuSoloControleur implements Initializable, PropertyChangeListener{
+public class JeuMultiCoopControleur implements Initializable, PropertyChangeListener{
 
 	private Stage owner;
-	private PartieSolo partie;
+	private PartieMultijoueurCooperative partie;
+	private int numJoueur;
 	private boolean estEnPause = false;
 	private double xClick;
 	private double yClick;
@@ -74,7 +70,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , BufferedImage img) throws IOException {
+	public JeuMultiCoopControleur
+	(Stage stage, PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur) 
+					throws IOException {
 		this.owner = stage;
 		this.partie = partie;
 		partie.lancerPartie(img, taille);
@@ -102,15 +100,15 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 */
 	private void updateImages() {
 		//Définition de la taille d'une case
-		double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;
+		double largeurCase = owner.getWidth()/this.partie.getPuzzleCommun().getTaille()*0.5;
 		Image image;
 		grille.getChildren().clear();
 		
-		for(int i=0;i<partie.getPuzzle().getTaille();i++) {
-			for(int j=0;j<partie.getPuzzle().getTaille();j++) {
+		for(int i=0;i<partie.getPuzzleCommun().getTaille();i++) {
+			for(int j=0;j<partie.getPuzzleCommun().getTaille();j++) {
 				Label l = new Label();
-				if(partie.getPuzzle().getCase(j, i).getIndex()!=-1)
-					l.setText(""+((int)partie.getPuzzle().getCase(j,i).getIndex()+1));
+				if(partie.getPuzzleCommun().getCase(j, i).getIndex()!=-1)
+					l.setText(""+((int)partie.getPuzzleCommun().getCase(j,i).getIndex()+1));
 				l.setFont(new Font(18));
 				l.setTextFill(Color.YELLOW);
 				l.setPrefWidth(largeurCase);
@@ -119,9 +117,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 				l.setLayoutX(j*largeurCase);
 				l.setLayoutY(i*largeurCase);
 				
-				l.setId("case"+partie.getPuzzle().getCase(j, i).getIndex());
+				l.setId("case"+partie.getPuzzleCommun().getCase(j, i).getIndex());
 				
-				image = SwingFXUtils.toFXImage(partie.getPuzzle().getCase(j, i).getImage(), null);
+				image = SwingFXUtils.toFXImage(partie.getPuzzleCommun().getCase(j, i).getImage(), null);
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				          new BackgroundSize(100, 100, true, true , true, false) ));
@@ -133,7 +131,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	
 	private void updateJeu() {
 		this.updateImages();
-		if(this.partie.getPuzzle().verifierGrille()) this.updateVictoire();
+		if(this.partie.getPuzzleCommun().verifierGrille()) this.updateVictoire();
 	}
 	
 	private void updateVictoire(){
@@ -142,13 +140,13 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	}
 	
 	private void initJoueur() {
-		Image image = SwingFXUtils.toFXImage(this.partie.getJoueur().getImage(), null);
+		Image image = SwingFXUtils.toFXImage(this.partie.getJoueurs().get(numJoueur).getImage(), null);
 		this.logoJoueur.setImage(image);
 		this.updateInfos();
 	}
 	
 	private void updateInfos() {
-		this.nbCoups.setText("nbCoups : "+this.partie.getPuzzle().getNbCoups());
+		this.nbCoups.setText("nbCoups : "+this.partie.getPuzzleCommun().getNbCoups());
 	}
 	
 	public void setKeyController() {
@@ -157,22 +155,27 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 			public void handle(KeyEvent event) {
 				if(!estEnPause) {
 					//dpAnim(event.getCode());
-					switch (event.getCode()) {
-	                case UP:
-	                	partie.deplacerCase(EDeplacement.HAUT);
-	                	break;
-	                case DOWN:
-	                	partie.deplacerCase(EDeplacement.BAS);
-	                	break;
-	                case LEFT:
-	                	partie.deplacerCase(EDeplacement.GAUCHE);
-	                	break;
-	                case RIGHT:
-	                	partie.deplacerCase(EDeplacement.DROITE);
-	                	break;
-					default:
-						break;
+					try {
+						switch (event.getCode()) {
+		                case UP:
+		                	partie.deplacerCase(EDeplacement.HAUT, numJoueur);
+		                	break;
+		                case DOWN:
+		                	partie.deplacerCase(EDeplacement.BAS, numJoueur);
+		                	break;
+		                case LEFT:
+		                	partie.deplacerCase(EDeplacement.GAUCHE, numJoueur);
+		                	break;
+		                case RIGHT:
+		                	partie.deplacerCase(EDeplacement.DROITE, numJoueur);
+		                	break;
+						default:
+							break;
             		}
+					}catch(IOException e) {
+						e.printStackTrace();
+					}
+					
 				}
 			}
 		});
@@ -187,7 +190,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	
 	@FXML
 	private void pauseButton(ActionEvent event) {
-		if(!this.partie.getPuzzle().verifierGrille()) {
+		if(!this.partie.getPuzzleCommun().verifierGrille()) {
 			this.estEnPause = !estEnPause;
 		}
 	}
@@ -207,16 +210,21 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
     
     private void handleReleaseAction(MouseEvent event) {
     	double translateX = event.getX()-xClick;
-    	double translateY = event.getY()-yClick;  	
-    	if(!estEnPause && (Math.abs(translateY) > 10 || Math.abs(translateX) > 10)) {
-    		if(Math.abs(translateX)>Math.abs(translateY)) {
-        		if(translateX>0) partie.deplacerCase(EDeplacement.DROITE);
-        			else partie.deplacerCase(EDeplacement.GAUCHE);
-        	}else {
-        		if(translateY>0) partie.deplacerCase(EDeplacement.BAS);
-    			else partie.deplacerCase(EDeplacement.HAUT);
+    	double translateY = event.getY()-yClick;
+    	try {
+    		if(!estEnPause && (Math.abs(translateY) > 10 || Math.abs(translateX) > 10)) {
+        		if(Math.abs(translateX)>Math.abs(translateY)) {
+            		if(translateX>0) partie.deplacerCase(EDeplacement.DROITE, numJoueur);
+            			else partie.deplacerCase(EDeplacement.GAUCHE, numJoueur);
+            	}else {
+            		if(translateY>0) partie.deplacerCase(EDeplacement.BAS, numJoueur);
+        			else partie.deplacerCase(EDeplacement.HAUT, numJoueur);
+            	}
         	}
+    	}catch(IOException e) {
+    		e.printStackTrace();
     	}
+    	
     }
     
     /* DEPLACEMENT, ANIMATION (Code un peu déstructuré, c'est normal)
