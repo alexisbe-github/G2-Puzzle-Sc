@@ -1,6 +1,7 @@
 package main.java.model.serveur;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -40,6 +41,8 @@ public class Serveur {
 				while (serverOn) {
 					try {
 						Socket clientSocket = serverSocket.accept();
+						ObjectOutputStream partieSortant = new ObjectOutputStream(clientSocket.getOutputStream());
+						partieSortant.writeObject(partie);
 						noConnexion++;
 						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, this);
 						st.start();

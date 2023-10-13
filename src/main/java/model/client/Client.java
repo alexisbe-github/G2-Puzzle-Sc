@@ -3,17 +3,20 @@ package main.java.model.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
 import main.java.model.joueur.Joueur;
+import main.java.model.partie.PartieMultijoueur;
 
 public class Client {
 
 	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
+	private PartieMultijoueur partie;
 
 	public Client(Joueur joueur) {
 		this.joueur = joueur;
@@ -28,10 +31,12 @@ public class Client {
 		return estConnecte;
 	}
 
-	public void seConnecter(String ip, int port) throws IOException {
+	public void seConnecter(String ip, int port) throws IOException, ClassNotFoundException {
 		socket = new Socket(ip, port);
 		setConnection();
 		ajouterJoueur();
+		ObjectInputStream fluxEntrant = new ObjectInputStream(socket.getInputStream());
+		PartieMultijoueur p = (PartieMultijoueur) fluxEntrant.readObject();
 	}
 
 	public Socket getSocket() {
@@ -49,5 +54,9 @@ public class Client {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		outputStream.writeObject(joueur);
 	}
-
+	
+	public PartieMultijoueur getPartie() {
+		return this.partie;
+	}
+	
 }

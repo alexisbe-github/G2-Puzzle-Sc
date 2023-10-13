@@ -1,6 +1,8 @@
 package main.java.model.partie;
 
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -51,6 +53,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	public void deconnecterJoueur(Joueur j) {
 		joueurs.remove(j);
 		tableSocketDesJoueurs.remove(j);
+		pcs.firePropertyChange("property", 1, 0);
 	}
 
 	/**
@@ -72,6 +75,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 			fluxSortant.println();
 			fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
 		}
+		pcs.firePropertyChange("property", 1, 0);
 	}
 
 	/**
@@ -94,6 +98,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
 			}
 		}
+		pcs.firePropertyChange("property", 1, 0);
 	}
 	
 	public boolean partieFinie() {

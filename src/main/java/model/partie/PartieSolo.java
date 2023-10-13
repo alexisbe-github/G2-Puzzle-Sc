@@ -4,11 +4,9 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
-import main.java.utils.Utils;
 
 public class PartieSolo implements StrategyPartie {
 
@@ -40,16 +38,16 @@ public class PartieSolo implements StrategyPartie {
 	}
 	
 	/**
-	 * TODO javadoc
-	 * @param pcl
+	 * Permet d'ajouter un PCL, et d'observer la classe.
+	 * @param PropertyChangeListener à appliquer
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 	        pcs.addPropertyChangeListener(pcl);
 	}
 	
 	/**
-	 * TODO javadoc
-	 * @param pcl
+	 * Permet de retirer un PCL.
+	 * @param PropertyChangeListener à appliquer
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 	        pcs.removePropertyChangeListener(pcl);

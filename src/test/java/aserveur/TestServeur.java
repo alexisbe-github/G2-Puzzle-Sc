@@ -55,7 +55,7 @@ public class TestServeur {
 
 	@Test
 	@Order(3)
-	public void testLancerServeur() throws IOException, InvalidPortException, InterruptedException {
+	public void testLancerServeur() throws IOException, InvalidPortException, InterruptedException, ClassNotFoundException {
 		Assertions.assertDoesNotThrow(() -> {
 			serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		});

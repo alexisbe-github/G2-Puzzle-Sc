@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.model.EDeplacement;
+import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
 
 public class JeuMultiCoopControleur implements Initializable, PropertyChangeListener{
@@ -36,6 +37,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	private Stage owner;
 	private PartieMultijoueurCooperative partie;
 	private int numJoueur;
+	private Joueur joueur;
 	private boolean estEnPause = false;
 	private double xClick;
 	private double yClick;
@@ -71,10 +73,12 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
 	public JeuMultiCoopControleur
-	(Stage stage, PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur) 
+	(Stage stage, PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur, Joueur joueur) 
 					throws IOException {
 		this.owner = stage;
 		this.partie = partie;
+		this.joueur = joueur;
+		this.numJoueur = numJoueur;
 		partie.lancerPartie(img, taille);
 	}
 	
@@ -140,7 +144,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	}
 	
 	private void initJoueur() {
-		Image image = SwingFXUtils.toFXImage(this.partie.getJoueurs().get(numJoueur).getImage(), null);
+		Image image = SwingFXUtils.toFXImage(this.joueur.getImage(), null);
 		this.logoJoueur.setImage(image);
 		this.updateInfos();
 	}
@@ -158,16 +162,16 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 					try {
 						switch (event.getCode()) {
 		                case UP:
-		                	partie.deplacerCase(EDeplacement.HAUT, numJoueur);
+		                	partie.deplacerCase(EDeplacement.HAUT, joueur, numJoueur);
 		                	break;
 		                case DOWN:
-		                	partie.deplacerCase(EDeplacement.BAS, numJoueur);
+		                	partie.deplacerCase(EDeplacement.BAS, joueur, numJoueur);
 		                	break;
 		                case LEFT:
-		                	partie.deplacerCase(EDeplacement.GAUCHE, numJoueur);
+		                	partie.deplacerCase(EDeplacement.GAUCHE, joueur, numJoueur);
 		                	break;
 		                case RIGHT:
-		                	partie.deplacerCase(EDeplacement.DROITE, numJoueur);
+		                	partie.deplacerCase(EDeplacement.DROITE, joueur, numJoueur);
 		                	break;
 						default:
 							break;
@@ -214,11 +218,11 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
     	try {
     		if(!estEnPause && (Math.abs(translateY) > 10 || Math.abs(translateX) > 10)) {
         		if(Math.abs(translateX)>Math.abs(translateY)) {
-            		if(translateX>0) partie.deplacerCase(EDeplacement.DROITE, numJoueur);
-            			else partie.deplacerCase(EDeplacement.GAUCHE, numJoueur);
+            		if(translateX>0) partie.deplacerCase(EDeplacement.DROITE, joueur, numJoueur);
+            			else partie.deplacerCase(EDeplacement.GAUCHE, joueur, numJoueur);
             	}else {
-            		if(translateY>0) partie.deplacerCase(EDeplacement.BAS, numJoueur);
-        			else partie.deplacerCase(EDeplacement.HAUT, numJoueur);
+            		if(translateY>0) partie.deplacerCase(EDeplacement.BAS, joueur, numJoueur);
+        			else partie.deplacerCase(EDeplacement.HAUT, joueur, numJoueur);
             	}
         	}
     	}catch(IOException e) {

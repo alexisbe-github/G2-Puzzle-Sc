@@ -11,17 +11,18 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.java.controleur.JeuMultiCoopControleur;
+import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
 
 public class VueJeuMultiCoop extends Stage{
 
-	public VueJeuMultiCoop(PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur) throws IOException {
+	public VueJeuMultiCoop(PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur, Joueur joueur) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
-        JeuMultiCoopControleur controller = new JeuMultiCoopControleur(this, partie, taille, img, numJoueur);
+        JeuMultiCoopControleur controller = new JeuMultiCoopControleur(this, partie, taille, img, numJoueur, joueur);
         loader.setController(controller);
         
         this.setTitle("Taquin - Jeu Multijoueur Coopératif");

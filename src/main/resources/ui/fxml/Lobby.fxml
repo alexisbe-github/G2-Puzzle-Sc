@@ -18,44 +18,12 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+            <HBox fx:id="boxJoueurs" alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
                         <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../../../../../../../Pictures/Snapchat-333035207.jpg" />
-                           </image>
-                        </ImageView>
-                        <Label text="joueur" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../../../../../../../Pictures/Snapchat-333035207.jpg" />
-                           </image>
-                        </ImageView>
-                        <Label text="joueur" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../../../../../../../Pictures/Snapchat-333035207.jpg" />
-                           </image>
-                        </ImageView>
-                        <Label text="joueur" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../../../../../../../Pictures/Snapchat-333035207.jpg" />
-                           </image>
+                           
                         </ImageView>
                         <Label text="joueur" />
                      </children>
@@ -71,15 +39,12 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../../../../../../../Pictures/dofus-2022-11-01_00-31-02-Arkashon.png" />
-               </image>
+            <ImageView fx:id="imagePuzzle" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
             </ImageView>
-            <Label text="Taille : 4" />
+            <Label fx:id="labelTaille" text="Taille : 4" />
          </children>
       </VBox>
-      <Button mnemonicParsing="false" text="Lancer Partie">
+      <Button fx:id="lancerPartie" onAction="#lancerPartieMulti" mnemonicParsing="false" text="Lancer Partie">
          <font>
             <Font size="18.0" />
          </font>
