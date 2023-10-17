@@ -196,7 +196,7 @@ public class NouvellePartieControleur implements Initializable{
 						//TODO
 					}
 					Client c = new Client(j);
-					//c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
+					c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080); //ICI BUG
 					
 					LobbyControleur lc = new LobbyControleur(vg, pm, true, true, imageChoisie, taille);
 					vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
