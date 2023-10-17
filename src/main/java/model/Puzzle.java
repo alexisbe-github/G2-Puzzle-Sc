@@ -3,6 +3,8 @@ package main.java.model;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import main.java.utils.Utils;
@@ -252,6 +254,19 @@ public class Puzzle implements Serializable {
 
 	public int getNbCoups() {
 		return this.nbCoups;
+	}
+
+	public List<EDeplacement> listeDeplacementsPossibles() {
+		List<EDeplacement> deplacementsPossibles = new ArrayList<>();
+		if (this.getXCaseVide() < this.TAILLE - 1)
+			deplacementsPossibles.add(EDeplacement.GAUCHE);
+		if (this.getXCaseVide() > 0)
+			deplacementsPossibles.add(EDeplacement.DROITE);
+		if (this.getYCaseVide() < this.TAILLE - 1)
+			deplacementsPossibles.add(EDeplacement.HAUT);
+		if (this.getYCaseVide() > 0)
+			deplacementsPossibles.add(EDeplacement.BAS);
+		return deplacementsPossibles;
 	}
 
 	public Memento saveToMemento() {

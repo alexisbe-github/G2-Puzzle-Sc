@@ -12,17 +12,26 @@ import main.java.utils.Utils;
 public class IA {
 
 	public static void main(String[] args) {
-		Puzzle puzzle = new Puzzle(4);
+		Puzzle puzzle = new Puzzle(3);
 
-		solveTaquin(puzzle);
+		// solveTaquin(puzzle);
 		System.out.println(puzzle);
-		System.out.println(calculerH(puzzle));
+		// System.out.println(calculerH(puzzle));
+		System.out.println(puzzle.listeDeplacementsPossibles());
 
 	}
 
 	private static List<EDeplacement> solveTaquin(Puzzle puzzle) {
 		List<EDeplacement> solution = new ArrayList<>();
-
+		boolean trouve = false;
+		int fs = calculerH(puzzle);
+		List<Puzzle> sommets = new ArrayList<>();
+		sommets.add(puzzle);
+		do {
+			for(EDeplacement dp:sommets.get(0).listeDeplacementsPossibles()) {
+				
+			}
+		} while (!sommets.isEmpty());
 		return solution;
 	}
 
