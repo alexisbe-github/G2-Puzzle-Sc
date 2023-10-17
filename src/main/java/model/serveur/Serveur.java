@@ -2,6 +2,7 @@ package main.java.model.serveur;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -10,7 +11,7 @@ import main.java.model.partie.PartieMultijoueur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 
-public class Serveur {
+public class Serveur{
 
 	private boolean serverOn;
 	private int noConnexion;

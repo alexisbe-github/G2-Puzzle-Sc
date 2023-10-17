@@ -1,7 +1,6 @@
 package main.java.controleur;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ImagingOpException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -19,8 +18,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+import main.java.model.bdd.dao.DAOJoueur;
+import main.java.model.bdd.dao.beans.JoueurSQL;
 
 public class CreerProfilControleur implements Initializable{
 
@@ -74,7 +75,10 @@ public class CreerProfilControleur implements Initializable{
 	@FXML
 	public void creerProfilBouton() {
 		if(this.image != null && this.saisiePseudo.getText() != null) {
-			//TODO Création du profil
+			DAOJoueur j = new DAOJoueur();
+			JoueurSQL joueur = new JoueurSQL();
+			joueur.setPseudo(this.saisiePseudo.getText());
+			j.creer(joueur);
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package main.java.controleur;
 
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,7 +23,7 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.utils.Utils;
 import main.java.vue.VueJeuMultiCoop;
 
-public class LobbyControleur implements Initializable{
+public class LobbyControleur implements Initializable, PropertyChangeListener{
 
 	private PartieMultijoueur partie;
 	private Joueur joueur = new Joueur("pedro", Utils.createTransparentBufferedImage(250, 250));
@@ -43,6 +45,9 @@ public class LobbyControleur implements Initializable{
 	@FXML
 	private Label labelTaille;
 	
+	@FXML
+	private Label labelType;
+	
 	public LobbyControleur(Stage stage, PartieMultijoueur partie, boolean estHote) {
 		this.owner = stage;
 		this.estHote = estHote;
@@ -61,6 +66,8 @@ public class LobbyControleur implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		lancerPartie.setManaged(estHote);
+		this.updateJoueurs();
+		this.updateInfos();
 	}
 	
 	private void updateJoueurs() {
@@ -88,11 +95,18 @@ public class LobbyControleur implements Initializable{
 		//TODO
 		this.imagePuzzle.setImage(SwingFXUtils.toFXImage(img, null));
 		this.labelTaille.setText("Taille : "+this.taille);
+		this.labelType.setText("Partie "+(estCoop ? "coopérative" : "compétitive"));
 	}
 	
 	@FXML
 	private void lancerPartieMulti() throws IOException {
-		VueJeuMultiCoop vj = new VueJeuMultiCoop((PartieMultijoueurCooperative) partie, taille, img, taille, joueur);
+		VueJeuMultiCoop vj = new VueJeuMultiCoop((PartieMultijoueurCooperative) partie, taille, img, 0, joueur);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		this.updateJoueurs();
+		
 	}
 	
 }

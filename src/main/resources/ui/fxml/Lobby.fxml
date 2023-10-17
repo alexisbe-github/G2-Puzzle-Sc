@@ -19,29 +19,21 @@
                </font>
             </Label>
             <HBox fx:id="boxJoueurs" alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
-                           
-                        </ImageView>
-                        <Label text="joueur" />
-                     </children>
-                  </VBox>
-               </children>
+
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="NEVER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" VBox.vgrow="NEVER">
          <children>
             <Label text="Image :">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <ImageView fx:id="imagePuzzle" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
+            <ImageView fx:id="imagePuzzle" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true">
             </ImageView>
             <Label fx:id="labelTaille" text="Taille : 4" />
+            <Label fx:id="labelType" text="Partie coopérative" />
          </children>
       </VBox>
       <Button fx:id="lancerPartie" onAction="#lancerPartieMulti" mnemonicParsing="false" text="Lancer Partie">

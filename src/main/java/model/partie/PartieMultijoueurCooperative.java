@@ -1,10 +1,9 @@
 package main.java.model.partie;
 
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
 
-public class PartieMultijoueurCooperative extends PartieMultijoueur {
+public class PartieMultijoueurCooperative extends PartieMultijoueur{ 
 
 	private Puzzle puzzleCommun;
 	private int indexJoueurCourant; // index qui indique quel joueur de la List<Joueur> joueurs doit jouer son tour
