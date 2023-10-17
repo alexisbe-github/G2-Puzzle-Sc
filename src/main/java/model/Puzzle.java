@@ -7,7 +7,7 @@ import java.util.Random;
 
 import main.java.utils.Utils;
 
-public class Puzzle implements Serializable{
+public class Puzzle implements Serializable {
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
@@ -207,13 +207,12 @@ public class Puzzle implements Serializable{
 				// Initialisation de la sous image
 				BufferedImage subImg;
 				index = this.grille[j][i].getIndex();
-				if ( index!=-1 ) { // Si la case n'est pas la case vide
-					subImg = this.image.getSubimage(
-							width * (index % this.TAILLE), 
-							height * (index / this.TAILLE), 
+				if (index != -1) { // Si la case n'est pas la case vide
+					subImg = this.image.getSubimage(width * (index % this.TAILLE), height * (index / this.TAILLE),
 							width, height); // "Découpe" de l'image
 				} else {
-					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même													// taille
+					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même
+																					// // taille
 				}
 				this.grille[j][i].setImage(subImg);
 			}
@@ -253,5 +252,24 @@ public class Puzzle implements Serializable{
 
 	public int getNbCoups() {
 		return this.nbCoups;
+	}
+
+	public Memento saveToMemento() {
+		return new Memento(grille, nbCoups);
+	}
+
+	public void restoreFromMemento(Memento memento) {
+		grille = memento.grille;
+		nbCoups = memento.nbCoups;
+	}
+
+	private static class Memento { // définition d’une classe interne pour la sauvegarde
+		private Case[][] grille;
+		private int nbCoups;
+
+		public Memento(Case[][] g, int coups) {
+			grille = g;
+			nbCoups = coups;
+		}
 	}
 }
