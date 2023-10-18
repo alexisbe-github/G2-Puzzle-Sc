@@ -3,15 +3,15 @@ package main.java.model.partie;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
 import main.java.model.EDeplacement;
-import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
 
-public abstract class PartieMultijoueur implements StrategyPartie {
+public abstract class PartieMultijoueur implements StrategyPartie, Serializable {
 
 	protected List<Joueur> joueurs;
 	protected Map<Joueur, Socket> tableSocketDesJoueurs;
