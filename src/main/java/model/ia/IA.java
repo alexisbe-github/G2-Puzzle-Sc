@@ -1,91 +1,60 @@
 package main.java.model.ia;
 
-import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
-import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
-import main.java.utils.Utils;
 
 public class IA {
 
 	public static void main(String[] args) {
 		Puzzle puzzle = new Puzzle(3);
-
+		solveTaquin(puzzle);
 		// solveTaquin(puzzle);
-		System.out.println(puzzle);
-		// System.out.println(calculerH(puzzle));
-		System.out.println(puzzle.listeDeplacementsPossibles());
+//		System.out.println(puzzle);
+//		// System.out.println(calculerH(puzzle));
+//		System.out.println(puzzle.listeDeplacementsPossibles());
 
 	}
 
 	private static List<EDeplacement> solveTaquin(Puzzle puzzle) {
+		System.out.println(puzzle);
 		List<EDeplacement> solution = new ArrayList<>();
-		boolean trouve = false;
-		int fs = calculerH(puzzle);
-		List<Puzzle> sommets = new ArrayList<>();
-		sommets.add(puzzle);
-		do {
-			for(EDeplacement dp:sommets.get(0).listeDeplacementsPossibles()) {
-				
+		Queue<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+
+		List<Noeud> fermes = new ArrayList<>();
+		boolean succes = false;
+		while (!ouverts.isEmpty() && !succes) {
+			Noeud n = ouverts.element().getNoeudMinimal();
+			System.out.println(n.getPuzzle());
+			if (puzzle.verifierGrille())
+				succes = true;
+			else {
+				System.out.println(ouverts.remove(n));
+				fermes.add(n);
+				for (Noeud successeur : n.successeurs()) {
+					if (!ouverts.contains(successeur) && !fermes.contains(successeur)) {
+						ouverts.add(successeur);
+					} else {
+						if (successeur.getG() > n.getG() + successeur.calculerH()) {
+							successeur.setPere(n);
+							if (fermes.contains(successeur)) {
+								fermes.remove(successeur);
+								ouverts.add(successeur);
+							}
+						}
+					}
+				}
 			}
-		} while (!sommets.isEmpty());
+		}
+		for (Noeud noeud : ouverts) {
+			System.out.println(noeud.getDeplacementMinimal());
+		}
 		return solution;
 	}
 
-	private static int calculerH(Puzzle p) {
-		int h = 0;
-		Case[][] grille = p.getGrille();
-		int compteur = 0;
-		for (int i = 0; i < grille.length; i++) {
-			for (int j = 0; j < grille.length; j++) {
-				if (j == grille.length - 1 && i == grille.length - 1) {
-					if (grille[j][i].getIndex() != Case.INDEX_CASE_VIDE)
-						h += manhattanDistance(p, grille[j][i].getIndex());
-				} else {
-					if (compteur != grille[j][i].getIndex())
-						h += manhattanDistance(p, grille[j][i].getIndex());
-				}
-				compteur++;
-			}
-		}
-		return h;
-	}
-
-	private static int manhattanDistance(Puzzle p, int index) {
-		Case[][] grille = p.getGrille();
-		int compteur = 0;
-		int distance = 0;
-		int xBut, yBut;
-		xBut = 0;
-		yBut = 0;
-		for (int i = 0; i < p.getTaille(); i++) {
-			for (int j = 0; j < p.getTaille(); j++) {
-				if (compteur == index) {
-					xBut = j;
-					yBut = i;
-				}
-				compteur++;
-			}
-		}
-
-		Point point = chercherCoordonneesIndex(p, index);
-		System.out.println("x:" + point.x + "   y:" + point.y + "   xbut:" + xBut + "     ybut:" + yBut);
-		distance = Math.abs(point.x - xBut) + Math.abs(point.y - yBut);
-		System.out.println(index + ": " + distance);
-		return distance;
-	}
-
-	private static Point chercherCoordonneesIndex(Puzzle p, int index) {
-		Case[][] grille = p.getGrille();
-		for (int i = 0; i < grille.length; i++) {
-			for (int j = 0; j < grille.length; j++) {
-				if (grille[j][i].getIndex() == index)
-					return new Point(j, i);
-			}
-		}
-		return null;
-	}
 }

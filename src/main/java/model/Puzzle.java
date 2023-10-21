@@ -4,12 +4,15 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import main.java.utils.Utils;
 
-public class Puzzle implements Serializable {
+public class Puzzle implements Serializable, Cloneable {
 
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
@@ -270,7 +273,17 @@ public class Puzzle implements Serializable {
 	}
 
 	public Memento saveToMemento() {
-		return new Memento(grille, nbCoups);
+		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				try {
+					tmp[j][i] = (Case) grille[j][i].clone();
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return new Memento(tmp, nbCoups);
 	}
 
 	public void restoreFromMemento(Memento memento) {
@@ -278,7 +291,7 @@ public class Puzzle implements Serializable {
 		nbCoups = memento.nbCoups;
 	}
 
-	private static class Memento { // définition d’une classe interne pour la sauvegarde
+	public class Memento { // définition d’une classe interne pour la sauvegarde
 		private Case[][] grille;
 		private int nbCoups;
 
@@ -286,5 +299,40 @@ public class Puzzle implements Serializable {
 			grille = g;
 			nbCoups = coups;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(grille);
+		result = prime * result + Objects.hash(TAILLE, nbCoups);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Puzzle other = (Puzzle) obj;
+		return TAILLE == other.TAILLE && Arrays.equals(grille, other.grille);
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Puzzle clonedPuzzle = (Puzzle) super.clone();
+		// Clonage de la grille
+		Case[][] clonedGrille = new Case[this.TAILLE][this.TAILLE];
+		for (int i = 0; i < this.TAILLE; i++) {
+			for (int j = 0; j < this.TAILLE; j++) {
+				clonedGrille[j][i] = (Case) this.grille[j][i].clone();
+			}
+		}
+		clonedPuzzle.grille = clonedGrille;
+		return clonedPuzzle;
 	}
 }
