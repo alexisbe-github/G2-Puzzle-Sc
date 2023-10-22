@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import javafx.scene.image.Image;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
@@ -54,7 +55,7 @@ public class TestPartieMultijoueurCooperative {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs
-		partieMultiCoop.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), TAILLE);
+		partieMultiCoop.lancerPartie(new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString()), TAILLE);
 	}
 
 	@Test

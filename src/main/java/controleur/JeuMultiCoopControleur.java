@@ -1,6 +1,5 @@
 package main.java.controleur;
 
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
 	public JeuMultiCoopControleur
-	(Stage stage, PartieMultijoueurCooperative partie, int taille, BufferedImage img, int numJoueur, Joueur joueur) 
+	(Stage stage, PartieMultijoueurCooperative partie, int taille, Image img, int numJoueur, Joueur joueur) 
 					throws IOException {
 		this.owner = stage;
 		this.partie = partie;
@@ -123,11 +122,12 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 				
 				l.setId("case"+partie.getPuzzleCommun().getCase(j, i).getIndex());
 				
-				image = SwingFXUtils.toFXImage(partie.getPuzzleCommun().getCase(j, i).getImage(), null);
+				image = partie.getPuzzleCommun().getCase(j, i).getImage();
+				
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				          new BackgroundSize(100, 100, true, true , true, false) ));
-				l.setBackground( bgi );
+				if(partie.getPuzzleCommun().getCase(j, i).getIndex()!=-1) l.setBackground( bgi );
 				grille.getChildren().add(l);
 			}
 		}
@@ -144,7 +144,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	}
 	
 	private void initJoueur() {
-		Image image = SwingFXUtils.toFXImage(this.joueur.getImage(), null);
+		Image image = new Image(joueur.getImageUrl());
 		this.logoJoueur.setImage(image);
 		this.updateInfos();
 	}

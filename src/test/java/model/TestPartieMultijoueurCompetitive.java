@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import javax.imageio.ImageIO;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -13,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import javafx.scene.image.Image;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
@@ -53,7 +52,7 @@ public class TestPartieMultijoueurCompetitive {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs
-		partieMultiCompetitive.lancerPartie(ImageIO.read(new File("src/test/resources/testimg.jpg")), TAILLE);
+		partieMultiCompetitive.lancerPartie(new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString()), TAILLE);
 	}
 
 	@Test

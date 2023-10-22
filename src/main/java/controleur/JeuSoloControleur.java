@@ -1,26 +1,21 @@
 package main.java.controleur;
 
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -32,7 +27,6 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import main.java.model.EDeplacement;
 import main.java.model.partie.PartieSolo;
 
@@ -74,7 +68,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , BufferedImage img) throws IOException {
+	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , Image img) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
 		partie.lancerPartie(img, taille);
@@ -121,11 +115,12 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 				
 				l.setId("case"+partie.getPuzzle().getCase(j, i).getIndex());
 				
-				image = SwingFXUtils.toFXImage(partie.getPuzzle().getCase(j, i).getImage(), null);
+				image = partie.getPuzzle().getCase(j, i).getImage();
+				
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				          new BackgroundSize(100, 100, true, true , true, false) ));
-				l.setBackground( bgi );
+				if(partie.getPuzzle().getCase(j, i).getIndex()!=-1) l.setBackground( bgi );
 				grille.getChildren().add(l);
 			}
 		}
@@ -142,7 +137,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	}
 	
 	private void initJoueur() {
-		Image image = SwingFXUtils.toFXImage(this.partie.getJoueur().getImage(), null);
+		Image image = new Image(this.partie.getJoueur().getImageUrl());
 		this.logoJoueur.setImage(image);
 		this.pseudoJoueur.setText(this.partie.getJoueur().getNom());
 		this.updateInfos();

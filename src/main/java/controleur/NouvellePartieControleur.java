@@ -1,6 +1,5 @@
 package main.java.controleur;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -9,8 +8,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-
-import org.imgscalr.Scalr;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -22,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -44,7 +42,7 @@ public class NouvellePartieControleur implements Initializable{
 
 	Stage owner;
 	JoueurSQL joueurChoisi;
-	BufferedImage imageChoisie;
+	Image imageChoisie;
 	ToggleGroup radioGroupe;
 	
 	@FXML
@@ -72,7 +70,8 @@ public class NouvellePartieControleur implements Initializable{
 
 	public NouvellePartieControleur(Stage stage) throws IOException {
 		this.owner = stage;
-		this.imageChoisie = ImageIO.read(new File("src/test/resources/testimg.jpg"));
+		this.imageChoisie = new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
+		System.out.println(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
 	}
 	
 	@Override
@@ -133,7 +132,7 @@ public class NouvellePartieControleur implements Initializable{
 	}
 	
 	private void updateImagePartie() {
-		imagePerso.setImage(SwingFXUtils.toFXImage(this.imageChoisie, null));
+		imagePerso.setImage(this.imageChoisie);
 	}
 	
 	private void setJoueurChoisi(JoueurSQL j) throws IOException {
@@ -149,7 +148,7 @@ public class NouvellePartieControleur implements Initializable{
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if(file!=null) {
-			imageChoisie = Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_EXACT, 1000, 1000);
+			imageChoisie = new Image(file.toURI().toString(),500,500,false,false);
 			this.updateImagePartie();
 		}
 	}
@@ -178,7 +177,7 @@ public class NouvellePartieControleur implements Initializable{
 	private void lancerPartie(ActionEvent event) throws IOException, ClassNotFoundException {
 		if(joueurChoisi != null) {
 			try {
-				Joueur j = new Joueur(joueurChoisi.getPseudo(), ImageIO.read(new File("src/main/resources/images/defaulticon.png")));
+				Joueur j = new Joueur(joueurChoisi.getPseudo(), new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString());
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if(soloRadio.isSelected()) {
 					//new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(), joueurChoisi.getImage()), taille, imageChoisie);
@@ -196,7 +195,7 @@ public class NouvellePartieControleur implements Initializable{
 						//TODO
 					}
 					Client c = new Client(j);
-					c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080); //ICI BUG
+					c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
 					
 					LobbyControleur lc = new LobbyControleur(vg, pm, true, true, imageChoisie, taille);
 					vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);

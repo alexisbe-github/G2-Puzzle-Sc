@@ -7,15 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
@@ -71,7 +69,7 @@ public class RecherchePartieControleur implements Initializable{
 	@FXML
 	private void connexion(ActionEvent event) throws IOException, NumberFormatException, ClassNotFoundException{
 		if(joueurChoisi!=null) {
-			Client c = new Client(new Joueur(joueurChoisi.getPseudo(), ImageIO.read(new File("src/main/resources/images/defaulticon.png"))));
+			Client c = new Client(new Joueur(joueurChoisi.getPseudo(), new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString()));
 			c.seConnecter(saisieIP.getText(),Integer.parseInt(saisiePort.getText()));
 			//System.out.println("Connexion ip:"+saisieIP.getText()+" Port:"+saisiePort.getText());
 			((VueGenerale) this.owner).changerVue("Lobby Multijoueur", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, c.getPartie(), false));

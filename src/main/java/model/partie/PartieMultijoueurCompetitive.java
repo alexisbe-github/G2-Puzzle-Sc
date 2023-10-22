@@ -1,12 +1,11 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.scene.image.Image;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
@@ -22,7 +21,7 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 	}
 
 	@Override
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
+	public void lancerPartie(Image image, int taillePuzzle) {
 		for (Joueur j : joueurs) {
 			Puzzle puzzleDuJoueurJ = new Puzzle(taillePuzzle, image);
 			tablePuzzleDesJoueurs.put(j, puzzleDuJoueurJ);

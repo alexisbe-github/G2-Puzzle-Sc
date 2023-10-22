@@ -1,9 +1,9 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javafx.scene.image.Image;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
@@ -20,7 +20,7 @@ public class PartieSolo implements StrategyPartie {
 	}
 
 	@Override
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
+	public void lancerPartie(Image image, int taillePuzzle) {
 		this.puzzle = new Puzzle(taillePuzzle, image);
 	}
 

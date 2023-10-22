@@ -1,9 +1,9 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
+import javafx.scene.image.Image;
 
 public interface StrategyPartie {
 
-	public void lancerPartie(BufferedImage image, int taillePuzzle);
+	public void lancerPartie(Image image, int taillePuzzle);
 
 }

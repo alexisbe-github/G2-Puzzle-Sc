@@ -1,21 +1,19 @@
 package test.java.model;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.net.MalformedURLException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javafx.application.Application;
+import javafx.scene.image.Image;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.utils.Utils;
+import main.java.vue.MainApplication;
 
 public class TestPuzzle {
 
@@ -337,25 +335,18 @@ public class TestPuzzle {
 	}
 
 	@Test
-	public void testDecoupageImage() {
-		BufferedImage img;
-		try {
-			img = ImageIO.read(new File("src/test/resources/testimg.jpg"));
-			Puzzle pTest = new Puzzle(4, img);
-			for (int i = 0; i < pTest.getTaille(); i++) {
-				for (int j = 0; j < pTest.getTaille(); j++) {
-					Assertions
-							.assertTrue(
-									Utils.comparerImages(pTest.getCase(j, i).getImage(),
-											ImageIO.read(new File("src/test/resources/image"
-													+ pTest.getCase(j, i).getIndex() + ".png"))),
-									"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i
-											+ ".");
-				}
+	public void testDecoupageImage() throws ArrayIndexOutOfBoundsException, MalformedURLException {
+		Image img = new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
+		Puzzle pTest = new Puzzle(4, img);
+		for (int i = 0; i < pTest.getTaille(); i++) {
+			for (int j = 0; j < pTest.getTaille(); j++) {
+				Assertions.assertTrue(
+								Utils.comparerImages(pTest.getCase(j, i).getImage(),
+										new Image(new File("src/test/resources/image"
+												+ pTest.getCase(j, i).getIndex() + ".png").toURI().toURL().toString())),
+								"Les images ne correspondent pas aux images attendues en x: "
+										 + j + " y: " + i + ".");
 			}
-		} catch (IOException e) {
-			fail("Erreur lors du chargement de l'image");
-			e.printStackTrace();
 		}
 	}
 }

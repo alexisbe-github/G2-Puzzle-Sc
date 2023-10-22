@@ -6,6 +6,8 @@ import main.java.controleur.MenuControleur;
 
 public class MainApplication extends Application{
     
+	private Stage primary;
+	
 	public static void open() {
 		launch();
 	}
@@ -20,8 +22,6 @@ public class MainApplication extends Application{
         }catch(Exception e) {
         	e.printStackTrace();
         }
-        
-        
     }
 
 }

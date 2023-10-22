@@ -1,14 +1,13 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.scene.image.Image;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
@@ -29,8 +28,8 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	}
 
 	@Override
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
-		puzzleCommun = new Puzzle(taillePuzzle);
+	public void lancerPartie(Image image, int taillePuzzle) {
+		puzzleCommun = new Puzzle(taillePuzzle, image);
 		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 			Joueur j = mapEntry.getKey();
 			Socket s = mapEntry.getValue();

@@ -3,18 +3,20 @@ package main.java.model;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import javafx.scene.image.Image;
+
 public class Case {
 
 	public final static int INDEX_CASE_VIDE = -1;
 	private int index;
-	private BufferedImage image;
+	private Image image;
 
 	/**
 	 * 
 	 * @param index : index de la case
 	 * @param image : image de la case
 	 */
-	public Case(int index, BufferedImage image) {
+	public Case(int index, Image image) {
 		this.index = index;
 		this.image = image;
 	}
@@ -27,7 +29,7 @@ public class Case {
 		this.index = index;
 	}
 
-	public void setImage(BufferedImage img) {
+	public void setImage(Image img) {
 		this.image = img;
 	}
 
@@ -35,7 +37,7 @@ public class Case {
 		return this.index;
 	}
 
-	public BufferedImage getImage() {
+	public Image getImage() {
 		return this.image;
 	}
 

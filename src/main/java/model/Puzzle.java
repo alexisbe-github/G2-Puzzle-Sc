@@ -1,10 +1,16 @@
 package main.java.model;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import main.java.model.Case;
 import main.java.utils.Utils;
 
 public class Puzzle implements Serializable{
@@ -12,7 +18,7 @@ public class Puzzle implements Serializable{
 	public static final int TAILLE_MINI = 3;
 	private final int TAILLE;
 	private Case[][] grille;
-	private BufferedImage image;
+	private Image image;
 	private int nbCoups;
 
 	/**
@@ -34,7 +40,7 @@ public class Puzzle implements Serializable{
 	 * @param imgSrc : image du puzzle
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
-	public Puzzle(int taille, BufferedImage image) {
+	public Puzzle(int taille, Image image) {
 		this(taille);
 		this.image = image;
 		this.decoupageImage();
@@ -198,23 +204,21 @@ public class Puzzle implements Serializable{
 	 */
 	public void decoupageImage() {
 		// Largeur et hauteur des sous-images
-		int height = this.image.getHeight() / this.TAILLE;
-		int width = this.image.getWidth() / this.TAILLE;
+		int height = (int) this.image.getHeight() / this.TAILLE;
+		int width = (int) this.image.getWidth() / this.TAILLE;
 		int index = -1;
 		// Parcours de la grille
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
 				// Initialisation de la sous image
-				BufferedImage subImg;
+				Image subImg;
 				index = this.grille[j][i].getIndex();
-				if ( index!=-1 ) { // Si la case n'est pas la case vide
-					subImg = this.image.getSubimage(
-							width * (index % this.TAILLE), 
-							height * (index / this.TAILLE), 
-							width, height); // "Découpe" de l'image
-				} else {
-					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même													// taille
-				}
+				if(index==-1) index = this.TAILLE;
+				subImg = Utils.getSubImage(
+						width * (index % this.TAILLE), 
+						height * (index / this.TAILLE), 
+						width, height, this.image); // "Découpe" de l'image
+				
 				this.grille[j][i].setImage(subImg);
 			}
 		}

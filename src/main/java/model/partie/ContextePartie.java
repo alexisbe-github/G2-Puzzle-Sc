@@ -1,7 +1,6 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
-
+import javafx.scene.image.Image;
 import main.java.model.joueur.Joueur;
 
 public class ContextePartie {
@@ -25,7 +24,7 @@ public class ContextePartie {
 	 * @param image        BufferedImage
 	 * @param taillePuzzle int
 	 */
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
+	public void lancerPartie(Image image, int taillePuzzle) {
 		strategyPartie.lancerPartie(image, taillePuzzle);
 	}
 
