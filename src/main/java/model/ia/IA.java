@@ -26,25 +26,27 @@ public class IA {
 		Queue<Noeud> ouverts = new LinkedList<>();
 		ouverts.add(new Noeud(puzzle));
 
-		List<Noeud> fermes = new ArrayList<>();
+		Queue<Noeud> fermes = new LinkedList<>();
 		boolean succes = false;
 		while (!ouverts.isEmpty() && !succes) {
-			Noeud n = ouverts.element().getNoeudMinimal();
+			Noeud n = getMinimum(ouverts);
 			System.out.println(n.getPuzzle());
 			if (puzzle.verifierGrille())
 				succes = true;
 			else {
-				System.out.println(ouverts.remove(n));
+				ouverts.remove(n);
 				fermes.add(n);
-				for (Noeud successeur : n.successeurs()) {
-					if (!ouverts.contains(successeur) && !fermes.contains(successeur)) {
-						ouverts.add(successeur);
+				for (Noeud s : n.successeurs()) {
+					if (!ouverts.contains(s) && !fermes.contains(s)) {
+						ouverts.add(s);
+						s.setPere(n);
+						s.setG(n.getG()+n.calculerH());
 					} else {
-						if (successeur.getG() > n.getG() + successeur.calculerH()) {
-							successeur.setPere(n);
-							if (fermes.contains(successeur)) {
-								fermes.remove(successeur);
-								ouverts.add(successeur);
+						if (s.getG() > n.getG() + n.calculerH()) {
+							s.setPere(n);
+							if (fermes.contains(s)) {
+								fermes.remove(s);
+								ouverts.add(s);
 							}
 						}
 					}
@@ -55,6 +57,20 @@ public class IA {
 			System.out.println(noeud.getDeplacementMinimal());
 		}
 		return solution;
+	}
+	
+	private static Noeud getMinimum(Queue<Noeud> ouverts) {
+		 Noeud minimumNode = null;
+		    int min = 9999;
+
+		    for (Noeud n : ouverts) {
+		        int cost = n.getG() + n.calculerH(); 
+		        if (cost < min) {
+		            min = cost;
+		            minimumNode = n;
+		        }
+		    }
+		    return minimumNode;
 	}
 
 }

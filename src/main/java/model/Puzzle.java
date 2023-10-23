@@ -319,7 +319,15 @@ public class Puzzle implements Serializable, Cloneable {
 		if (getClass() != obj.getClass())
 			return false;
 		Puzzle other = (Puzzle) obj;
-		return TAILLE == other.TAILLE && Arrays.equals(grille, other.grille);
+		boolean grillesEquals = true;
+		for (int i = 0; i < grille.length; i++) {
+			for (int j = 0; j < grille.length; j++) {
+				if (grille[j][i].getIndex() != other.grille[j][i].getIndex()) {
+					grillesEquals = false;
+				}
+			}
+		}
+		return grillesEquals;
 	}
 
 	@Override
@@ -329,7 +337,7 @@ public class Puzzle implements Serializable, Cloneable {
 		Case[][] clonedGrille = new Case[this.TAILLE][this.TAILLE];
 		for (int i = 0; i < this.TAILLE; i++) {
 			for (int j = 0; j < this.TAILLE; j++) {
-				clonedGrille[j][i] = (Case) this.grille[j][i].clone();
+				clonedGrille[i][j] = new Case(grille[i][j].getIndex());
 			}
 		}
 		clonedPuzzle.grille = clonedGrille;

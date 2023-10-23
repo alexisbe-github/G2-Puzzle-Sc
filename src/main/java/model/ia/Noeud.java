@@ -34,10 +34,16 @@ public class Noeud {
 		List<Noeud> successeurs = new ArrayList<>();
 		for (EDeplacement dp : puzzle.listeDeplacementsPossibles()) {
 			puzzle.deplacerCase(dp);
-			Noeud successeur = new Noeud(puzzle);
-			successeur.setG(this.getG() + 1);
-			successeur.setPere(this);
-			successeurs.add(successeur);
+			Noeud successeur;
+			try {
+				successeur = new Noeud((Puzzle)puzzle.clone());
+				successeur.setPere(this);
+				successeurs.add(successeur);
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			this.restoreToThatNode();
 		}
 		return successeurs;
@@ -144,6 +150,12 @@ public class Noeud {
 	public EDeplacement getDeplacementMinimal() {
 		return dpMinimal;
 	}
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(puzzle);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -154,7 +166,7 @@ public class Noeud {
 		if (getClass() != obj.getClass())
 			return false;
 		Noeud other = (Noeud) obj;
-		return Objects.equals(puzzle, other.puzzle);
+		return puzzle.equals(other.puzzle);
 	}
 
 }
