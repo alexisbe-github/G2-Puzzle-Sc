@@ -2,11 +2,11 @@ package main.java.controleur;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -72,7 +72,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
 	public JeuMultiCoopControleur
-	(Stage stage, PartieMultijoueurCooperative partie, int taille, Image img, int numJoueur, Joueur joueur) 
+	(Stage stage, PartieMultijoueurCooperative partie, int taille, byte[] img, int numJoueur, Joueur joueur) 
 					throws IOException {
 		this.owner = stage;
 		this.partie = partie;
@@ -122,7 +122,7 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 				
 				l.setId("case"+partie.getPuzzleCommun().getCase(j, i).getIndex());
 				
-				image = partie.getPuzzleCommun().getCase(j, i).getImage();
+				image = new Image(new ByteArrayInputStream(partie.getPuzzleCommun().getCase(j, i).getImage()));
 				
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,

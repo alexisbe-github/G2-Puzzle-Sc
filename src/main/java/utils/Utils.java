@@ -1,13 +1,20 @@
 package main.java.utils;
 
-import javafx.scene.paint.Color;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 public class Utils {
 	
@@ -26,37 +33,6 @@ public class Utils {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
 	}
-
-	/**
-	 * Compare deux images pixel par pixel
-	 *
-	 * @param imga premiere image
-	 * @param imgb deconde image.
-	 * @return true si les deux images correspondent.
-	 */
-	public static boolean comparerImages(Image imga, Image imgb) {
-	  if (imga.getWidth() != imgb.getWidth() || imga.getHeight() != imgb.getHeight()) {
-	    return false;
-	  }
-
-	  PixelReader imgar = imga.getPixelReader(); 
-	  PixelReader imgbr = imgb.getPixelReader();
-	  
-	  int width  = (int) imga.getWidth();
-	  int height = (int) imga.getHeight();
-
-	  for (int y = 0; y < height; y++) {
-	    for (int x = 0; x < width; x++) {
-
-	      if (!imgar.getColor(x, y).equals(imgbr.getColor(x, y))) { //vérifie l'identité de chaque pixels
-	        return false;
-	      }
-	      
-	    }
-	  }
-	  return true;
-	}
-	
 	
 	public static Image getSubImage(int x, int y, int w, int h, Image stripImg)
     {
@@ -75,5 +51,40 @@ public class Utils {
         return wImg;
     }//
 	
+	// transforme une BufferedImage en byte[]
+    public static byte[] bufferedImageToByteArray(BufferedImage bi, String format) throws IOException {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        if(format==null) format = "png";
+        ImageIO.write(bi, format, baos);
+        byte[] bytes = baos.toByteArray();
+        return bytes;
+
+    }
+
+    // transforme un byte[] en BufferedImage
+    public static BufferedImage byteArrayToBufferedImage(byte[] bytes) throws IOException {
+
+        InputStream is = new ByteArrayInputStream(bytes);
+        BufferedImage bi = ImageIO.read(is);
+        return bi;
+
+    }
+    
+    public static byte[] imageToByteArray(Image image, String format) throws IOException {
+        BufferedImage img = SwingFXUtils.fromFXImage(image, null);
+        return Utils.bufferedImageToByteArray(img, format);
+    } 
+	
+    
+
+    public static boolean compareByteArrays(byte[] a, byte[] b) {
+    	if(a.length == b.length) {
+    		for(int i=0;i<a.length;i++) {
+        		if(b[i]!=a[i]) return false;
+        	}
+    	}else return false;
+    	return true;
+    }
 	
 }

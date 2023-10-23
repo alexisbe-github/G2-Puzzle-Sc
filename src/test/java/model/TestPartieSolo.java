@@ -2,8 +2,7 @@ package test.java.model;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.nio.file.Files;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +32,9 @@ public class TestPartieSolo {
 
 	@Test
 	public void testLancerPartie() throws IOException {
-		partie.lancerPartie(new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString()), TAILLE);
+		File fi = new File("src/test/resources/testimg.jpg");
+		byte[] img = Files.readAllBytes(fi.toPath());
+		partie.lancerPartie(img, TAILLE);
 		Puzzle puzzle = partie.getPuzzle();
 		Assertions.assertEquals(puzzle.getTaille(), TAILLE);
 		Assertions.assertEquals(puzzle.getNbCoups(), 0);
@@ -41,7 +42,9 @@ public class TestPartieSolo {
 
 	@Test
 	public void testDeplacerCase() throws IOException {
-		partie.lancerPartie(new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString()), TAILLE);
+		File fi = new File("src/test/resources/testimg.jpg");
+		byte[] img = Files.readAllBytes(fi.toPath());
+		partie.lancerPartie(img, TAILLE);
 		Puzzle puzzle = partie.getPuzzle();
 		puzzle.setGrille(grille);
 

@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
+import main.java.utils.Utils;
 import main.java.vue.VueJeuMultiCoop;
 
 public class LobbyControleur implements Initializable, PropertyChangeListener{
@@ -104,7 +105,8 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	
 	@FXML
 	private void lancerPartieMulti() throws IOException {
-		VueJeuMultiCoop vj = new VueJeuMultiCoop((PartieMultijoueurCooperative) partie, taille, img, 0, joueur);
+		byte[] newImg = Utils.imageToByteArray(img,null);
+		VueJeuMultiCoop vj = new VueJeuMultiCoop((PartieMultijoueurCooperative) partie, taille, newImg, 0, joueur);
 	}
 
 	@Override

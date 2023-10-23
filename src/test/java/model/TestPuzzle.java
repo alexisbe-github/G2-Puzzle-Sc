@@ -1,19 +1,18 @@
 package test.java.model;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javafx.application.Application;
-import javafx.scene.image.Image;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.utils.Utils;
-import main.java.vue.MainApplication;
 
 public class TestPuzzle {
 
@@ -335,18 +334,21 @@ public class TestPuzzle {
 	}
 
 	@Test
-	public void testDecoupageImage() throws ArrayIndexOutOfBoundsException, MalformedURLException {
-		Image img = new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
-		Puzzle pTest = new Puzzle(4, img);
+	public void testDecoupageImage() throws ArrayIndexOutOfBoundsException, IOException {
+		File file = new File("src/test/resources/testimg.jpg");
+		byte[] image = Files.readAllBytes(file.toPath());
+		Puzzle pTest = new Puzzle(4, image);
 		for (int i = 0; i < pTest.getTaille(); i++) {
 			for (int j = 0; j < pTest.getTaille(); j++) {
+				File fi = new File("src/test/resources/image"+pTest.getCase(j, i).getIndex()+".png");
+				byte[] img = Files.readAllBytes(fi.toPath());
 				Assertions.assertTrue(
-								Utils.comparerImages(pTest.getCase(j, i).getImage(),
-										new Image(new File("src/test/resources/image"
-												+ pTest.getCase(j, i).getIndex() + ".png").toURI().toURL().toString())),
+								Utils.compareByteArrays(img, pTest.getCase(j, i).getImage()),
 								"Les images ne correspondent pas aux images attendues en x: "
 										 + j + " y: " + i + ".");
 			}
 		}
 	}
+	
+	
 }

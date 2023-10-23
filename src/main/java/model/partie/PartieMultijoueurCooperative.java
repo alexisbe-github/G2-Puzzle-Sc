@@ -28,7 +28,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	}
 
 	@Override
-	public void lancerPartie(Image image, int taillePuzzle) {
+	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
 		puzzleCommun = new Puzzle(taillePuzzle, image);
 		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 			Joueur j = mapEntry.getKey();

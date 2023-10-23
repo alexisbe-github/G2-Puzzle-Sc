@@ -15,7 +15,7 @@ import main.java.model.partie.PartieSolo;
 
 public class VueJeuSolo extends Stage{
 
-	public VueJeuSolo(PartieSolo partie, int taille, Image img) throws IOException {
+	public VueJeuSolo(PartieSolo partie, int taille, byte[] img) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);

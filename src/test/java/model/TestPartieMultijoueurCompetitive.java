@@ -2,6 +2,7 @@ package test.java.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
@@ -52,7 +53,10 @@ public class TestPartieMultijoueurCompetitive {
 		client1.seConnecter(ip, PORT_VALIDE);
 		client2.seConnecter(ip, PORT_VALIDE);
 		TimeUnit.SECONDS.sleep(1); // attente de la connexion des joueurs
-		partieMultiCompetitive.lancerPartie(new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString()), TAILLE);
+		
+		File fi = new File("src/test/resources/testimg.jpg");
+		byte[] img = Files.readAllBytes(fi.toPath());
+		partieMultiCompetitive.lancerPartie(img, TAILLE);
 	}
 
 	@Test

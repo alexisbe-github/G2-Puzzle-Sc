@@ -35,6 +35,7 @@ import main.java.model.partie.PartieSolo;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
+import main.java.utils.Utils;
 import main.java.vue.VueGenerale;
 import main.java.vue.VueJeuSolo;
 
@@ -71,7 +72,6 @@ public class NouvellePartieControleur implements Initializable{
 	public NouvellePartieControleur(Stage stage) throws IOException {
 		this.owner = stage;
 		this.imageChoisie = new Image(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
-		System.out.println(new File("src/test/resources/testimg.jpg").toURI().toURL().toString());
 	}
 	
 	@Override
@@ -181,7 +181,7 @@ public class NouvellePartieControleur implements Initializable{
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if(soloRadio.isSelected()) {
 					//new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(), joueurChoisi.getImage()), taille, imageChoisie);
-					new VueJeuSolo(new PartieSolo(j), taille, imageChoisie);
+					new VueJeuSolo(new PartieSolo(j), taille, Utils.imageToByteArray(imageChoisie, null));
 				}else if(multiCoopRadio.isSelected()){
 					VueGenerale vg = new VueGenerale(this.owner);
 					

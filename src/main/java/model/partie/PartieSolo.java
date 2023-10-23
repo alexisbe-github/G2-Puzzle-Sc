@@ -2,6 +2,7 @@ package main.java.model.partie;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 
 import javafx.scene.image.Image;
 import main.java.model.EDeplacement;
@@ -20,7 +21,7 @@ public class PartieSolo implements StrategyPartie {
 	}
 
 	@Override
-	public void lancerPartie(Image image, int taillePuzzle) {
+	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
 		this.puzzle = new Puzzle(taillePuzzle, image);
 	}
 

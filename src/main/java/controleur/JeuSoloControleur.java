@@ -2,6 +2,7 @@ package main.java.controleur;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -68,7 +69,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , Image img) throws IOException {
+	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille , byte[] img) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
 		partie.lancerPartie(img, taille);
@@ -115,7 +116,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 				
 				l.setId("case"+partie.getPuzzle().getCase(j, i).getIndex());
 				
-				image = partie.getPuzzle().getCase(j, i).getImage();
+				image = new Image(new ByteArrayInputStream(partie.getPuzzle().getCase(j, i).getImage()));
 				
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
