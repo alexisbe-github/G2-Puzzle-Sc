@@ -138,7 +138,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	}
 	
 	private void initJoueur() {
-		Image image = new Image(this.partie.getJoueur().getImageUrl());
+		Image image = new Image(new ByteArrayInputStream(this.partie.getJoueur().getImage()));
 		this.logoJoueur.setImage(image);
 		this.pseudoJoueur.setText(this.partie.getJoueur().getNom());
 		this.updateInfos();

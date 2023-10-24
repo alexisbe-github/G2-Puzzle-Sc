@@ -2,14 +2,13 @@ package main.java.controleur;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -20,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
@@ -35,6 +35,8 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	private Stage owner;
 	private Image img;
 	private int taille;
+	private int numJoueur = 1; //DEBUG
+	private Client client;
 	
 	@FXML
 	private Button lancerPartie;
@@ -51,21 +53,23 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	@FXML
 	private Label labelType;
 	
-	public LobbyControleur(Stage stage, PartieMultijoueur partie, boolean estHote) throws IOException {
+	public LobbyControleur(Stage stage, Joueur j, boolean estHote) throws IOException {
 		this.owner = stage;
 		this.estHote = estHote;
-		this.partie = partie;
-		Joueur j = new Joueur("pedro", new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString());
+		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
+		this.joueur = j;
 	}
 	
-	public LobbyControleur(Stage stage, PartieMultijoueur partie, boolean estHote, boolean estCoop, Image img, int taille) throws IOException {
+	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estHote, boolean estCoop, Image img, int taille, Client client) throws IOException {
 		this.owner = stage;
 		this.estHote = estHote;
 		this.partie = partie;
 		this.estCoop = estCoop;
 		this.img = img;
 		this.taille = taille;
-		joueur = new Joueur("pedro", new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString());
+		this.client=client;
+		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
+		this.joueur = j;
 	}
 	
 	@Override
@@ -87,7 +91,8 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 			ImageView i = new ImageView(); //Logo du joueur
 			i.setFitHeight(60);
 			i.setFitWidth(60);
-			i.setImage(new Image(j.getImageUrl()));
+			Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
+			i.setImage(image);
 			Label l = new Label(j.getNom()); //Pseudo du joueur
 			v.setId("box"+j.getNom());
 			v.getChildren().add(i);
@@ -106,7 +111,10 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	@FXML
 	private void lancerPartieMulti() throws IOException {
 		byte[] newImg = Utils.imageToByteArray(img,null);
-		VueJeuMultiCoop vj = new VueJeuMultiCoop((PartieMultijoueurCooperative) partie, taille, newImg, 0, joueur);
+		partie.lancerPartie(newImg, taille);
+		VueJeuMultiCoop vj = new VueJeuMultiCoop(taille, newImg, numJoueur, joueur, partie.getJoueurs(), 
+				((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(), ((PartieMultijoueurCooperative) partie).getPuzzleCommun(),
+				this.client);
 	}
 
 	@Override

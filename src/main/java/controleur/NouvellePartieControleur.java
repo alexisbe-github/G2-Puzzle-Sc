@@ -3,6 +3,8 @@ package main.java.controleur;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -177,12 +179,14 @@ public class NouvellePartieControleur implements Initializable{
 	private void lancerPartie(ActionEvent event) throws IOException, ClassNotFoundException {
 		if(joueurChoisi != null) {
 			try {
-				Joueur j = new Joueur(joueurChoisi.getPseudo(), new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString());
+				byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
+				Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if(soloRadio.isSelected()) {
 					//new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(), joueurChoisi.getImage()), taille, imageChoisie);
 					new VueJeuSolo(new PartieSolo(j), taille, Utils.imageToByteArray(imageChoisie, null));
 				}else if(multiCoopRadio.isSelected()){
+					
 					VueGenerale vg = new VueGenerale(this.owner);
 					
 					ContextePartie cp = new ContextePartie(j);
@@ -197,8 +201,9 @@ public class NouvellePartieControleur implements Initializable{
 					Client c = new Client(j);
 					c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
 					
-					LobbyControleur lc = new LobbyControleur(vg, pm, true, true, imageChoisie, taille);
+					LobbyControleur lc = new LobbyControleur(vg, pm, j, true, true, imageChoisie, taille, c);
 					vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
+					
 				}else if(multiCompetRadio.isSelected()) {
 					//TODO
 				}else if(IARadio.isSelected()) {

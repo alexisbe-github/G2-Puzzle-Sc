@@ -1,13 +1,13 @@
 package main.java.model.partie;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.scene.image.Image;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
@@ -30,28 +30,12 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	@Override
 	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
 		puzzleCommun = new Puzzle(taillePuzzle, image);
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur j = mapEntry.getKey();
-			Socket s = mapEntry.getValue();
-
-			try {
-				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-				fluxSortant.println();
-				fluxSortant.println(puzzleCommun);
-				fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
-				fluxSortant.println();
-				fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {
 		joueurs.remove(j);
 		tableSocketDesJoueurs.remove(j);
-		pcs.firePropertyChange("property", 1, 0);
 	}
 
 	/**
@@ -62,18 +46,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	private void passerAuJoueurSuivant() throws IOException {
 		this.indexJoueurCourant++;
 		this.indexJoueurCourant %= joueurs.size();
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur j = mapEntry.getKey();
-			Socket s = mapEntry.getValue();
-
-			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-			fluxSortant.println(puzzleCommun);
-			fluxSortant.println();
-			fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
-			fluxSortant.println();
-			fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
-		}
-		pcs.firePropertyChange("property", 1, 0);
 	}
 
 	/**
@@ -86,6 +58,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
+			notifierClients();
 		}
 		if (puzzleCommun.verifierGrille()) {
 			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
@@ -96,7 +69,19 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
 			}
 		}
-		pcs.firePropertyChange("property", 1, 0);
+	}
+	
+	private void notifierClients() throws IOException {
+		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+			Joueur j = mapEntry.getKey();
+			Socket s = mapEntry.getValue();
+
+			//PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+			ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
+			oop.writeObject(this.puzzleCommun);
+			//fluxSortant.println(this.indexJoueurCourant);
+			
+		}
 	}
 	
 	public boolean partieFinie() {

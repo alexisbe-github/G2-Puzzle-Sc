@@ -16,7 +16,6 @@ public class Client {
 	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
-	private PartieMultijoueur partie;
 
 	public Client(Joueur joueur) {
 		this.joueur = joueur;
@@ -53,10 +52,6 @@ public class Client {
 	private void ajouterJoueur() throws IOException {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		outputStream.writeObject(joueur);
-	}
-	
-	public PartieMultijoueur getPartie() {
-		return this.partie;
 	}
 	
 }

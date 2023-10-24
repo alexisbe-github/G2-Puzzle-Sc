@@ -1,10 +1,12 @@
 package main.java.controleur;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -17,29 +19,37 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import main.java.model.EDeplacement;
+import main.java.model.Puzzle;
+import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
-import main.java.model.partie.PartieMultijoueurCooperative;
 
-public class JeuMultiCoopControleur implements Initializable, PropertyChangeListener{
+public class JeuMultiCoopControleur implements Initializable{
 
 	private Stage owner;
-	private PartieMultijoueurCooperative partie;
+	
+	private Puzzle puzzle;
+	private int numJoueurCourant;
+	private List<Joueur> joueurs;
+	
 	private int numJoueur;
 	private Joueur joueur;
 	private boolean estEnPause = false;
 	private double xClick;
 	private double yClick;
+	private Client client;
+	
+	@FXML
+	VBox boxJoueurs;
 	
 	@FXML
 	Label chrono;
@@ -72,13 +82,18 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
 	public JeuMultiCoopControleur
-	(Stage stage, PartieMultijoueurCooperative partie, int taille, byte[] img, int numJoueur, Joueur joueur) 
+	(Stage stage, int taille, byte[] img, int numJoueur, Joueur joueur,
+			List<Joueur> joueurs, int numJoueurCourant, Puzzle puzzle, Client client) 
 					throws IOException {
 		this.owner = stage;
-		this.partie = partie;
 		this.joueur = joueur;
 		this.numJoueur = numJoueur;
-		partie.lancerPartie(img, taille);
+		this.client=client;
+		
+		this.numJoueurCourant=numJoueurCourant;
+		this.puzzle=puzzle;
+		this.joueurs = joueurs;
+		
 	}
 	
 	
@@ -90,10 +105,10 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 		this.updateImages();
 		this.initJoueur();
 		
-		this.partie.addPropertyChangeListener(this);
+		//grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
+		//grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 		
-		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
-		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
+		this.updateJoueurs();
 		
 	}
 	
@@ -103,15 +118,15 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	 */
 	private void updateImages() {
 		//Définition de la taille d'une case
-		double largeurCase = owner.getWidth()/this.partie.getPuzzleCommun().getTaille()*0.5;
+		double largeurCase = owner.getWidth()/this.puzzle.getTaille()*0.5;
 		Image image;
 		grille.getChildren().clear();
 		
-		for(int i=0;i<partie.getPuzzleCommun().getTaille();i++) {
-			for(int j=0;j<partie.getPuzzleCommun().getTaille();j++) {
+		for(int i=0;i<puzzle.getTaille();i++) {
+			for(int j=0;j<puzzle.getTaille();j++) {
 				Label l = new Label();
-				if(partie.getPuzzleCommun().getCase(j, i).getIndex()!=-1)
-					l.setText(""+((int)partie.getPuzzleCommun().getCase(j,i).getIndex()+1));
+				if(puzzle.getCase(j, i).getIndex()!=-1)
+					l.setText(""+((int)puzzle.getCase(j,i).getIndex()+1));
 				l.setFont(new Font(18));
 				l.setTextFill(Color.YELLOW);
 				l.setPrefWidth(largeurCase);
@@ -120,22 +135,42 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 				l.setLayoutX(j*largeurCase);
 				l.setLayoutY(i*largeurCase);
 				
-				l.setId("case"+partie.getPuzzleCommun().getCase(j, i).getIndex());
+				l.setId("case"+puzzle.getCase(j, i).getIndex());
 				
-				image = new Image(new ByteArrayInputStream(partie.getPuzzleCommun().getCase(j, i).getImage()));
+				image = new Image(new ByteArrayInputStream(puzzle.getCase(j, i).getImage()));
 				
 				Background bgi = new Background(new BackgroundImage(image,
 				        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 				          new BackgroundSize(100, 100, true, true , true, false) ));
-				if(partie.getPuzzleCommun().getCase(j, i).getIndex()!=-1) l.setBackground( bgi );
+				if(puzzle.getCase(j, i).getIndex()!=-1) l.setBackground( bgi );
 				grille.getChildren().add(l);
 			}
 		}
 	}
 	
+	private void updateJoueurs() {
+		this.boxJoueurs.getChildren().clear();
+		for(Joueur j : joueurs) {
+			VBox v = new VBox(); //Box dans laquelle on affichera les infos des joueurs
+			v.setAlignment(Pos.CENTER);
+			v.setPrefHeight(200);
+			v.setPrefWidth(100);
+			ImageView i = new ImageView(); //Logo du joueur
+			i.setFitHeight(60);
+			i.setFitWidth(60);
+			Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
+			i.setImage(image);
+			Label l = new Label(j.getNom()); //Pseudo du joueur
+			v.setId("box"+j.getNom());
+			v.getChildren().add(i);
+			v.getChildren().add(l);
+			boxJoueurs.getChildren().add(v); //Ajout a la box principal
+		}
+	}
+	
 	private void updateJeu() {
 		this.updateImages();
-		if(this.partie.getPuzzleCommun().verifierGrille()) this.updateVictoire();
+		if(this.puzzle.verifierGrille()) this.updateVictoire();
 	}
 	
 	private void updateVictoire(){
@@ -144,13 +179,14 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	}
 	
 	private void initJoueur() {
-		Image image = new Image(joueur.getImageUrl());
+		Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
 		this.logoJoueur.setImage(image);
+		this.pseudoJoueur.setText(joueur.getNom());
 		this.updateInfos();
 	}
 	
 	private void updateInfos() {
-		this.nbCoups.setText("nbCoups : "+this.partie.getPuzzleCommun().getNbCoups());
+		this.nbCoups.setText("nbCoups : "+this.puzzle.getNbCoups());
 	}
 	
 	public void setKeyController() {
@@ -162,24 +198,35 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 					try {
 						switch (event.getCode()) {
 		                case UP:
-		                	partie.deplacerCase(EDeplacement.HAUT, joueur, numJoueur);
+							client.lancerRequete("h");
+							readStream();
+		                	//partie.deplacerCase(EDeplacement.HAUT, joueur, numJoueur);
 		                	break;
 		                case DOWN:
-		                	partie.deplacerCase(EDeplacement.BAS, joueur, numJoueur);
+		                	client.lancerRequete("b");
+		                	readStream();
+		                	//partie.deplacerCase(EDeplacement.BAS, joueur, numJoueur);
 		                	break;
 		                case LEFT:
-		                	partie.deplacerCase(EDeplacement.GAUCHE, joueur, numJoueur);
+		                	client.lancerRequete("g");
+		                	readStream();
+		                	//partie.deplacerCase(EDeplacement.GAUCHE, joueur, numJoueur);
 		                	break;
 		                case RIGHT:
-		                	partie.deplacerCase(EDeplacement.DROITE, joueur, numJoueur);
+		                	client.lancerRequete("d");
+		                	readStream();
+		                	//partie.deplacerCase(EDeplacement.DROITE, joueur, numJoueur);
 		                	break;
 						default:
 							break;
-            		}
-					}catch(IOException e) {
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 				}
 			}
 		});
@@ -194,18 +241,30 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
 	
 	@FXML
 	private void pauseButton(ActionEvent event) {
-		if(!this.partie.getPuzzleCommun().verifierGrille()) {
+		if(!this.puzzle.verifierGrille()) {
 			this.estEnPause = !estEnPause;
 		}
 	}
 
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
+	
+	public void updateAll() {
 		this.updateJeu();
 		this.updateInfos();
 	}
 	
+	
+	private void readStream() throws IOException, ClassNotFoundException {
+//		BufferedReader fluxEntrant = new BufferedReader(
+//				new InputStreamReader(client.getSocket().getInputStream()));
+//		System.out.println(fluxEntrant.readLine());
+		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
+		puzzle = (Puzzle) ois.readObject();
+		updateAll();
+	}
+	
+	
+	
+	/*
 
     private void handlePressAction(MouseEvent event) {
         xClick = event.getX();//translation en abscisse
@@ -230,6 +289,11 @@ public class JeuMultiCoopControleur implements Initializable, PropertyChangeList
     	}
     	
     }
+    */
+	
+	
+	
+	
     
     /* DEPLACEMENT, ANIMATION (Code un peu déstructuré, c'est normal)
     private void dpAnim(KeyCode key) {

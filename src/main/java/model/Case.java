@@ -1,10 +1,9 @@
 package main.java.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import javafx.scene.image.Image;
-
-public class Case {
+public class Case implements Serializable{
 
 	public final static int INDEX_CASE_VIDE = -1;
 	private int index;

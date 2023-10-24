@@ -1,8 +1,10 @@
 package main.java.controleur;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
@@ -69,10 +70,14 @@ public class RecherchePartieControleur implements Initializable{
 	@FXML
 	private void connexion(ActionEvent event) throws IOException, NumberFormatException, ClassNotFoundException{
 		if(joueurChoisi!=null) {
-			Client c = new Client(new Joueur(joueurChoisi.getPseudo(), new File("src/main/resources/images/defaulticon.png").toURI().toURL().toString()));
+			
+			byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
+			Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
+			Client c = new Client(j);
 			c.seConnecter(saisieIP.getText(),Integer.parseInt(saisiePort.getText()));
 			//System.out.println("Connexion ip:"+saisieIP.getText()+" Port:"+saisiePort.getText());
-			((VueGenerale) this.owner).changerVue("Lobby Multijoueur", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, c.getPartie(), false));
+			((VueGenerale) this.owner).changerVue("Lobby Multijoueur", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, j, false));
+		
 		}
 	}
 	

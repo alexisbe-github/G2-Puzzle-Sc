@@ -6,24 +6,24 @@ import java.util.Objects;
 public class Joueur implements Serializable{
 
 	private String nom;
-	private String imageUrl;
+	private byte[] image;
 
 	/**
 	 * 
 	 * @param nom   String du nom du joueur
 	 * @param URL de l'Image correspondant à l'avatar du joueur
 	 */
-	public Joueur(String nom, String imageUrl) {
+	public Joueur(String nom, byte[] image) {
 		this.nom = nom;
-		this.imageUrl = imageUrl;
+		this.image = image;
 	}
 
 	public String getNom() {
 		return nom;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public byte[] getImage() {
+		return image;
 	}
 	
 	@Override
