@@ -40,9 +40,9 @@ public class IA {
 					if (!ouverts.contains(s) && !fermes.contains(s)) {
 						ouverts.add(s);
 						s.setPere(n);
-						s.setG(n.getG()+n.calculerH());
+						s.setG(n.getG() + 1);
 					} else {
-						if (s.getG() > n.getG() + n.calculerH()) {
+						if (s.getG() > n.getG() + 1) {
 							s.setPere(n);
 							if (fermes.contains(s)) {
 								fermes.remove(s);
@@ -58,19 +58,19 @@ public class IA {
 		}
 		return solution;
 	}
-	
-	private static Noeud getMinimum(Queue<Noeud> ouverts) {
-		 Noeud minimumNode = null;
-		    int min = 9999;
 
-		    for (Noeud n : ouverts) {
-		        int cost = n.getG() + n.calculerH(); 
-		        if (cost < min) {
-		            min = cost;
-		            minimumNode = n;
-		        }
-		    }
-		    return minimumNode;
+	private static Noeud getMinimum(Queue<Noeud> ouverts) {
+		Noeud minimumNode = null;
+		int min = 9999;
+
+		for (Noeud n : ouverts) {
+			int cost = n.getG() + n.calculerH();
+			if (cost < min) {
+				min = cost;
+				minimumNode = n;
+			}
+		}
+		return minimumNode;
 	}
 
 }
