@@ -29,10 +29,8 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 			Joueur jcourant = mapEntry.getKey();
 			Socket scourant = mapEntry.getValue();
 
-			PrintStream fluxSortant = new PrintStream(scourant.getOutputStream());
-			fluxSortant.println("c");
 			ObjectOutputStream oop = new ObjectOutputStream(scourant.getOutputStream());
-			oop.writeObject(jcourant);
+			oop.writeObject(joueurs);
 		}
 		System.out.println(joueurs);
 	}

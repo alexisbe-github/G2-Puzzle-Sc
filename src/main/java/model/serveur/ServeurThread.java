@@ -68,9 +68,6 @@ public class ServeurThread extends Thread {
 						case 'd':
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
-						case 'c':
-							
-							break;
 						}
 					}
 				}
@@ -79,6 +76,7 @@ public class ServeurThread extends Thread {
 			} // while
 		} catch (InterruptedException erreur) {
 			/* le thread s'arrete */} catch (IOException erreur) {
+			erreur.printStackTrace();
 			System.out.println("Déconnexion du client numéro " + this.noConnexion);
 			serveur.getPartie().deconnecterJoueur(joueur); // cas où le cient n'est plus connecté au serveur
 		} catch (ClassNotFoundException e) {

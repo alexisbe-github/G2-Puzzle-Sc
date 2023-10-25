@@ -42,8 +42,6 @@ public class Serveur{
 				while (serverOn) {
 					try {
 						Socket clientSocket = serverSocket.accept();
-						ObjectOutputStream partieSortant = new ObjectOutputStream(clientSocket.getOutputStream());
-						partieSortant.writeObject(partie);
 						noConnexion++;
 						ServeurThread st = new ServeurThread(clientSocket, groupe, noConnexion, this);
 						st.start();

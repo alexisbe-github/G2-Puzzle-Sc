@@ -33,9 +33,6 @@ public class Client {
 	public void seConnecter(String ip, int port) throws IOException, ClassNotFoundException {
 		socket = new Socket(ip, port);
 		setConnection();
-		ObjectInputStream fluxEntrant = new ObjectInputStream(socket.getInputStream());
-		PartieMultijoueur p = (PartieMultijoueur) fluxEntrant.readObject();
-		lancerRequete("c");
 		this.ajouterJoueur();
 	}
 
