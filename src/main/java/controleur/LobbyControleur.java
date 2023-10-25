@@ -1,12 +1,15 @@
 package main.java.controleur;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
@@ -26,9 +30,8 @@ import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.utils.Utils;
 import main.java.vue.VueJeuMultiCoop;
 
-public class LobbyControleur implements Initializable, PropertyChangeListener{
+public class LobbyControleur implements Initializable{
 
-	private PartieMultijoueur partie;
 	private Joueur joueur;
 	private boolean estHote;
 	private boolean estCoop;
@@ -37,6 +40,10 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	private int taille;
 	private int numJoueur = 1; //DEBUG
 	private Client client;
+	private PartieMultijoueur partie;
+	
+	private List<Joueur> joueurs = new ArrayList<>();
+	
 	
 	@FXML
 	private Button lancerPartie;
@@ -63,11 +70,11 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estHote, boolean estCoop, Image img, int taille, Client client) throws IOException {
 		this.owner = stage;
 		this.estHote = estHote;
-		this.partie = partie;
 		this.estCoop = estCoop;
 		this.img = img;
 		this.taille = taille;
 		this.client=client;
+		this.partie=partie;
 		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 		this.joueur = j;
 	}
@@ -81,7 +88,7 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 	
 	private void updateJoueurs() {
 		//TODO
-		for(Joueur j : partie.getJoueurs()) {
+		for(Joueur j : joueurs) {
 			this.boxJoueurs.getChildren().clear();
 			VBox v = new VBox(); //Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
@@ -116,11 +123,19 @@ public class LobbyControleur implements Initializable, PropertyChangeListener{
 				((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(), ((PartieMultijoueurCooperative) partie).getPuzzleCommun(),
 				this.client);
 	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
+	
+	private void readStream() throws IOException, ClassNotFoundException {
+		BufferedReader fluxEntrant = new BufferedReader(
+		new InputStreamReader(client.getSocket().getInputStream()));
+		String s = fluxEntrant.readLine();
+		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
+		Joueur j = (Joueur) ois.readObject();
+		if(s.equals("c")) {
+			joueurs.add(j);
+		}else if(s.equals("d")) {
+			joueurs.remove(j);
+		}
 		this.updateJoueurs();
-		
 	}
 	
 }

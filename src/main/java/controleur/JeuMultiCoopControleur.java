@@ -254,11 +254,11 @@ public class JeuMultiCoopControleur implements Initializable{
 	
 	
 	private void readStream() throws IOException, ClassNotFoundException {
-//		BufferedReader fluxEntrant = new BufferedReader(
-//				new InputStreamReader(client.getSocket().getInputStream()));
-//		System.out.println(fluxEntrant.readLine());
 		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
 		puzzle = (Puzzle) ois.readObject();
+		BufferedReader fluxEntrant = new BufferedReader(
+		new InputStreamReader(client.getSocket().getInputStream()));
+		System.out.println(fluxEntrant.readLine());
 		updateAll();
 	}
 	

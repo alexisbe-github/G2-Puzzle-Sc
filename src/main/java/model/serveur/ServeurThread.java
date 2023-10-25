@@ -68,6 +68,9 @@ public class ServeurThread extends Thread {
 						case 'd':
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
+						case 'c':
+							
+							break;
 						}
 					}
 				}

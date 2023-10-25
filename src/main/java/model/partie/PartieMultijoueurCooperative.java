@@ -76,11 +76,10 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 			Joueur j = mapEntry.getKey();
 			Socket s = mapEntry.getValue();
 
-			//PrintStream fluxSortant = new PrintStream(s.getOutputStream());
 			ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
 			oop.writeObject(this.puzzleCommun);
-			//fluxSortant.println(this.indexJoueurCourant);
-			
+			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
+			fluxSortant.println(this.indexJoueurCourant);
 		}
 	}
 	
