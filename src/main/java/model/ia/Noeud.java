@@ -39,6 +39,7 @@ public class Noeud {
 				successeur = new Noeud((Puzzle)puzzle.clone());
 				successeur.setPere(this);
 				successeurs.add(successeur);
+				successeur.setDeplacementMinimal(dp);
 			} catch (CloneNotSupportedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -149,6 +150,10 @@ public class Noeud {
 
 	public EDeplacement getDeplacementMinimal() {
 		return dpMinimal;
+	}
+	
+	public void setDeplacementMinimal(EDeplacement dp) {
+		this.dpMinimal = dp;
 	}
 	
 
