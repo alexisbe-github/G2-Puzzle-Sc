@@ -39,7 +39,7 @@ public class Noeud {
 				successeur = new Noeud((Puzzle)puzzle.clone());
 				successeur.setPere(this);
 				successeurs.add(successeur);
-				successeur.setDeplacementMinimal(dp);
+				successeur.setdeplacement(dp);
 			} catch (CloneNotSupportedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -131,6 +131,14 @@ public class Noeud {
 		}
 		return null;
 	}
+	
+	public boolean deplacementNulPere() {
+		if(this.dpMinimal == EDeplacement.BAS && this.pere.getdeplacement() == EDeplacement.HAUT) return true;
+		if(this.dpMinimal == EDeplacement.HAUT && this.pere.getdeplacement() == EDeplacement.BAS) return true;
+		if(this.dpMinimal == EDeplacement.GAUCHE && this.pere.getdeplacement() == EDeplacement.DROITE) return true;
+		if(this.dpMinimal == EDeplacement.DROITE && this.pere.getdeplacement() == EDeplacement.GAUCHE) return true;
+		return false;
+	}
 
 	public void setPere(Noeud n) {
 		this.pere = n;
@@ -148,11 +156,11 @@ public class Noeud {
 		this.g = g;
 	}
 
-	public EDeplacement getDeplacementMinimal() {
+	public EDeplacement getdeplacement() {
 		return dpMinimal;
 	}
 	
-	public void setDeplacementMinimal(EDeplacement dp) {
+	public void setdeplacement(EDeplacement dp) {
 		this.dpMinimal = dp;
 	}
 	

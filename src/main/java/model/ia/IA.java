@@ -9,13 +9,14 @@ import java.util.Queue;
 
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
+import main.java.utils.Utils;
 
 public class IA {
 
 	public static void main(String[] args) {
 		Puzzle puzzle = new Puzzle(3);
 		System.out.println(puzzle);
-		List<EDeplacement> solveur = solveTaquin(puzzle);
+		List<EDeplacement> solveur = solveTaquin2(puzzle);
 		for (EDeplacement dp : solveur) {
 			puzzle.deplacerCase(dp);
 			System.out.println(puzzle);
@@ -48,6 +49,16 @@ public class IA {
 						s.setPere(n);
 						s.setG(n.getG() + 1);
 					} else {
+						if (fermes.contains(s)) {
+							for (Noeud noeud : fermes) {
+								s = noeud;
+							}
+						}
+						if (ouverts.contains(s)) {
+							for (Noeud noeud : ouverts) {
+								s = noeud;
+							}
+						}
 						if (s.getG() > n.getG() + Math.abs(s.getG() - n.getG())) {
 							s.setPere(n);
 							s.setG(n.getG() + Math.abs(s.getG() - n.getG()));
@@ -62,8 +73,41 @@ public class IA {
 		}
 		Noeud noeudTmp = chercherNoeudResolu(ouverts);
 		while (noeudTmp.getPere() != null) {
-			solution.add(noeudTmp.getDeplacementMinimal());
+			solution.add(noeudTmp.getdeplacement());
 			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
+	}
+
+	/**
+	 * Solveur en déplacements aléatoires (taille < 4)
+	 * 
+	 * @param puzzle
+	 * @return
+	 */
+	private static List<EDeplacement> solveTaquin2(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+
+		boolean succes = false;
+		Noeud noeudCourant = new Noeud(puzzle);
+		while (!succes) {
+			if (noeudCourant.getPuzzle().verifierGrille()) {
+				succes = true;
+			}
+			List<Noeud> successeurs = noeudCourant.successeurs();
+			Noeud successeurChoisi;
+			do {
+				int random = Utils.getRandomNumberInRange(0, successeurs.size() - 1);
+				successeurChoisi = successeurs.get(random);
+			} while (successeurChoisi.deplacementNulPere());
+			successeurChoisi.setPere(noeudCourant);
+			noeudCourant = successeurChoisi;
+		}
+
+		while (noeudCourant.getPere() != null) {
+			solution.add(noeudCourant.getdeplacement());
+			noeudCourant = noeudCourant.getPere();
 		}
 		Collections.reverse(solution);
 		return solution;
