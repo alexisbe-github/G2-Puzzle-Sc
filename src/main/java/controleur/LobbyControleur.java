@@ -1,5 +1,6 @@
 package main.java.controleur;
 
+import java.awt.print.Printable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -63,7 +65,6 @@ public class LobbyControleur implements Initializable {
 		this.client = client;
 		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 		this.joueur = j;
-		this.lancerThread();
 	}
 
 	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estHote, boolean estCoop, Image img,
@@ -88,10 +89,9 @@ public class LobbyControleur implements Initializable {
 
 	private void updateJoueurs() {
 		System.out.println("c'est censé update les joueurs : joueurs -> "+joueurs);
+		this.boxJoueurs.getChildren().clear();
 		for (Joueur j : joueurs) {
-			System.out.println("c'est censé avoir ajouté "+j);
-			System.out.println();
-			this.boxJoueurs.getChildren().clear();
+			System.out.println("infos joueur update : "+j.getNom()+" "+j.getImage().length);
 			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
 			v.setPrefHeight(200);
@@ -100,7 +100,7 @@ public class LobbyControleur implements Initializable {
 			ImageView i = new ImageView(); // Logo du joueur
 			i.setFitHeight(60);
 			i.setFitWidth(60);
-			Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
+			Image image = new Image(new ByteArrayInputStream(j.getImage()));
 			i.setImage(image);
 			Label l = new Label(j.getNom()); // Pseudo du joueur
 			v.setId("box" + j.getNom());
@@ -127,29 +127,33 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException {
+		System.out.println("avant lecture : "+joueurs);
 		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
 		List<Joueur> j = (List<Joueur>) ois.readObject();
-		System.out.println("apres lecture : "+joueurs);
 		joueurs = j;
+		System.out.println("apres lecture : "+joueurs);
 		this.updateJoueurs();
+	}
+	
+	private void readInitStream() {
+		
 	}
 
 	private void lancerThread() {
 		System.out.println("le thread est censé se lancer");
 		Task task = new Task<Void>() {
 		    @Override public Void call() {
-		    	while(true) {
-		    		System.out.println("le thread est lancé une fois");
-			    	try {
-						readStream();
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		    	}
+	    		System.out.println("le thread est lancé une fois");
+		    	try {
+					readStream();
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	return null;
 		    }
 		};
-		new Thread(task).start();
+		Platform.runLater(task);
 	}
 
 }
