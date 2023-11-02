@@ -131,26 +131,28 @@ public class LobbyControleur implements Initializable {
 		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
 		List<Joueur> j = (List<Joueur>) ois.readObject();
 		joueurs = j;
+		System.out.println("lecture terminée");
 		System.out.println("apres lecture : "+joueurs);
 		this.updateJoueurs();
 	}
 	
 	private void readInitStream() {
-		
+		//TODO
 	}
 
 	private void lancerThread() {
 		System.out.println("le thread est censé se lancer");
-		Task task = new Task<Void>() {
+		Task<Void> task = new Task<>() {
 		    @Override public Void call() {
 	    		System.out.println("le thread est lancé une fois");
-		    	try {
-					readStream();
-				} catch (ClassNotFoundException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		    	return null;
+	    		while(true) {
+	    			try {
+						readStream();
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
 		    }
 		};
 		Platform.runLater(task);
