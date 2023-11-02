@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -88,10 +89,10 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void updateJoueurs() {
-		System.out.println("c'est censé update les joueurs : joueurs -> "+joueurs);
+		System.out.println("c'est censé update les joueurs : joueurs -> " + joueurs);
 		this.boxJoueurs.getChildren().clear();
 		for (Joueur j : joueurs) {
-			System.out.println("infos joueur update : "+j.getNom()+" "+j.getImage().length);
+			System.out.println("infos joueur update : " + j.getNom() + " " + j.getImage().length);
 			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
 			v.setPrefHeight(200);
@@ -127,33 +128,44 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException {
-		System.out.println("avant lecture : "+joueurs);
-		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
-		List<Joueur> j = (List<Joueur>) ois.readObject();
-		joueurs = j;
-		System.out.println("apres lecture : "+joueurs);
-		this.updateJoueurs();
+		System.out.println("avant lecture : " + joueurs);
+		ObjectInputStream ois;
+		List<Joueur> j;
+		try {
+			ois = new ObjectInputStream(client.getSocket().getInputStream());
+			j = (List<Joueur>) ois.readObject();
+			joueurs = j;
+			System.out.println("apres lecture : " + joueurs);
+			updateJoueurs();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	private void readInitStream() {
-		
+
 	}
 
 	private void lancerThread() {
 		System.out.println("le thread est censé se lancer");
 		Task task = new Task<Void>() {
-		    @Override public Void call() {
-	    		System.out.println("le thread est lancé une fois");
-		    	try {
+			@Override
+			public Void call() throws InterruptedException, ClassNotFoundException, IOException {
+				System.out.println("le thread est lancé une fois");
+				while (client.getSocket().isConnected()) {
 					readStream();
-				} catch (ClassNotFoundException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-		    	return null;
-		    }
+				return null;
+			}
 		};
-		Platform.runLater(task);
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
 	}
 
 }
