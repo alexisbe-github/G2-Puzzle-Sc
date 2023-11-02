@@ -36,6 +36,7 @@ public class LobbyControleur implements Initializable {
 	private Joueur joueur;
 	private boolean estHote;
 	private boolean estCoop;
+	private boolean flagThread = false;
 	private Stage owner;
 	private Image img;
 	private int taille;
@@ -128,23 +129,34 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException {
-		System.out.println("avant lecture : " + joueurs);
-		ObjectInputStream ois;
-		List<Joueur> j;
-		try {
-			ois = new ObjectInputStream(client.getSocket().getInputStream());
-			j = (List<Joueur>) ois.readObject();
-			joueurs = j;
-			System.out.println("apres lecture : " + joueurs);
-			updateJoueurs();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		while (client.getSocket().isConnected()) {
+			if (!flagThread) {
+				System.out.println("test");
+				flagThread = true;
+				Platform.runLater(new Runnable() {
+					public void run() {
+						System.out.println("avant lecture : " + joueurs);
+						ObjectInputStream ois;
+						List<Joueur> j;
+						try {
+							ois = new ObjectInputStream(client.getSocket().getInputStream());
+							j = (List<Joueur>) ois.readObject();
+							flagThread = false;
+							joueurs = j;
+							System.out.println("apres lecture : " + joueurs);
+							updateJoueurs();
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
+					}
+				});
+			}
+		}
 	}
 
 	private void readInitStream() {
@@ -158,7 +170,11 @@ public class LobbyControleur implements Initializable {
 			public Void call() throws InterruptedException, ClassNotFoundException, IOException {
 				System.out.println("le thread est lancé une fois");
 				while (client.getSocket().isConnected()) {
-					readStream();
+					try {
+						readStream();
+					} catch (IOException | ClassNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 				return null;
 			}
