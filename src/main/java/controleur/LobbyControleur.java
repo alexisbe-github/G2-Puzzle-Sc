@@ -128,33 +128,31 @@ public class LobbyControleur implements Initializable {
 				((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
 	}
 
-	private void readStream() throws IOException, ClassNotFoundException {
-		while (client.getSocket().isConnected()) {
-			if (!flagThread) {
-				System.out.println("test");
-				flagThread = true;
-				Platform.runLater(new Runnable() {
-					public void run() {
-						System.out.println("avant lecture : " + joueurs);
-						ObjectInputStream ois;
-						List<Joueur> j;
-						try {
-							ois = new ObjectInputStream(client.getSocket().getInputStream());
-							j = (List<Joueur>) ois.readObject();
-							flagThread = false;
-							joueurs = j;
-							System.out.println("apres lecture : " + joueurs);
-							updateJoueurs();
-						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
+	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
+		if (!flagThread) {
+			flagThread = true;
+			while (true) {
+				Platform.runLater(() -> {
+					System.out.println("avant lecture : " + joueurs);
+					List<Joueur> j;
+					ObjectInputStream ois;
+					try {
+						client.lancerRequete("l");
+						ois = new ObjectInputStream(client.getSocket().getInputStream());
+						j = (List<Joueur>) ois.readObject();
+						flagThread = false;
+						joueurs = new ArrayList<>(j);
+						System.out.println("apres lecture : " + joueurs);
+						updateJoueurs();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				});
+				Thread.sleep(5000);
 			}
 		}
 	}
@@ -165,23 +163,19 @@ public class LobbyControleur implements Initializable {
 
 	private void lancerThread() {
 		System.out.println("le thread est censé se lancer");
-		Task task = new Task<Void>() {
-			@Override
-			public Void call() throws InterruptedException, ClassNotFoundException, IOException {
-				System.out.println("le thread est lancé une fois");
-				while (client.getSocket().isConnected()) {
-					try {
-						readStream();
-					} catch (IOException | ClassNotFoundException e) {
-						e.printStackTrace();
-					}
-				}
-				return null;
+		new Thread(() -> {
+			try {
+				readStream();
+
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		};
-		Thread th = new Thread(task);
-		th.setDaemon(true);
-		th.start();
+		}).start();
+
 	}
 
 }
