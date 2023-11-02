@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -35,6 +36,7 @@ public class LobbyControleur implements Initializable {
 	private Joueur joueur;
 	private boolean estHote;
 	private boolean estCoop;
+	private boolean flagThread = false;
 	private Stage owner;
 	private Image img;
 	private int taille;
@@ -88,10 +90,10 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void updateJoueurs() {
-		System.out.println("c'est censé update les joueurs : joueurs -> "+joueurs);
+		System.out.println("c'est censé update les joueurs : joueurs -> " + joueurs);
 		this.boxJoueurs.getChildren().clear();
 		for (Joueur j : joueurs) {
-			System.out.println("infos joueur update : "+j.getNom()+" "+j.getImage().length);
+			System.out.println("infos joueur update : " + j.getNom() + " " + j.getImage().length);
 			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
 			v.setPrefHeight(200);
@@ -126,36 +128,54 @@ public class LobbyControleur implements Initializable {
 				((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
 	}
 
-	private void readStream() throws IOException, ClassNotFoundException {
-		System.out.println("avant lecture : "+joueurs);
-		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
-		List<Joueur> j = (List<Joueur>) ois.readObject();
-		joueurs = j;
-		System.out.println("lecture terminée");
-		System.out.println("apres lecture : "+joueurs);
-		this.updateJoueurs();
+	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
+		if (!flagThread) {
+			flagThread = true;
+			while (true) {
+				Platform.runLater(() -> {
+					System.out.println("avant lecture : " + joueurs);
+					List<Joueur> j;
+					ObjectInputStream ois;
+					try {
+						client.lancerRequete("l");
+						ois = new ObjectInputStream(client.getSocket().getInputStream());
+						j = (List<Joueur>) ois.readObject();
+						flagThread = false;
+						joueurs = new ArrayList<>(j);
+						System.out.println("apres lecture : " + joueurs);
+						updateJoueurs();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
+				Thread.sleep(5000);
+			}
+		}
 	}
-	
+
 	private void readInitStream() {
 		//TODO
 	}
 
 	private void lancerThread() {
 		System.out.println("le thread est censé se lancer");
-		Task<Void> task = new Task<>() {
-		    @Override public Void call() {
-	    		System.out.println("le thread est lancé une fois");
-	    		while(true) {
-	    			try {
-						readStream();
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	    		}
-		    }
-		};
-		Platform.runLater(task);
+		new Thread(() -> {
+			try {
+				readStream();
+
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}).start();
+
 	}
 
 }
