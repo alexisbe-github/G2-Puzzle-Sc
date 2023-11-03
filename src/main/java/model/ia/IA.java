@@ -16,7 +16,7 @@ public class IA {
 	public static void main(String[] args) {
 		Puzzle puzzle = new Puzzle(3);
 		System.out.println(puzzle);
-		List<EDeplacement> solveur = solveTaquin2(puzzle);
+		List<EDeplacement> solveur = solveTaquin3(puzzle);
 		for (EDeplacement dp : solveur) {
 			puzzle.deplacerCase(dp);
 			System.out.println(puzzle);
@@ -27,6 +27,37 @@ public class IA {
 //		// System.out.println(calculerH(puzzle));
 //		System.out.println(puzzle.listeDeplacementsPossibles());
 
+	}
+
+	private static List<EDeplacement> solveTaquin3(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+		Deque<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+
+		Deque<Noeud> fermes = new LinkedList<>();
+		boolean succes = false;
+		while (!ouverts.isEmpty() && !succes) {
+			Noeud n = ouverts.element();
+			if (n.getPuzzle().verifierGrille())
+				succes = true;
+			else {
+				ouverts.remove(n);
+				fermes.add(n);
+				for (Noeud s : n.successeurs()) {
+					if (!ouverts.contains(s) && !fermes.contains(s)) {
+						ouverts.add(s);
+						s.setPere(n);
+					} 
+				}
+			}
+		}
+		Noeud noeudTmp = chercherNoeudResolu(ouverts);
+		while (noeudTmp.getPere() != null) {
+			solution.add(noeudTmp.getdeplacement());
+			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
 	}
 
 	private static List<EDeplacement> solveTaquin(Puzzle puzzle) {
