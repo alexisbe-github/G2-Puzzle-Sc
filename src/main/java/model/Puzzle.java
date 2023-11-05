@@ -270,6 +270,21 @@ public class Puzzle implements Serializable, Cloneable {
 			deplacementsPossibles.add(EDeplacement.BAS);
 		return deplacementsPossibles;
 	}
+	
+	public static EDeplacement inverseDeplacement(EDeplacement move) {
+	    switch (move) {
+	        case HAUT:
+	            return EDeplacement.BAS;
+	        case BAS:
+	            return EDeplacement.HAUT;
+	        case GAUCHE:
+	            return EDeplacement.DROITE;
+	        case DROITE:
+	            return EDeplacement.GAUCHE;
+	        default:
+	            return EDeplacement.HAUT; 
+	    }
+	}
 
 	public Memento saveToMemento() {
 		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];

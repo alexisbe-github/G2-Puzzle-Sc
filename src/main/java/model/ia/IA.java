@@ -16,17 +16,28 @@ public class IA {
 	public static void main(String[] args) {
 		Puzzle puzzle = new Puzzle(3);
 		System.out.println(puzzle);
-		List<EDeplacement> solveur = solveTaquin3(puzzle);
+		List<EDeplacement> solveur = solveTaquin(puzzle);
 		for (EDeplacement dp : solveur) {
 			puzzle.deplacerCase(dp);
-			System.out.println(puzzle);
+			System.out.println(dp);
+			//System.out.println(puzzle);
 		}
 		System.out.println(solveur.size());
-		// solveTaquin(puzzle);
-//		System.out.println(puzzle);
-//		// System.out.println(calculerH(puzzle));
-//		System.out.println(puzzle.listeDeplacementsPossibles());
 
+	}
+	
+	private static List<EDeplacement> solveTaquin4(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+		Deque<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+		
+		Noeud noeudTmp = chercherNoeudResolu(ouverts);
+		while (noeudTmp.getPere() != null) {
+			solution.add(noeudTmp.getdeplacement());
+			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
 	}
 
 	private static List<EDeplacement> solveTaquin3(Puzzle puzzle) {
@@ -60,7 +71,7 @@ public class IA {
 		return solution;
 	}
 
-	private static List<EDeplacement> solveTaquin(Puzzle puzzle) {
+	public static List<EDeplacement> solveTaquin(Puzzle puzzle) {
 		List<EDeplacement> solution = new ArrayList<>();
 		Deque<Noeud> ouverts = new LinkedList<>();
 		ouverts.add(new Noeud(puzzle));
@@ -80,16 +91,6 @@ public class IA {
 						s.setPere(n);
 						s.setG(n.getG() + 1);
 					} else {
-						if (fermes.contains(s)) {
-							for (Noeud noeud : fermes) {
-								s = noeud;
-							}
-						}
-						if (ouverts.contains(s)) {
-							for (Noeud noeud : ouverts) {
-								s = noeud;
-							}
-						}
 						if (s.getG() > n.getG() + Math.abs(s.getG() - n.getG())) {
 							s.setPere(n);
 							s.setG(n.getG() + Math.abs(s.getG() - n.getG()));
