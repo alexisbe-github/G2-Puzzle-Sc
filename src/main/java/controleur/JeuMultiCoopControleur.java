@@ -82,14 +82,13 @@ public class JeuMultiCoopControleur implements Initializable{
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
 	public JeuMultiCoopControleur
-	(Stage stage, int taille, byte[] img, int numJoueur, Joueur joueur,
+	(Stage stage, int taille, int numJoueur, Joueur joueur,
 			List<Joueur> joueurs, int numJoueurCourant, Puzzle puzzle, Client client) 
 					throws IOException {
 		this.owner = stage;
 		this.joueur = joueur;
 		this.numJoueur = numJoueur;
 		this.client=client;
-		
 		this.numJoueurCourant=numJoueurCourant;
 		this.puzzle=puzzle;
 		this.joueurs = joueurs;
