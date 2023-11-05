@@ -15,7 +15,7 @@ import main.java.model.Puzzle;
 public class IATest {
 
 	public static void main(String[] args) {
-		Puzzle puzzle = new Puzzle(4);
+		Puzzle puzzle = new Puzzle(20);
 		System.out.println(puzzle);
 		List<EDeplacement> solveur = solveTaquin(puzzle);
 		for (EDeplacement dp : solveur) {
@@ -31,9 +31,9 @@ public class IATest {
 		// on s'occupe déjà de la première ligne jusqu'à l'avant dernière case de la
 		// ligne
 		Noeud noeud = new Noeud(puzzle);
+
 		for (int index = 0; index < puzzle.getTaille() - 1; index++) {
 			while (manhattanDistance(index, noeud.getPuzzle()) != 0) {
-				System.out.println(manhattanDistance(index, noeud.getPuzzle()));
 				deplacer(noeud.getPuzzle(), index);
 			}
 		}
@@ -81,10 +81,11 @@ public class IATest {
 		// cas où la case vide se trouve en dessous
 		if (puzzle.getYCaseVide() == coordonneesIndex.y + 1 && puzzle.getXCaseVide() == coordonneesIndex.x) {
 			puzzle.deplacerCase(EDeplacement.GAUCHE);
+			System.out.println(puzzle);
 			puzzle.deplacerCase(EDeplacement.BAS);
 			System.out.println(puzzle);
 		}
-		
+
 		// cas où la case à déplacer doit se retrouver vers la gauche
 		if (getDistanceX(index, puzzle) > 0) {
 			// si la case vide ne se trouve pas à gauche de la case à déplacer
@@ -129,11 +130,11 @@ public class IATest {
 					// on déplace la case vide à gauche de la case à déplacer
 
 					// si la case vide est à droite et pas sur la même ligne
-					if (puzzle.getYCaseVide() != coordonneesIndex.y && puzzle.getXCaseVide() > coordonneesIndex.x + 1) {
+					if (puzzle.getYCaseVide() != coordonneesIndex.y && puzzle.getXCaseVide() > coordonneesIndex.x + 1 && !(puzzle.getYCaseVide() == 0 && (index-1) == puzzle.getXCaseVide() - 1)) {
 						puzzle.deplacerCase(EDeplacement.DROITE);
 						System.out.println(puzzle);
 					} else {
-						// si la case vide est est à gauche et pas sur la même ligne
+						// si la case vide est à gauche et pas sur la même ligne
 						if (puzzle.getYCaseVide() != coordonneesIndex.y
 								&& puzzle.getXCaseVide() <= coordonneesIndex.x) {
 							puzzle.deplacerCase(EDeplacement.GAUCHE);
@@ -147,7 +148,7 @@ public class IATest {
 							} else {
 								// si la case vide est sur la même ligne et à droite
 								if (puzzle.getYCaseVide() == coordonneesIndex.y
-										&& puzzle.getXCaseVide() > coordonneesIndex.x + 1) {
+										&& puzzle.getXCaseVide() > coordonneesIndex.x + 1 && !(puzzle.getYCaseVide() == 0 && (index) == puzzle.getXCaseVide() - 1)) {
 									puzzle.deplacerCase(EDeplacement.DROITE);
 									System.out.println(puzzle);
 								}
@@ -161,7 +162,8 @@ public class IATest {
 					// on déplace la case vide à la même colonne que de la case à déplacer
 
 					// si la case vide est à droite et pas sur la même ligne
-					if (puzzle.getYCaseVide() != coordonneesIndex.y && puzzle.getXCaseVide() >= coordonneesIndex.x) {
+					if (puzzle.getYCaseVide() != coordonneesIndex.y && puzzle.getXCaseVide() >= coordonneesIndex.x && !(puzzle.getYCaseVide() == 0 && (index-1) == puzzle.getXCaseVide() - 1)) {
+						System.out.println("DROIIIIITE");
 						puzzle.deplacerCase(EDeplacement.DROITE);
 						System.out.println(puzzle);
 					} else {
@@ -192,7 +194,8 @@ public class IATest {
 	}
 
 	private static void deplacerEnY(Puzzle puzzle, int index, Point coordonneesIndex) {
-		// si la case à déplacer n'est pas sur la même colonne que là où elle doit être
+
+		// si la case à déplacer n'est pas sur la même ligne que là où elle doit être
 		if (getDistanceY(index, puzzle) != 0) {
 
 			// on déplace la case vide à gauche ou à droite de la case à déplacer
@@ -203,7 +206,7 @@ public class IATest {
 				System.out.println(puzzle);
 			} else {
 				// si la case vide est est en dessous et pas sur la même colonne
-				if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() > coordonneesIndex.y) {
+				if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() > coordonneesIndex.y &&  !(puzzle.getXCaseVide() == (index-1) && puzzle.getYCaseVide() == 1)) {
 					puzzle.deplacerCase(EDeplacement.BAS);
 					System.out.println(puzzle);
 				} else {
@@ -214,8 +217,29 @@ public class IATest {
 					} else {
 						// si la case vide est sur la même ligne et à gauche de la case à déplacer
 						if (puzzle.getYCaseVide() == coordonneesIndex.y && puzzle.getXCaseVide() < coordonneesIndex.x) {
-							puzzle.deplacerCase(EDeplacement.HAUT);
+							if (puzzle.getYCaseVide() == puzzle.getTaille() - 1) {
+								puzzle.deplacerCase(EDeplacement.BAS);
+								System.out.println(puzzle);
+								puzzle.deplacerCase(EDeplacement.GAUCHE);
+							} else {
+								puzzle.deplacerCase(EDeplacement.HAUT);
+							}
 							System.out.println(puzzle);
+
+						} else {
+							// si la case vide est sur la même colonne et au dessus de la case vide
+							if (puzzle.getXCaseVide() == coordonneesIndex.x
+									&& puzzle.getYCaseVide() < coordonneesIndex.y - 1) {
+								puzzle.deplacerCase(EDeplacement.HAUT);
+								System.out.println(puzzle);
+							} else {
+								// si la case vide est sur la même colonne et en dessous de la case vide
+								if (puzzle.getXCaseVide() == coordonneesIndex.x
+										&& puzzle.getYCaseVide() > coordonneesIndex.y + 1) {
+									puzzle.deplacerCase(EDeplacement.BAS);
+									System.out.println(puzzle);
+								}
+							}
 						}
 					}
 				}
@@ -229,19 +253,44 @@ public class IATest {
 				System.out.println(puzzle);
 			} else {
 				// si la case vide est est en dessous et pas sur la même colonne
-				if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() >= coordonneesIndex.y - 1) {
+				if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() > coordonneesIndex.y) {
 					puzzle.deplacerCase(EDeplacement.BAS);
 					System.out.println(puzzle);
 				} else {
 					// si la case vide est sur la même ligne et à droite de la case à déplacer
 					if (puzzle.getYCaseVide() == coordonneesIndex.y && puzzle.getXCaseVide() > coordonneesIndex.x) {
+						if(puzzle.getYCaseVide() == 0) {
+							puzzle.deplacerCase(EDeplacement.HAUT);
+							System.out.println(puzzle);
+							puzzle.deplacerCase(EDeplacement.DROITE);
+							System.out.println(puzzle);
+							puzzle.deplacerCase(EDeplacement.DROITE);
+							System.out.println(puzzle);
+							puzzle.deplacerCase(EDeplacement.BAS);
+						}else {
 						puzzle.deplacerCase(EDeplacement.BAS);
+						}
 						System.out.println(puzzle);
 					} else {
 						// si la case vide est sur la même ligne et à gauche de la case à déplacer
 						if (puzzle.getYCaseVide() == coordonneesIndex.y && puzzle.getXCaseVide() < coordonneesIndex.x) {
 							puzzle.deplacerCase(EDeplacement.HAUT);
 							System.out.println(puzzle);
+						} else {
+							// si la case vide est sur la même colonne et au dessus
+							if (puzzle.getYCaseVide() < coordonneesIndex.y - 1
+									&& puzzle.getXCaseVide() == coordonneesIndex.x) {
+								puzzle.deplacerCase(EDeplacement.HAUT);
+								System.out.println(puzzle);
+							} else {
+								// si la case vide est sur la même colonne et en dessous
+								if (puzzle.getYCaseVide() > coordonneesIndex.y + 1
+										&& puzzle.getXCaseVide() == coordonneesIndex.x) {
+									puzzle.deplacerCase(EDeplacement.BAS);
+									System.out.println("test");
+									System.out.println(puzzle);
+								}
+							}
 						}
 					}
 				}
