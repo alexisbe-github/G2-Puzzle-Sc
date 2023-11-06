@@ -6,6 +6,7 @@
 	<artifactId>G2-Puzzle-Sc-2023</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
+		<finalName>taquin</finalName>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
@@ -57,10 +58,16 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>5.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>10.0.23</version>
+		</dependency>
 	</dependencies>
+	<packaging>war</packaging>
 </project>
