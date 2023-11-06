@@ -72,7 +72,6 @@ public class ServeurThread extends Thread {
 							break;
 						case 's':
 							serveur.getPartie().envoyerLancement();
-							break;
 						}
 					}
 				}
