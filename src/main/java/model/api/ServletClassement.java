@@ -5,8 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import com.mysql.cj.util.StringUtils;
@@ -49,8 +47,7 @@ public class ServletClassement extends HttpServlet {
 	 * <b><i>ratio_victoires</i></b>, <b><i>temps_partie</i></b>,
 	 * <b><i>nb_coups</i></b>)</li>
 	 * <li><b><i>[<u>OPTIONNEL</u>]</i> taille_grille</b> : La taille de la grille
-	 * pour laquelle récupérer les informations (obligatoirement supérieure à 3) ;
-	 * si aucune valeur n'est spécifiée, la valeur par défaut est 3</li>
+	 * pour laquelle récupérer les informations (obligatoirement supérieure à 3)</li>
 	 * </ul>
 	 * 
 	 * <br>
@@ -71,7 +68,8 @@ public class ServletClassement extends HttpServlet {
 
 		StringBuilder json = new StringBuilder("{\r\n");
 		String sql;
-		List<List<Object>> res = new ArrayList<>();
+		
+		Connection connexion = Connexion.getInstance().getConnection();
 
 		switch (filtre.toLowerCase(Locale.FRANCE)) {
 		case "nb_victoires":
@@ -80,7 +78,6 @@ public class ServletClassement extends HttpServlet {
 			} else {
 				sql = "SELECT id_joueur, COUNT(*) AS nb_victoires FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = id_joueur AND p.taille_grille = ? ORDER BY nb_victoires %s LIMIT ? OFFSET ?";
 			}
-			Connection connexion = Connexion.getInstance().getConnection();
 			try {
 				verifierTailleGrille(taille_grille);
 				verifierTri(tri);
@@ -94,24 +91,180 @@ public class ServletClassement extends HttpServlet {
 						pstmt.setInt(2, Integer.parseInt(max) - Integer.parseInt(min) + 1);
 						pstmt.setInt(3, Integer.parseInt(min) - 1);
 					} else {
-						int limite = Integer.parseInt(max) - Integer.parseInt(min) + 1;
-						pstmt.setInt(1, limite);
-						int offset = Integer.parseInt(min) - 1;
-						pstmt.setInt(2, offset);
+						pstmt.setInt(1, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(2, Integer.parseInt(min) - 1);
 					}
 					pstmt.execute();
 					try (ResultSet rs = pstmt.getResultSet()) {
 						while (rs.next()) {
-							List<Object> liste = new ArrayList<>();
+							// TODO Ne rien renvoyer si !rs.next()
 							long id = rs.getLong("id_joueur");
 							int nb_victoires = rs.getInt("nb_victoires");
-							json.append("[pseudo: ");
+							if (dao.trouver(id).getPseudo() == null) break;
+							json.append("[id_joueur: ");
+							json.append(id);
+							json.append(", pseudo: '");
 							json.append(dao.trouver(id).getPseudo());
-							json.append(", nb_victoires: ");
+							json.append("', nb_victoires: ");
 							json.append(nb_victoires);
 							json.append("],\r\n");
-							res.add(liste);
-							System.out.println(liste);
+						}
+					}
+				}
+			} catch (SQLException e) {
+				json.append("erreur_sql: '");
+				json.append(e.getMessage());
+				json.append("',\r\n");
+				e.printStackTrace();
+			} catch (Exception e) {
+				json.append("erreur: '");
+				json.append(e.getMessage());
+				json.append(" - ");
+				json.append(e.getStackTrace());
+				json.append(" - ");
+				json.append(e.getClass());
+				json.append("',\r\n");
+				e.printStackTrace();
+			}
+			break;
+		case "ratio_victoires":
+			if (taille_grille == null) {
+				sql = "SELECT id_joueur, COUNT(*) AS nb_victoires, COUNT(*) / (SELECT COUNT(*) FROM partie_competitive AS pc2 WHERE pc2.id_vainqueur = id_joueur) AS ratio_victoires FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = id_joueur GROUP BY id_joueur ORDER BY ratio_victoires %s LIMIT ? OFFSET ?";
+			} else {
+				sql = "SELECT id_joueur, COUNT(*) AS nb_victoires, COUNT(*) / (SELECT COUNT(*) FROM partie_competitive AS pc2 INNER JOIN partie AS p ON pc2.id_partie = p.id WHERE pc2.id_vainqueur = id_joueur AND p.taille_grille = ?) AS ratio_victoires FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = id_joueur AND taille_grille = ? GROUP BY id_joueur ORDER BY ratio_victoires %s LIMIT ? OFFSET ?";
+			}
+			try {
+				verifierTailleGrille(taille_grille);
+				verifierTri(tri);
+				verifierMin(min);
+				verifierMax(min, max);
+				sql = String.format(sql, tri);
+				try (PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY)) {
+					if (taille_grille != null) {
+						pstmt.setInt(1, Integer.parseInt(taille_grille));
+						pstmt.setInt(2, Integer.parseInt(taille_grille));
+						pstmt.setInt(3, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(4, Integer.parseInt(min) - 1);
+					} else {
+						pstmt.setInt(1, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(2, Integer.parseInt(min) - 1);
+					}
+					pstmt.execute();
+					try (ResultSet rs = pstmt.getResultSet()) {
+						while (rs.next()) {
+							long id = rs.getLong("id_joueur");
+							double ratio_victoires = rs.getDouble("ratio_victoires");
+							if (dao.trouver(id).getPseudo() == null) break;
+							json.append("[id_joueur: ");
+							json.append(id);
+							json.append(", pseudo: '");
+							json.append(dao.trouver(id).getPseudo());
+							json.append("', ratio_victoires: ");
+							json.append(ratio_victoires);
+							json.append("],\r\n");
+						}
+					}
+				}
+			} catch (SQLException e) {
+				json.append("erreur_sql: '");
+				json.append(e.getMessage());
+				json.append("',\r\n");
+				e.printStackTrace();
+			} catch (Exception e) {
+				json.append("erreur: '");
+				json.append(e.getMessage());
+				json.append(" - ");
+				json.append(e.getStackTrace());
+				json.append(" - ");
+				json.append(e.getClass());
+				json.append("',\r\n");
+				e.printStackTrace();
+			}
+			break;
+		case "temps_partie":
+			if (taille_grille == null) {
+				sql = "SELECT id, duree_secondes AS temps_partie FROM partie ORDER by temps_partie %s LIMIT ? OFFSET ?";
+			} else {
+				sql = "SELECT id, duree_secondes AS temps_partie FROM partie WHERE taille_grille = ? ORDER by temps_partie %s LIMIT ? OFFSET ?";
+			}
+			try {
+				verifierTailleGrille(taille_grille);
+				verifierTri(tri);
+				verifierMin(min);
+				verifierMax(min, max);
+				sql = String.format(sql, tri);
+				try (PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY)) {
+					if (taille_grille != null) {
+						pstmt.setInt(1, Integer.parseInt(taille_grille));
+						pstmt.setInt(2, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(3, Integer.parseInt(min) - 1);
+					} else {
+						pstmt.setInt(1, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(2, Integer.parseInt(min) - 1);
+					}
+					pstmt.execute();
+					try (ResultSet rs = pstmt.getResultSet()) {
+						while (rs.next()) {
+							long id = rs.getLong("id");
+							int duree_partie = rs.getInt("temps_partie");
+							json.append("[id_partie: ");
+							json.append(id);
+							json.append(", duree_partie: ");
+							json.append(duree_partie);
+							json.append("],\r\n");
+						}
+					}
+				}
+			} catch (SQLException e) {
+				json.append("erreur_sql: '");
+				json.append(e.getMessage());
+				json.append("',\r\n");
+				e.printStackTrace();
+			} catch (Exception e) {
+				json.append("erreur: '");
+				json.append(e.getMessage());
+				json.append(" - ");
+				json.append(e.getStackTrace());
+				json.append(" - ");
+				json.append(e.getClass());
+				json.append("',\r\n");
+				e.printStackTrace();
+			}
+			break;
+		case "nb_coups":
+			if (taille_grille == null) {
+				sql = "SELECT id, nb_coups FROM partie ORDER by nb_coups %s LIMIT ? OFFSET ?";
+			} else {
+				sql = "SELECT id, nb_coups FROM partie WHERE taille_grille = ? ORDER by nb_coups %s LIMIT ? OFFSET ?";
+			}
+			try {
+				verifierTailleGrille(taille_grille);
+				verifierTri(tri);
+				verifierMin(min);
+				verifierMax(min, max);
+				sql = String.format(sql, tri);
+				try (PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY)) {
+					if (taille_grille != null) {
+						pstmt.setInt(1, Integer.parseInt(taille_grille));
+						pstmt.setInt(2, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(3, Integer.parseInt(min) - 1);
+					} else {
+						pstmt.setInt(1, Integer.parseInt(max) - Integer.parseInt(min) + 1);
+						pstmt.setInt(2, Integer.parseInt(min) - 1);
+					}
+					pstmt.execute();
+					try (ResultSet rs = pstmt.getResultSet()) {
+						while (rs.next()) {
+							long id = rs.getLong("id");
+							int nb_coups = rs.getInt("nb_coups");
+							json.append("[id_partie: ");
+							json.append(id);
+							json.append(", nb_coups: ");
+							json.append(nb_coups);
+							json.append("],\r\n");
 						}
 					}
 				}
@@ -132,8 +285,7 @@ public class ServletClassement extends HttpServlet {
 			}
 			break;
 		default:
-			System.err.println("Le filtre est incorrect !");
-			return;
+			json.append("Le filtre est incorrect !\r\n");
 		}
 		try {
 			json.append("}");
@@ -210,20 +362,4 @@ public class ServletClassement extends HttpServlet {
 			throw new Exception("Le paramètre doit être supérieur ou égal au mimimum !");
 		}
 	}
-
-//	/**
-//	 * @return La connexion à la base de données
-//	 */
-//	private static Connection getConnexion() {
-//		Connection connexion;
-//		try {
-//			Context initContext = new InitialContext();
-//			Context envContext = (Context) initContext.lookup("java:comp/env");
-//			DataSource dataSource = (DataSource) envContext.lookup("jdbc/taquin");
-//			connexion = dataSource.getConnection();
-//			return connexion;
-//		} catch (NamingException | SQLException e) {
-//			return null; // TODO return message
-//		}
-//	}
 }
