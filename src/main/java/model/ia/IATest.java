@@ -37,6 +37,23 @@ public class IATest {
 				deplacer(noeud.getPuzzle(), index);
 			}
 		}
+
+		System.out.println("=================OK=================");
+		// on s'occupe de la dernière case de la première ligne
+
+		// on inverse l'index de premiere ligne, derniere col AVEC troisième ligne
+		// derniere col pour dire à l'algorithme de placer le premier à l'emplacement du
+		// deuxième
+		Point point = chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle());
+		Point point2 = chercherCoordonneesIndex(puzzle.getTaille() * 3 - 1, noeud.getPuzzle());
+		noeud.getPuzzle().getGrille()[point.x][point.y] = new Case(puzzle.getTaille() * 3 - 1);
+		noeud.getPuzzle().getGrille()[point2.x][point2.y] = new Case(puzzle.getTaille() - 1);
+		System.out.println(noeud.getPuzzle());
+		while (manhattanDistance(puzzle.getTaille() * 3 - 1, noeud.getPuzzle()) != 0) {
+			deplacer(noeud.getPuzzle(), puzzle.getTaille() * 3 - 1);
+		}
+
+		System.out.println(noeud.getPuzzle());
 		return solution;
 	}
 
@@ -59,6 +76,7 @@ public class IATest {
 				}
 			}
 		} while (!res);
+
 		puzzle.deplacerCase(deplacerIndexVersCaseVide(puzzle, index, chercherCoordonneesIndex(index, puzzle)));
 		System.out.println(puzzle);
 	}
