@@ -6,6 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -39,11 +41,10 @@ public class LobbyControleur implements Initializable {
 	private Joueur joueur;
 	private boolean estHote;
 	private boolean estCoop;
-	private boolean flagThread = false;
 	private Stage owner;
 	private Image img;
-	private int taille;
-	private int numJoueur = 1; // DEBUG
+	private int taille = 0;
+	private int numJoueur = 1; // TODO
 	private Client client;
 	private PartieMultijoueur partie;
 
@@ -130,51 +131,68 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
-		if (!flagThread) {
-			flagThread = true;
-			while (true) {
-				System.out.println("début while true");
-				Platform.runLater(() -> {
-					System.out.println("début runLater");
-					try {
-						String ligne = "";
-						BufferedReader fluxEntrant = new BufferedReader(
-								new InputStreamReader(this.client.getSocket().getInputStream()));
-						ligne = fluxEntrant.readLine();
-						if (ligne != null) {
-							String reponse = ligne; // calcul de la reponse
-							char c = reponse.charAt(0);
-							switch (c) {
-								case 's':
-									VueJeuMultiCoop vj = new VueJeuMultiCoop(taille, numJoueur, joueur, partie.getJoueurs(),
-											((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-											((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
-									break;
-								case 'c':
-									System.out.println("avant lecture : " + joueurs);
-									List<Joueur> j;
-									ObjectInputStream ois;
-									client.lancerRequete("l");
-									ois = new ObjectInputStream(client.getSocket().getInputStream());
-									j = (List<Joueur>) ois.readObject();
-									flagThread = false;
-									joueurs = new ArrayList<>(j);
-									System.out.println("apres lecture : " + joueurs);
-									updateJoueurs();
-							}
-						}
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-				Thread.sleep(5000);
-			}
+		while (true) {
+			Platform.runLater(() -> {
+				System.out.println("avant lecture : " + joueurs);
+				List<Joueur> j;
+				ObjectInputStream ois;
+				try {
+					client.lancerRequete("l");
+					ois = new ObjectInputStream(client.getSocket().getInputStream());
+					j = (List<Joueur>) ois.readObject();
+					joueurs = new ArrayList<>(j);
+					System.out.println("apres lecture : " + joueurs);
+					updateJoueurs();
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			Thread.sleep(3000);
 		}
 	}
 
-	private void readInitStream() {
-		// TODO
+//	BufferedReader fluxEntrant = new BufferedReader(
+//	new InputStreamReader(this.client.getSocket().getInputStream()));
+//ligne = fluxEntrant.readLine();
+//if (ligne != null) {
+//String reponse = ligne; // calcul de la reponse
+//char c = reponse.charAt(0);
+//switch (c) {
+//case 's':
+//	VueJeuMultiCoop vj = new VueJeuMultiCoop(numJoueur, joueur, partie.getJoueurs(),
+//			((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
+//			((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+//	break;
+//case 'i':
+//	if (this.estHote) {
+//		// Envoi des infos au serveur
+//		ObjectOutputStream oop = new ObjectOutputStream(client.getSocket().getOutputStream());
+//		PrintStream fluxSortant = new PrintStream(client.getSocket().getOutputStream());
+//		oop.writeObject(this.img);
+//		// fluxSortant.println(this.estCoop ? "coop" : "compet");
+//		// fluxSortant.println(this.taille);
+//	}
+//	break;
+//}
+//}
+
+	private void readInitStream() throws IOException, ClassNotFoundException {
+		if (!estHote) {
+			ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
+			// BufferedReader fluxEntrant = new BufferedReader(
+			// new InputStreamReader(this.client.getSocket().getInputStream()));
+
+			client.lancerRequete("i");
+			Image newImg = (Image) ois.readObject();
+			// String newTaille = fluxEntrant.readLine();
+			// String newType = fluxEntrant.readLine();
+
+			// this.taille = Integer.parseInt(newTaille);
+			// this.estCoop = newType == "cooperative";
+
+			this.updateInfos();
+		}
 	}
 
 	private void lancerThread() {
