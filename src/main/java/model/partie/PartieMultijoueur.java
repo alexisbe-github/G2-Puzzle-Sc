@@ -33,19 +33,9 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 			Joueur jcourant = mapEntry.getKey();
 			Socket scourant = mapEntry.getValue();
+
 			ObjectOutputStream oop = new ObjectOutputStream(scourant.getOutputStream());
 			oop.writeObject(joueurs);
-			PrintStream fluxSortant = new PrintStream(scourant.getOutputStream());
-			fluxSortant.println("c");
-		}
-	}
-	
-	public void envoyerLancement() throws IOException {
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur jcourant = mapEntry.getKey();
-			Socket scourant = mapEntry.getValue();
-			PrintStream fluxSortant = new PrintStream(scourant.getOutputStream());
-			fluxSortant.println("s");
 		}
 	}
 

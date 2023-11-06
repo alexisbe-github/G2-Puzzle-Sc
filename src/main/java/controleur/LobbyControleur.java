@@ -1,10 +1,8 @@
 package main.java.controleur;
 
 import java.awt.print.Printable;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.nio.file.Files;
@@ -26,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.model.EDeplacement;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
@@ -126,44 +123,31 @@ public class LobbyControleur implements Initializable {
 	private void lancerPartieMulti() throws IOException {
 		byte[] newImg = Utils.imageToByteArray(img, null);
 		partie.lancerPartie(newImg, taille);
-		client.lancerRequete("s");
+		VueJeuMultiCoop vj = new VueJeuMultiCoop(taille, newImg, numJoueur, joueur, partie.getJoueurs(),
+				((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
+				((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
 		if (!flagThread) {
 			flagThread = true;
 			while (true) {
-				System.out.println("début while true");
 				Platform.runLater(() -> {
-					System.out.println("début runLater");
+					System.out.println("avant lecture : " + joueurs);
+					List<Joueur> j;
+					ObjectInputStream ois;
 					try {
-						String ligne = "";
-						BufferedReader fluxEntrant = new BufferedReader(
-								new InputStreamReader(this.client.getSocket().getInputStream()));
-						ligne = fluxEntrant.readLine();
-						if (ligne != null) {
-							String reponse = ligne; // calcul de la reponse
-							char c = reponse.charAt(0);
-							switch (c) {
-								case 's':
-									VueJeuMultiCoop vj = new VueJeuMultiCoop(taille, numJoueur, joueur, partie.getJoueurs(),
-											((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-											((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
-									break;
-								case 'c':
-									System.out.println("avant lecture : " + joueurs);
-									List<Joueur> j;
-									ObjectInputStream ois;
-									client.lancerRequete("l");
-									ois = new ObjectInputStream(client.getSocket().getInputStream());
-									j = (List<Joueur>) ois.readObject();
-									flagThread = false;
-									joueurs = new ArrayList<>(j);
-									System.out.println("apres lecture : " + joueurs);
-									updateJoueurs();
-							}
-						}
-					} catch (ClassNotFoundException | IOException e) {
+						client.lancerRequete("l");
+						ois = new ObjectInputStream(client.getSocket().getInputStream());
+						j = (List<Joueur>) ois.readObject();
+						flagThread = false;
+						joueurs = new ArrayList<>(j);
+						System.out.println("apres lecture : " + joueurs);
+						updateJoueurs();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -174,7 +158,7 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void readInitStream() {
-		// TODO
+		//TODO
 	}
 
 	private void lancerThread() {
@@ -182,7 +166,11 @@ public class LobbyControleur implements Initializable {
 		new Thread(() -> {
 			try {
 				readStream();
-			} catch (ClassNotFoundException | IOException | InterruptedException e) {
+
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

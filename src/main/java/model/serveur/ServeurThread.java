@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import main.java.model.EDeplacement;
 import main.java.model.joueur.Joueur;
+import main.java.model.partie.PartieMultijoueur;
 
 public class ServeurThread extends Thread {
 
@@ -70,8 +71,6 @@ public class ServeurThread extends Thread {
 						case 'l':
 							serveur.getPartie().envoyerJoueurs();
 							break;
-						case 's':
-							serveur.getPartie().envoyerLancement();
 						}
 					}
 				}
