@@ -2,6 +2,8 @@ package main.java.model.bdd.dao.beans;
 
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 /**
  * <code>{@link <a href=
  * "https://fr.wikipedia.org/wiki/JavaBeans">Java Bean</a>}</code> correspondant
@@ -14,6 +16,7 @@ public class JoueurSQL implements Serializable {
 
 	private long id;
 	private String pseudo;
+	private ImageIcon pp;
 
 	/**
 	 * @return L'identifiant
@@ -41,6 +44,20 @@ public class JoueurSQL implements Serializable {
 	 */
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
+	}
+
+	/**
+	 * @return La photo de profil
+	 */
+	public ImageIcon getPp() {
+		return pp;
+	}
+
+	/**
+	 * @param pp La photo de profil à mettre à jour
+	 */
+	public void setPp(ImageIcon pp) {
+		this.pp = pp;
 	}
 
 }

@@ -1,15 +1,13 @@
 package main.java.model.bdd;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import main.resources.utils.EnvironmentVariablesUtils;
 
 public enum Connexion {
 	INSTANCE;
@@ -17,18 +15,6 @@ public enum Connexion {
 	private Connection connection = null;
 
 	Connexion() {
-//		try {
-//
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-//
-//			this.connection = DriverManager.getConnection(EnvironmentVariablesUtils.getBDDURL(),
-//					EnvironmentVariablesUtils.getBDDUSER(), EnvironmentVariablesUtils.getBDDMDP());
-//
-//		} catch (SQLException | ClassNotFoundException e) {
-//			System.err.println("Erreur lors de la connexion : " + e.getMessage());
-//		}
-		
-		Connection connexion;
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:comp/env");
@@ -39,7 +25,6 @@ public enum Connexion {
 		}
 	}
 
-	// Static getter
 	public static Connexion getInstance() {
 		return INSTANCE;
 	}
@@ -47,7 +32,7 @@ public enum Connexion {
 	public Connection getConnection() {
 		return connection;
 	}
-	
+
 	/**
 	 * Ferme la connexion
 	 */
@@ -56,7 +41,7 @@ public enum Connexion {
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				
+
 			}
 			connection = null;
 		}
