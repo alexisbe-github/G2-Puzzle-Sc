@@ -44,25 +44,170 @@ public class IATest {
 		// on inverse l'index de premiere ligne, derniere col AVEC troisième ligne
 		// derniere col pour dire à l'algorithme de placer le premier à l'emplacement du
 		// deuxième
-		Point point = chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle());
-		Point point2 = chercherCoordonneesIndex(puzzle.getTaille() * 3 - 1, noeud.getPuzzle());
-		noeud.getPuzzle().getGrille()[point.x][point.y] = new Case(puzzle.getTaille() * 3 - 1);
-		noeud.getPuzzle().getGrille()[point2.x][point2.y] = new Case(puzzle.getTaille() - 1);
-		System.out.println(noeud.getPuzzle());
-		while (manhattanDistance(puzzle.getTaille() * 3 - 1, noeud.getPuzzle()) != 0) {
-			deplacer(noeud.getPuzzle(), puzzle.getTaille() * 3 - 1);
+		if (!(chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle()).x == puzzle.getTaille() - 1
+				&& chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle()).y == 0)) {
+			debloquerCaseVideDuCoin(noeud.getPuzzle(), Case.INDEX_CASE_VIDE);
+			if (!(chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle()).x == puzzle.getTaille() - 1
+					&& chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle()).y == 0)) {
+				Point point = chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle());
+				Point point2 = chercherCoordonneesIndex(puzzle.getTaille() * 3 - 1, noeud.getPuzzle());
+				noeud.getPuzzle().getGrille()[point.x][point.y] = new Case(puzzle.getTaille() * 3 - 1);
+				noeud.getPuzzle().getGrille()[point2.x][point2.y] = new Case(puzzle.getTaille() - 1);
+				System.out.println(noeud.getPuzzle());
+
+				while (manhattanDistance(puzzle.getTaille() * 3 - 1, noeud.getPuzzle()) != 0) {
+					int man = manhattanDistance(puzzle.getTaille() * 3 - 1, noeud.getPuzzle());
+					System.out.println(man);
+					deplacer(noeud.getPuzzle(), puzzle.getTaille() * 3 - 1);
+				}
+
+				deplacerCaseVidePourDerniereCaseLigne(noeud.getPuzzle());
+				deplacerDerniereCaseVersPremiereLigne(noeud.getPuzzle(), puzzle.getTaille() * 3 - 1);
+				Point point3 = chercherCoordonneesIndex(puzzle.getTaille() - 1, noeud.getPuzzle());
+				Point point4 = chercherCoordonneesIndex(puzzle.getTaille() * 3 - 1, noeud.getPuzzle());
+				noeud.getPuzzle().getGrille()[point3.x][point3.y] = new Case(puzzle.getTaille() * 3 - 1);
+				noeud.getPuzzle().getGrille()[point4.x][point4.y] = new Case(puzzle.getTaille() - 1);
+			}
+		}
+
+		// on résoud la prmière colonne maintenant
+		for (int index = 1; index < puzzle.getTaille() - 1; index++) {
+			while (manhattanDistance(index * puzzle.getTaille(), noeud.getPuzzle()) != 0) {
+				deplacerPourColonne(noeud.getPuzzle(), index * puzzle.getTaille());
+				System.out.println(index * puzzle.getTaille());
+			}
 		}
 
 		System.out.println(noeud.getPuzzle());
 		return solution;
 	}
 
-	private static void deplacer(Puzzle puzzle, int index) {
+	private static void deplacerCaseVidePourDerniereCaseLigne(Puzzle puzzle) {
+		int xCaseVide = chercherCoordonneesIndex(Case.INDEX_CASE_VIDE, puzzle).x;
+		int yCaseVide = chercherCoordonneesIndex(Case.INDEX_CASE_VIDE, puzzle).y;
+		System.out.println("ON DEPLACE");
+		if (xCaseVide == puzzle.getTaille() - 1 && yCaseVide == 1) {
+			puzzle.deplacerCase(EDeplacement.DROITE);
+			System.out.println(puzzle);
+		} else {
+			if (xCaseVide == puzzle.getTaille() - 1 && yCaseVide == 3) {
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+			} else {
+				if (xCaseVide == puzzle.getTaille() - 2 && yCaseVide == 2) {
+					puzzle.deplacerCase(EDeplacement.BAS);
+					System.out.println(puzzle);
+				}
+			}
+			System.out.println("ON A FINI LE DP");
+		}
+	}
+
+	private static void deplacerDerniereCaseVersPremiereLigne(Puzzle puzzle, int index) {
+		puzzle.deplacerCase(EDeplacement.GAUCHE);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.BAS);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.DROITE);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.HAUT);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.GAUCHE);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.HAUT);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.DROITE);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.BAS);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.BAS);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.GAUCHE);
+		System.out.println(puzzle);
+		puzzle.deplacerCase(EDeplacement.HAUT);
+		System.out.println(puzzle);
+	}
+
+	private static void debloquerCaseVideDuCoin(Puzzle puzzle, int index) {
+		if ((index == Case.INDEX_CASE_VIDE)
+				&& chercherCoordonneesIndex(Case.INDEX_CASE_VIDE, puzzle).x == puzzle.getTaille() - 1
+				&& chercherCoordonneesIndex(Case.INDEX_CASE_VIDE, puzzle).y == 0) {
+			System.out.println("================DEBUT===============");
+			puzzle.deplacerCase(EDeplacement.HAUT);
+			System.out.println(puzzle);
+			if (chercherCoordonneesIndex(index, puzzle).x == puzzle.getTaille() - 1
+					&& chercherCoordonneesIndex(index, puzzle).y == 0) {
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.GAUCHE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.GAUCHE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.GAUCHE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.GAUCHE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.HAUT);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.GAUCHE);
+				System.out.println(puzzle);
+			}
+			System.out.println("==============FIN=============");
+
+		}
+	}
+
+	private static void deplacerPourColonne(Puzzle puzzle, int index) {
 		boolean res;
-		Point coordonneesIndex = chercherCoordonneesIndex(index, puzzle);
+
 		do {
-			deplacerEnX(puzzle, index, coordonneesIndex);
-			deplacerEnY(puzzle, index, coordonneesIndex);
+			Point coordonneesIndex = chercherCoordonneesIndex(index, puzzle);
+			deplacerEnXLigne(puzzle, index, coordonneesIndex);
+			deplacerEnYLigne(puzzle, index, coordonneesIndex);
 			res = true;
 			if (getDistanceX(index, puzzle) > 0) {
 				res = puzzle.getXCaseVide() - coordonneesIndex.x < 0 && puzzle.getYCaseVide() - coordonneesIndex.y == 0;
@@ -76,7 +221,45 @@ public class IATest {
 				}
 			}
 		} while (!res);
+		puzzle.deplacerCase(deplacerIndexVersCaseVide(puzzle, index, chercherCoordonneesIndex(index, puzzle)));
+		System.out.println(puzzle);
 
+	}
+
+	private static void deplacer(Puzzle puzzle, int index) {
+		boolean res;
+
+		do {
+			Point coordonneesIndex = chercherCoordonneesIndex(index, puzzle);
+			// si la case vide est sur la même colonne et en dessous et dernière colonne
+			if (getDistanceY(index, puzzle) > 0 && puzzle.getYCaseVide() > coordonneesIndex.y
+					&& puzzle.getXCaseVide() == coordonneesIndex.x && puzzle.getXCaseVide() == puzzle.getTaille() - 1) {
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.DROITE);
+				System.out.println(puzzle);
+				puzzle.deplacerCase(EDeplacement.BAS);
+				System.out.println(puzzle);
+			}
+			deplacerEnXLigne(puzzle, index, coordonneesIndex);
+			deplacerEnYLigne(puzzle, index, coordonneesIndex);
+			res = true;
+			if (getDistanceX(index, puzzle) > 0) {
+				res = puzzle.getXCaseVide() - coordonneesIndex.x < 0 && puzzle.getYCaseVide() - coordonneesIndex.y == 0;
+			} else {
+				if (getDistanceX(index, puzzle) < 0) {
+					res = puzzle.getXCaseVide() - coordonneesIndex.x > 0
+							&& puzzle.getYCaseVide() - coordonneesIndex.y == 0;
+				} else {
+					res = puzzle.getXCaseVide() - coordonneesIndex.x == 0
+							&& puzzle.getYCaseVide() - coordonneesIndex.y == -1;
+				}
+			}
+		} while (!res);
 		puzzle.deplacerCase(deplacerIndexVersCaseVide(puzzle, index, chercherCoordonneesIndex(index, puzzle)));
 		System.out.println(puzzle);
 	}
@@ -94,7 +277,7 @@ public class IATest {
 		return null;
 	}
 
-	private static void deplacerEnX(Puzzle puzzle, int index, Point coordonneesIndex) {
+	private static void deplacerEnXLigne(Puzzle puzzle, int index, Point coordonneesIndex) {
 
 		// cas où la case vide se trouve en dessous
 		if (puzzle.getYCaseVide() == coordonneesIndex.y + 1 && puzzle.getXCaseVide() == coordonneesIndex.x) {
@@ -213,7 +396,7 @@ public class IATest {
 		}
 	}
 
-	private static void deplacerEnY(Puzzle puzzle, int index, Point coordonneesIndex) {
+	private static void deplacerEnYLigne(Puzzle puzzle, int index, Point coordonneesIndex) {
 
 		// si la case à déplacer n'est pas sur la même ligne que là où elle doit être
 		if (getDistanceY(index, puzzle) != 0) {
@@ -271,7 +454,7 @@ public class IATest {
 			// si la case à déplacer est sur la même colonne que là où elle doit être
 
 			// si la case vide est au dessus et pas sur la même colonne
-			if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() < coordonneesIndex.y - 1) {
+			if (puzzle.getXCaseVide() != coordonneesIndex.x && puzzle.getYCaseVide() < coordonneesIndex.y) {
 				puzzle.deplacerCase(EDeplacement.HAUT);
 				System.out.println(puzzle);
 			} else {
@@ -308,6 +491,7 @@ public class IATest {
 								System.out.println(puzzle);
 							} else {
 								// si la case vide est sur la même colonne et en dessous
+
 								if (puzzle.getYCaseVide() > coordonneesIndex.y + 1
 										&& puzzle.getXCaseVide() == coordonneesIndex.x
 										&& !(puzzle.getXCaseVide() < index && puzzle.getYCaseVide() == 1)) {
