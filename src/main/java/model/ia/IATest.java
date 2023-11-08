@@ -2,11 +2,7 @@ package main.java.model.ia;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import main.java.model.Case;
 import main.java.model.EDeplacement;
@@ -70,14 +66,12 @@ public class IATest {
 			}
 		}
 
+		System.out.println(noeud.getPuzzle());
+		
 		// on résoud la prmière colonne maintenant
-		for (int index = 1; index < puzzle.getTaille() - 1; index++) {
-			while (manhattanDistance(index * puzzle.getTaille(), noeud.getPuzzle()) != 0) {
-				deplacerPourColonne(noeud.getPuzzle(), index * puzzle.getTaille());
-				System.out.println(index * puzzle.getTaille());
-			}
-		}
-
+		SystemeExpertColonne sec = new SystemeExpertColonne();
+		sec.solveColonne(noeud.getPuzzle());
+		
 		System.out.println(noeud.getPuzzle());
 		return solution;
 	}
@@ -199,31 +193,6 @@ public class IATest {
 			System.out.println("==============FIN=============");
 
 		}
-	}
-
-	private static void deplacerPourColonne(Puzzle puzzle, int index) {
-		boolean res;
-
-		do {
-			Point coordonneesIndex = chercherCoordonneesIndex(index, puzzle);
-			deplacerEnXLigne(puzzle, index, coordonneesIndex);
-			deplacerEnYLigne(puzzle, index, coordonneesIndex);
-			res = true;
-			if (getDistanceX(index, puzzle) > 0) {
-				res = puzzle.getXCaseVide() - coordonneesIndex.x < 0 && puzzle.getYCaseVide() - coordonneesIndex.y == 0;
-			} else {
-				if (getDistanceX(index, puzzle) < 0) {
-					res = puzzle.getXCaseVide() - coordonneesIndex.x > 0
-							&& puzzle.getYCaseVide() - coordonneesIndex.y == 0;
-				} else {
-					res = puzzle.getXCaseVide() - coordonneesIndex.x == 0
-							&& puzzle.getYCaseVide() - coordonneesIndex.y == -1;
-				}
-			}
-		} while (!res);
-		puzzle.deplacerCase(deplacerIndexVersCaseVide(puzzle, index, chercherCoordonneesIndex(index, puzzle)));
-		System.out.println(puzzle);
-
 	}
 
 	private static void deplacer(Puzzle puzzle, int index) {
