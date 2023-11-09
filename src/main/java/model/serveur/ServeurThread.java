@@ -69,10 +69,7 @@ public class ServeurThread extends Thread {
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
 						case 'l':
-							serveur.getPartie().envoyerJoueurs(false);
-							break;
-						case 's':
-							serveur.getPartie().envoyerJoueurs(true);
+							serveur.getPartie().envoyerJoueurs();
 							break;
 						}
 						
