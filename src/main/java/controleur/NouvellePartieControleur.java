@@ -201,7 +201,7 @@ public class NouvellePartieControleur implements Initializable{
 					Client c = new Client(j);
 					c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
 					
-					LobbyControleur lc = new LobbyControleur(vg, pm, j, true, imageChoisie, taille, c);
+					LobbyControleur lc = new LobbyControleur(vg, pm, j, true, Utils.imageToByteArray(imageChoisie, null), taille, c);
 					vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
 					
 				}else if(multiCompetRadio.isSelected()) {
