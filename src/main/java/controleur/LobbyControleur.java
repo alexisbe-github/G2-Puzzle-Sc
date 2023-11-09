@@ -1,19 +1,14 @@
 package main.java.controleur;
 
-import java.awt.print.Printable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -36,13 +31,13 @@ public class LobbyControleur implements Initializable {
 	private Joueur joueur;
 	private boolean estHote;
 	private boolean estCoop;
-	private boolean flagThread = false;
 	private Stage owner;
 	private Image img;
 	private int taille;
 	private int numJoueur = 1; // DEBUG
 	private Client client;
 	private PartieMultijoueur partie;
+	private boolean flagLancement = false;
 
 	private List<Joueur> joueurs = new ArrayList<>();
 
@@ -61,24 +56,22 @@ public class LobbyControleur implements Initializable {
 	@FXML
 	private Label labelType;
 
-	public LobbyControleur(Stage stage, Joueur j, Client client, boolean estHote) throws IOException {
+	public LobbyControleur(Stage stage, Joueur j, Client client) throws IOException {
 		this.owner = stage;
-		this.estHote = estHote;
+		this.estHote = false;
 		this.client = client;
-		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 		this.joueur = j;
 	}
 
-	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estHote, boolean estCoop, Image img,
-			int taille, Client client) throws IOException {
+	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estCoop, Image img, int taille,
+			Client client) throws IOException {
 		this.owner = stage;
-		this.estHote = estHote;
+		this.estHote = true;
 		this.estCoop = estCoop;
 		this.img = img;
 		this.taille = taille;
 		this.client = client;
 		this.partie = partie;
-		byte[] imgjoueur = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 		this.joueur = j;
 	}
 
@@ -123,42 +116,57 @@ public class LobbyControleur implements Initializable {
 	private void lancerPartieMulti() throws IOException {
 		byte[] newImg = Utils.imageToByteArray(img, null);
 		partie.lancerPartie(newImg, taille);
-		VueJeuMultiCoop vj = new VueJeuMultiCoop(taille, newImg, numJoueur, joueur, partie.getJoueurs(),
-				((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-				((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+		this.flagLancement = true;
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
-		if (!flagThread) {
-			flagThread = true;
-			while (true) {
-				Platform.runLater(() -> {
-					System.out.println("avant lecture : " + joueurs);
-					List<Joueur> j;
-					ObjectInputStream ois;
-					try {
+		while (true) {
+			Platform.runLater(() -> {
+				System.out.println("avant lecture : " + joueurs);
+				List<Joueur> j;
+				ObjectInputStream ois;
+
+				try {
+					ois = new ObjectInputStream(client.getSocket().getInputStream());
+
+					List<Object> tab = (List<Object>) ois.readObject();
+
+					if (flagLancement)
+						client.lancerRequete("s");
+					else
 						client.lancerRequete("l");
-						ois = new ObjectInputStream(client.getSocket().getInputStream());
-						j = (List<Joueur>) ois.readObject();
-						flagThread = false;
-						joueurs = new ArrayList<>(j);
-						System.out.println("apres lecture : " + joueurs);
-						updateJoueurs();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
+					if (tab.get(0) instanceof String) {
+						if (tab.get(0).equals("s")) {
+							VueJeuMultiCoop vj = new VueJeuMultiCoop(numJoueur, joueur, partie.getJoueurs(),
+									((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
+									((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+							
+						}
+						
 					}
-				});
-				Thread.sleep(5000);
-			}
+
+					if (tab.get(1) instanceof List) {
+						j = (List<Joueur>) tab.get(1);
+						this.joueurs = new ArrayList<>(j);
+						this.updateJoueurs();
+					}
+
+					System.out.println("apres lecture : " + joueurs);
+
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+
+			});
+
+			Thread.sleep(2000);
 		}
+
 	}
 
 	private void readInitStream() {
-		//TODO
+		// TODO
 	}
 
 	private void lancerThread() {
@@ -166,11 +174,7 @@ public class LobbyControleur implements Initializable {
 		new Thread(() -> {
 			try {
 				readStream();
-
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
+			} catch (InterruptedException | ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
