@@ -68,7 +68,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 				if (rs.first()) {
 					joueur.setId(id);
 					joueur.setPseudo(rs.getString(PSEUDO));
-					joueur.setPp(new ImageIcon(rs.getString(PHOTO_PROFIL)));
+					joueur.setUrlPp(rs.getString(PHOTO_PROFIL));
 				}
 			}
 		} catch (SQLException e) {
@@ -129,7 +129,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 			try (PreparedStatement pstmt2 = connexion.prepareStatement("INSERT INTO " + JOUEUR + " VALUES (?, ?, ?);")) {
 				pstmt2.setLong(1, joueur.getId());
 				pstmt2.setString(2, joueur.getPseudo());
-				pstmt2.setString(3, joueur.getPp().getDescription());
+				pstmt2.setString(3, joueur.getUrlPp());
 				pstmt2.execute();
 			}
 		} catch (SQLException e) {
@@ -150,7 +150,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 		try (PreparedStatement pstmt = connexion
 				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ?, " + PHOTO_PROFIL + " = ?, "  + " WHERE " + ID + " = ?")) {
 			pstmt.setString(1, joueur.getPseudo());
-			pstmt.setString(2, joueur.getPp().getDescription());
+			pstmt.setString(2, joueur.getUrlPp());
 			pstmt.setLong(3, joueur.getId());
 			pstmt.execute();
 		} catch (SQLException e) {
@@ -173,13 +173,5 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) throws MalformedURLException {
-		DAOJoueur dao = new DAOJoueur();
-		JoueurSQL j = new JoueurSQL();
-		j.setPseudo("yo");
-		j.setPp(new ImageIcon(new URL("https://example.com")));
-		dao.creer(j);
 	}
 }
