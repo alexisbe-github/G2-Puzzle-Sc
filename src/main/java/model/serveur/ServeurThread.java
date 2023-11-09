@@ -75,6 +75,7 @@ public class ServeurThread extends Thread {
 							serveur.getPartie().envoyerJoueurs(true);
 							break;
 						}
+						
 					}
 				}
 

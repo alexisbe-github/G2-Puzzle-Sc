@@ -3,6 +3,7 @@ package main.java.controleur;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,8 @@ public class LobbyControleur implements Initializable {
 	private boolean estHote;
 	private boolean estCoop;
 	private Stage owner;
-	private Image img;
+	//private Image img;
+	private byte[] img;
 	private int taille;
 	private int numJoueur = 1; // DEBUG
 	private Client client;
@@ -63,7 +65,7 @@ public class LobbyControleur implements Initializable {
 		this.joueur = j;
 	}
 
-	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estCoop, Image img, int taille,
+	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estCoop, byte[] img, int taille,
 			Client client) throws IOException {
 		this.owner = stage;
 		this.estHote = true;
@@ -80,6 +82,13 @@ public class LobbyControleur implements Initializable {
 		lancerPartie.setManaged(estHote);
 		this.updateInfos();
 		this.lancerThread();
+//		if(this.estHote)
+//			try {
+//				this.sendInitStream();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 	}
 
 	private void updateJoueurs() {
@@ -106,16 +115,16 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void updateInfos() {
-		// TODO
-		this.imagePuzzle.setImage(img);
-		this.labelTaille.setText("Taille : " + this.taille);
-		this.labelType.setText("Partie " + (estCoop ? "coopérative" : "compétitive"));
+		if(img!=null && taille>2) {
+			this.imagePuzzle.setImage(new Image(new ByteArrayInputStream(this.img)));
+			this.labelTaille.setText("Taille : " + this.taille);
+			this.labelType.setText("Partie " + (estCoop ? "coopérative" : "compétitive"));
+		}
 	}
 
 	@FXML
 	private void lancerPartieMulti() throws IOException {
-		byte[] newImg = Utils.imageToByteArray(img, null);
-		partie.lancerPartie(newImg, taille);
+		partie.lancerPartie(this.img, taille);
 		this.flagLancement = true;
 	}
 
@@ -129,29 +138,34 @@ public class LobbyControleur implements Initializable {
 				try {
 					ois = new ObjectInputStream(client.getSocket().getInputStream());
 
-					List<Object> tab = (List<Object>) ois.readObject();
+					Object oisObj = ois.readObject();
+					
+					if(oisObj instanceof List) {
+						
+						List<Object> tab = (List<Object>) oisObj;
 
-					if (flagLancement)
-						client.lancerRequete("s");
-					else
-						client.lancerRequete("l");
+						if (flagLancement)
+							client.lancerRequete("s");
+						else
+							client.lancerRequete("l");
 
-					if (tab.get(0) instanceof String) {
-						if (tab.get(0).equals("s")) {
-							VueJeuMultiCoop vj = new VueJeuMultiCoop(numJoueur, joueur, partie.getJoueurs(),
-									((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-									((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+						if (tab.get(0) instanceof String) {
+							if (tab.get(0).equals("s")) {
+								VueJeuMultiCoop vj = new VueJeuMultiCoop(numJoueur, joueur, partie.getJoueurs(),
+										((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
+										((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+							}
 							
+						}
+
+						if (tab.get(1) instanceof List) {
+							j = (List<Joueur>) tab.get(1);
+							this.joueurs = new ArrayList<>(j);
+							this.updateJoueurs();
 						}
 						
 					}
-
-					if (tab.get(1) instanceof List) {
-						j = (List<Joueur>) tab.get(1);
-						this.joueurs = new ArrayList<>(j);
-						this.updateJoueurs();
-					}
-
+					
 					System.out.println("apres lecture : " + joueurs);
 
 				} catch (IOException | ClassNotFoundException e) {
@@ -164,9 +178,22 @@ public class LobbyControleur implements Initializable {
 		}
 
 	}
+	
+//	private void sendInitStream() throws IOException {
+//		//TODO
+//		client.lancerRequete("i");
+//		ObjectOutputStream oos = new ObjectOutputStream(client.getSocket().getOutputStream());
+//		List<Object> output = new ArrayList<Object>();
+//		output.add(true);
+//		output.add(this.img);
+//		output.add(this.taille);
+//		output.add(this.estCoop);
+//		oos.writeObject(output);
+//	}
 
 	private void readInitStream() {
 		// TODO
+		
 	}
 
 	private void lancerThread() {
