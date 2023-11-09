@@ -1,12 +1,10 @@
 package main.java.model.partie;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +23,34 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 	public void ajouterJoueur(Joueur j, Socket s) throws IOException {
 		joueurs.add(j);
 		tableSocketDesJoueurs.put(j, s);
-		this.envoyerJoueurs();
+		this.envoyerJoueurs(false);
 		System.out.println(joueurs);
 	}
-	
-	public void envoyerJoueurs() throws IOException {
+
+	public void envoyerJoueurs(boolean lancement) throws IOException {
+		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
+			Joueur jcourant = mapEntry.getKey();
+			Socket scourant = mapEntry.getValue();
+
+			List<Object> output = new ArrayList<Object>();
+			if (lancement)
+				output.add("s");
+			else
+				output.add("c");
+			output.add(joueurs);
+
+			ObjectOutputStream oop = new ObjectOutputStream(scourant.getOutputStream());
+			oop.writeObject(output);
+		}
+	}
+
+	public void envoyerLancement() throws IOException {
 		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
 			Joueur jcourant = mapEntry.getKey();
 			Socket scourant = mapEntry.getValue();
 
 			ObjectOutputStream oop = new ObjectOutputStream(scourant.getOutputStream());
-			oop.writeObject(joueurs);
+			oop.writeObject("s");
 		}
 	}
 
@@ -46,5 +61,5 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 	public Map<Joueur, Socket> getTableSocketDesJoueurs() {
 		return tableSocketDesJoueurs;
 	}
-	
+
 }
