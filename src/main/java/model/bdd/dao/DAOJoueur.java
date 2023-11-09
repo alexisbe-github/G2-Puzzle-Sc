@@ -126,7 +126,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 				}
 			}
 
-			try (PreparedStatement pstmt2 = connexion.prepareStatement("INSERT INTO " + JOUEUR + " VALUES (?, ?, ?);")) {
+			try (PreparedStatement pstmt2 = connexion.prepareStatement("INSERT INTO " + JOUEUR + " VALUES (?, ?, ?)")) {
 				pstmt2.setLong(1, joueur.getId());
 				pstmt2.setString(2, joueur.getPseudo());
 				pstmt2.setString(3, joueur.getUrlPp());
@@ -148,7 +148,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	public JoueurSQL maj(JoueurSQL joueur) {
 		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion
-				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ?, " + PHOTO_PROFIL + " = ?, "  + " WHERE " + ID + " = ?")) {
+				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ?, " + PHOTO_PROFIL + " = ? WHERE " + ID + " = ?")) {
 			pstmt.setString(1, joueur.getPseudo());
 			pstmt.setString(2, joueur.getUrlPp());
 			pstmt.setLong(3, joueur.getId());
