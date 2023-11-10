@@ -4,37 +4,55 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import main.resources.utils.EnvironmentVariablesUtils;
 
-public enum Connexion
-{
-    INSTANCE;
+public enum Connexion {
+	INSTANCE;
 
-    // instance vars, constructor
-    private Connection connection = null;
+	private Connection connection = null;
 
-    Connexion()
-    {
-    	try {
-
+	Connexion() {
+		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			this.connection = DriverManager.getConnection(EnvironmentVariablesUtils.getBDDURL(),
+			Connection c = DriverManager.getConnection(EnvironmentVariablesUtils.getBDDURL(),
 					EnvironmentVariablesUtils.getBDDUSER(), EnvironmentVariablesUtils.getBDDMDP());
-
-		} catch (SQLException | ClassNotFoundException e) {
+			if (c != null) {
+				this.connection = c;
+			} else {
+				Context initContext = new InitialContext();
+				Context envContext = (Context) initContext.lookup("java:comp/env");
+				DataSource dataSource = (DataSource) envContext.lookup("jdbc/taquin");
+				this.connection = dataSource.getConnection();
+			}
+		} catch (NamingException | ClassNotFoundException | SQLException e) {
 			System.err.println("Erreur lors de la connexion : " + e.getMessage());
 		}
-    }
+	}
 
-    // Static getter
-    public static Connexion getInstance()
-    {
-        return INSTANCE;
-    }
+	public static Connexion getInstance() {
+		return INSTANCE;
+	}
 
-    public Connection getConnection()
-    {
-        return connection;
-    }
+	public Connection getConnection() {
+		return connection;
+	}
+
+	/**
+	 * Ferme la connexion
+	 */
+	public void fermerConnexion() {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+			}
+			connection = null;
+		}
+	}
 }

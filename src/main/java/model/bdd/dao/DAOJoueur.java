@@ -1,11 +1,15 @@
 package main.java.model.bdd.dao;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import main.java.model.bdd.Connexion;
 import main.java.model.bdd.dao.beans.JoueurSQL;
@@ -39,6 +43,11 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	 * Colonne <code><i>nom</i></code>, correspondant au pseudonyme des joueurs.
 	 */
 	private final String PSEUDO = "pseudo";
+	/**
+	 * Colonne <code><i>photo_profil</i></code>, correspondant à l'URI de la photo
+	 * de profil des joueurs.
+	 */
+	private final String PHOTO_PROFIL = "photo_profil";
 
 	/**
 	 * {@inheritDoc}
@@ -59,6 +68,7 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 				if (rs.first()) {
 					joueur.setId(id);
 					joueur.setPseudo(rs.getString(PSEUDO));
+					joueur.setUrlPp(rs.getString(PHOTO_PROFIL));
 				}
 			}
 		} catch (SQLException e) {
@@ -116,9 +126,10 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 				}
 			}
 
-			try (PreparedStatement pstmt2 = connexion.prepareStatement("INSERT INTO " + JOUEUR + " VALUES (?, ?);")) {
+			try (PreparedStatement pstmt2 = connexion.prepareStatement("INSERT INTO " + JOUEUR + " VALUES (?, ?, ?)")) {
 				pstmt2.setLong(1, joueur.getId());
 				pstmt2.setString(2, joueur.getPseudo());
+				pstmt2.setString(3, joueur.getUrlPp());
 				pstmt2.execute();
 			}
 		} catch (SQLException e) {
@@ -137,9 +148,10 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 	public JoueurSQL maj(JoueurSQL joueur) {
 		Connection connexion = Connexion.getInstance().getConnection();
 		try (PreparedStatement pstmt = connexion
-				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ? WHERE " + ID + " = ?")) {
+				.prepareStatement("UPDATE " + JOUEUR + " SET " + PSEUDO + " = ?, " + PHOTO_PROFIL + " = ? WHERE " + ID + " = ?")) {
 			pstmt.setString(1, joueur.getPseudo());
-			pstmt.setLong(2, joueur.getId());
+			pstmt.setString(2, joueur.getUrlPp());
+			pstmt.setLong(3, joueur.getId());
 			pstmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,5 +174,4 @@ public class DAOJoueur extends DAO<JoueurSQL> {
 			e.printStackTrace();
 		}
 	}
-
 }
