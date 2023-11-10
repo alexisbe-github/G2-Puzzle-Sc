@@ -40,6 +40,7 @@ public class LobbyControleur implements Initializable {
 	private Client client;
 	private PartieMultijoueur partie;
 	private boolean flagLancement = false;
+	private boolean flagThreadEnd = false;
 
 	private List<Joueur> joueurs = new ArrayList<>();
 
@@ -92,10 +93,8 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void updateJoueurs() {
-		System.out.println("c'est censé update les joueurs : joueurs -> " + joueurs);
 		this.boxJoueurs.getChildren().clear();
 		for (Joueur j : joueurs) {
-			System.out.println("infos joueur update : " + j.getNom() + " " + j.getImage().length);
 			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
 			v.setPrefHeight(200);
@@ -127,17 +126,24 @@ public class LobbyControleur implements Initializable {
 		partie.lancerPartie(this.img, taille);
 		this.flagLancement = true;
 	}
+	
+	private void endStream() {
+		
+	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
-		while (true) {
+		
+		client.lancerRequete("l");
+		
+		while (!flagThreadEnd) {
 			Platform.runLater(() -> {
-				System.out.println("avant lecture : " + joueurs);
+				System.out.println("debut lecture");
 				List<Joueur> j;
-				ObjectInputStream ois;
-
+				
 				try {
+					ObjectInputStream ois;
 					ois = new ObjectInputStream(client.getSocket().getInputStream());
-
+					
 					Object oisObj = ois.readObject();
 					
 					if(oisObj instanceof List) {
@@ -154,8 +160,8 @@ public class LobbyControleur implements Initializable {
 								VueJeuMultiCoop vj = new VueJeuMultiCoop(numJoueur, joueur, partie.getJoueurs(),
 										((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
 										((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+								flagThreadEnd = true;
 							}
-							
 						}
 
 						if (tab.get(1) instanceof List) {
@@ -166,7 +172,7 @@ public class LobbyControleur implements Initializable {
 						
 					}
 					
-					System.out.println("apres lecture : " + joueurs);
+					System.out.println("fin lecture");
 
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
@@ -174,7 +180,7 @@ public class LobbyControleur implements Initializable {
 
 			});
 
-			Thread.sleep(2000);
+			Thread.sleep(500);
 		}
 
 	}
@@ -197,7 +203,6 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void lancerThread() {
-		System.out.println("le thread est censé se lancer");
 		new Thread(() -> {
 			try {
 				readStream();
