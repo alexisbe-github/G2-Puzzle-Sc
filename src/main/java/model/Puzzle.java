@@ -14,7 +14,6 @@ import main.java.utils.Utils;
 public class Puzzle implements Serializable, Cloneable {
 
 	public static final int TAILLE_MINI = 3;
-	private final int TAILLE;
 	private Case[][] grille;
 	private BufferedImage image;
 	private int nbCoups;
@@ -25,8 +24,8 @@ public class Puzzle implements Serializable, Cloneable {
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
 	public Puzzle(int taille) {
-		this.TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
-		this.grille = new Case[this.TAILLE][this.TAILLE];
+		final int TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
+		this.grille = new Case[TAILLE][TAILLE];
 		this.initGrille();
 		this.nbCoups = 0;
 	}
@@ -49,14 +48,14 @@ public class Puzzle implements Serializable, Cloneable {
 	 */
 	private void initGrille() {
 		int compteur = 0;
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				this.grille[j][i] = new Case(compteur);
 				compteur++;
 			}
 		}
 
-		this.grille[this.TAILLE - 1][this.TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
+		this.grille[this.grille.length - 1][this.grille.length - 1] = new Case(Case.INDEX_CASE_VIDE);
 		this.melanger();
 	}
 
@@ -67,7 +66,7 @@ public class Puzzle implements Serializable, Cloneable {
 	public void melanger() {
 		Random rd = new Random();
 		do {
-			for (int i = 0; i < Math.pow(this.TAILLE, 4); i++) {
+			for (int i = 0; i < Math.pow(this.grille.length, 4); i++) {
 				int x = Utils.getRandomNumberInRange(0, 3);
 				switch (x) {
 				case 0:
@@ -112,7 +111,7 @@ public class Puzzle implements Serializable, Cloneable {
 			newCoordX += -1;
 			break;
 		}
-		if (newCoordX < this.TAILLE && newCoordX >= 0 && newCoordY < this.TAILLE && newCoordY >= 0) {
+		if (newCoordX < this.grille.length && newCoordX >= 0 && newCoordY < this.grille.length && newCoordY >= 0) {
 			this.echangerCase(new Point(oldCoordX, oldCoordY), new Point(newCoordX, newCoordY));
 		}
 	}
@@ -141,14 +140,14 @@ public class Puzzle implements Serializable, Cloneable {
 	 */
 	public boolean verifierGrille() {
 		int last = -1;
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
-				if (this.grille[j][i].getIndex() <= last && !(i == TAILLE - 1 && j == TAILLE - 1))
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
+				if (this.grille[j][i].getIndex() <= last && !(i == grille.length - 1 && j == grille.length - 1))
 					return false;
 				last = this.grille[j][i].getIndex();
 			}
 		}
-		if (this.grille[TAILLE - 1][TAILLE - 1].getIndex() != -1)
+		if (this.grille[grille.length - 1][grille.length - 1].getIndex() != -1)
 			return false;
 		return true;
 	}
@@ -169,7 +168,7 @@ public class Puzzle implements Serializable, Cloneable {
 	public int getXCaseVide() {
 		int res = -1;
 		for (int i = 0; i < this.grille.length; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				if (this.grille[i][j].getIndex() == Case.INDEX_CASE_VIDE) {
 					res = i;
 				}
@@ -186,7 +185,7 @@ public class Puzzle implements Serializable, Cloneable {
 	public int getYCaseVide() {
 		int res = -1;
 		for (int i = 0; i < this.grille.length; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				if (this.grille[i][j].getIndex() == Case.INDEX_CASE_VIDE) {
 					res = j;
 				}
@@ -202,17 +201,17 @@ public class Puzzle implements Serializable, Cloneable {
 	 */
 	public void decoupageImage() {
 		// Largeur et hauteur des sous-images
-		int height = this.image.getHeight() / this.TAILLE;
-		int width = this.image.getWidth() / this.TAILLE;
+		int height = this.image.getHeight() / this.grille.length;
+		int width = this.image.getWidth() / this.grille.length;
 		int index = -1;
 		// Parcours de la grille
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				// Initialisation de la sous image
 				BufferedImage subImg;
 				index = this.grille[j][i].getIndex();
 				if (index != -1) { // Si la case n'est pas la case vide
-					subImg = this.image.getSubimage(width * (index % this.TAILLE), height * (index / this.TAILLE),
+					subImg = this.image.getSubimage(width * (index % this.grille.length), height * (index / this.grille.length),
 							width, height); // "Découpe" de l'image
 				} else {
 					subImg = Utils.createTransparentBufferedImage(width, height); // Sinon image transparent de la même
@@ -236,16 +235,16 @@ public class Puzzle implements Serializable, Cloneable {
 	}
 
 	public int getTaille() {
-		return this.TAILLE;
+		return this.grille.length;
 	}
 
 	@Override
 	public String toString() {
 		String res = "";
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				res += this.grille[j][i];
-				if (j == this.TAILLE - 1)
+				if (j == this.grille.length - 1)
 					res += "\n";
 				else
 					res += " / ";
@@ -260,11 +259,11 @@ public class Puzzle implements Serializable, Cloneable {
 
 	public List<EDeplacement> listeDeplacementsPossibles() {
 		List<EDeplacement> deplacementsPossibles = new ArrayList<>();
-		if (this.getXCaseVide() < this.TAILLE - 1)
+		if (this.getXCaseVide() < this.grille.length - 1)
 			deplacementsPossibles.add(EDeplacement.GAUCHE);
 		if (this.getXCaseVide() > 0)
 			deplacementsPossibles.add(EDeplacement.DROITE);
-		if (this.getYCaseVide() < this.TAILLE - 1)
+		if (this.getYCaseVide() < this.grille.length - 1)
 			deplacementsPossibles.add(EDeplacement.HAUT);
 		if (this.getYCaseVide() > 0)
 			deplacementsPossibles.add(EDeplacement.BAS);
@@ -287,9 +286,9 @@ public class Puzzle implements Serializable, Cloneable {
 	}
 
 	public Memento saveToMemento() {
-		Case[][] tmp = new Case[this.TAILLE][this.TAILLE];
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+		Case[][] tmp = new Case[this.grille.length][this.grille.length];
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				try {
 					tmp[j][i] = (Case) grille[j][i].clone();
 				} catch (CloneNotSupportedException e) {
@@ -320,7 +319,7 @@ public class Puzzle implements Serializable, Cloneable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Arrays.deepHashCode(grille);
-		result = prime * result + Objects.hash(TAILLE, nbCoups);
+		result = prime * result + Objects.hash(grille.length, nbCoups);
 		return result;
 	}
 
@@ -348,9 +347,9 @@ public class Puzzle implements Serializable, Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		Puzzle clonedPuzzle = (Puzzle) super.clone();
 		// Clonage de la grille
-		Case[][] clonedGrille = new Case[this.TAILLE][this.TAILLE];
-		for (int i = 0; i < this.TAILLE; i++) {
-			for (int j = 0; j < this.TAILLE; j++) {
+		Case[][] clonedGrille = new Case[this.grille.length][this.grille.length];
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
 				clonedGrille[i][j] = new Case(grille[i][j].getIndex());
 			}
 		}
