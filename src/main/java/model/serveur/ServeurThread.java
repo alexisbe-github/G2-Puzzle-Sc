@@ -1,22 +1,19 @@
 package main.java.model.serveur;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.List;
 
 import main.java.model.EDeplacement;
 import main.java.model.joueur.Joueur;
-import main.java.model.partie.PartieMultijoueur;
 
 public class ServeurThread extends Thread {
 
 	private Socket socket;
 	private int noConnexion; // numero du client distant
-	private BufferedReader fluxEntrant;
-	private PrintStream fluxSortant;
+	ObjectInputStream inputStream;
 	private boolean flagJoueurAjoute = false;
 	private Joueur joueur;
 	private Serveur serveur;
@@ -26,29 +23,36 @@ public class ServeurThread extends Thread {
 	 * 
 	 * @param noConnexion : num du client
 	 */
-	public ServeurThread(Socket socket, ThreadGroup groupe, int noConnexion, Serveur serveur)
-			throws IOException {
+	public ServeurThread(Socket socket, ThreadGroup groupe, int noConnexion, Serveur serveur) throws IOException {
 		super(groupe, "ReceveurEnvoyeur");
 		this.socket = socket;
 		this.noConnexion = noConnexion;
 		this.serveur = serveur;
-		fluxEntrant = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		fluxSortant = new PrintStream(this.socket.getOutputStream());
+		inputStream = new ObjectInputStream(socket.getInputStream());
 	}
 
 	@Override
 	public void run() {
-		String ligne;
+		String ligne = null;
+		List<Object> liste = null;
 		String reponse;
 		try {
 			while (!isInterrupted()) {
 				if (!flagJoueurAjoute) {
-					ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 					this.joueur = (Joueur) inputStream.readObject();
 					serveur.getPartie().ajouterJoueur(joueur, socket);
 					flagJoueurAjoute = true;
 				} else {
-					ligne = fluxEntrant.readLine(); // saisit le texte du client
+					Object input = inputStream.readObject();
+					
+					if (input instanceof String)
+						ligne = (String) input;
+					else if (input instanceof List) {
+						liste = (List<Object>) input;
+						if(liste.get(0) instanceof String)
+							ligne = (String) liste.get(0);
+					}
+
 					if (ligne != null) {
 						System.out.println("Le client numéro " + this.noConnexion + " a envoye : ");
 						System.out.println(ligne); // echo de la question sur la console
@@ -69,13 +73,15 @@ public class ServeurThread extends Thread {
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
 						case 'l':
-							serveur.getPartie().envoyerJoueurs(false,socket);
+							serveur.getPartie().envoyerJoueurs(ligne, socket, liste);
 							break;
 						case 's':
-							serveur.getPartie().envoyerJoueurs(true,socket);
+							serveur.getPartie().envoyerJoueurs(ligne, socket, liste);
 							break;
+//						case 'i':
+//							serveur.getPartie().envoyerJoueurs(ligne,socket, liste);
 						}
-						
+
 					}
 				}
 

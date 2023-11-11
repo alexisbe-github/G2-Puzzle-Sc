@@ -44,17 +44,19 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 //		}
 //	}
 
-	public void envoyerJoueurs(boolean lancement, Socket s) throws IOException {
+	public void envoyerJoueurs(String param, Socket s, List<Object> l) throws IOException {
 		List<Object> output = new ArrayList<Object>();
-		
-		if (lancement)
-			output.add("s");
-		else
-			output.add("c");
-		
-		output.add(joueurs);
-
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
+		
+		output.add(param);
+		output.add(joueurs);
+		
+//		if(param.equals("i")) {
+//			output.add(l.get(2));
+//			output.add(l.get(3));
+//			output.add(l.get(4));
+//		}
+
 		oop.writeObject(output);
 	}
 	

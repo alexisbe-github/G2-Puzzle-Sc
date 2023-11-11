@@ -3,7 +3,6 @@ package main.java.controleur;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
 import main.java.model.partie.PartieMultijoueurCooperative;
-import main.java.utils.Utils;
 import main.java.vue.VueJeuMultiCoop;
 
 public class LobbyControleur implements Initializable {
@@ -33,7 +31,7 @@ public class LobbyControleur implements Initializable {
 	private boolean estHote;
 	private boolean estCoop;
 	private Stage owner;
-	//private Image img;
+	// private Image img;
 	private byte[] img;
 	private int taille;
 	private int numJoueur = 1; // DEBUG
@@ -41,6 +39,7 @@ public class LobbyControleur implements Initializable {
 	private PartieMultijoueur partie;
 	private boolean flagLancement = false;
 	private boolean flagThreadEnd = false;
+	private boolean flagInfos = true;
 
 	private List<Joueur> joueurs = new ArrayList<>();
 
@@ -114,7 +113,7 @@ public class LobbyControleur implements Initializable {
 	}
 
 	private void updateInfos() {
-		if(img!=null && taille>2) {
+		if (img != null && taille > 2) {
 			this.imagePuzzle.setImage(new Image(new ByteArrayInputStream(this.img)));
 			this.labelTaille.setText("Taille : " + this.taille);
 			this.labelType.setText("Partie " + (estCoop ? "coopérative" : "compétitive"));
@@ -126,31 +125,45 @@ public class LobbyControleur implements Initializable {
 		partie.lancerPartie(this.img, taille);
 		this.flagLancement = true;
 	}
-	
-	private void endStream() {
-		
+
+	private void envoyerInfos() throws IOException {
+//		if(this.estHote) {
+//			List<Object> output = new ArrayList<Object>();
+//			output.add("i");
+//			output.add(true);
+//			output.add(this.img);
+//			output.add(this.estCoop);
+//			output.add(this.taille);
+//			client.lancerRequete(output);
+//		}else {
+//			client.lancerRequete("i");
+//		}
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
-		
+
 		client.lancerRequete("l");
-		
+
 		while (!flagThreadEnd) {
 			Platform.runLater(() -> {
 				System.out.println("debut lecture");
 				List<Joueur> j;
-				
+
 				try {
 					ObjectInputStream ois;
 					ois = new ObjectInputStream(client.getSocket().getInputStream());
-					
+
 					Object oisObj = ois.readObject();
-					
-					if(oisObj instanceof List) {
-						
+
+					if (oisObj instanceof List) {
+
 						List<Object> tab = (List<Object>) oisObj;
 
-						if (flagLancement)
+//						if (flagInfos) {
+//							this.envoyerInfos();
+//							flagInfos = false;
+//						} else 
+							if (flagLancement)
 							client.lancerRequete("s");
 						else
 							client.lancerRequete("l");
@@ -161,6 +174,11 @@ public class LobbyControleur implements Initializable {
 										((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
 										((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
 								flagThreadEnd = true;
+//							} else if (tab.get(0).equals("i")) {
+//								this.img = (byte[]) tab.get(2);
+//								this.estCoop = (boolean) tab.get(3);
+//								this.taille = (int) tab.get(4);
+//								this.updateInfos();
 							}
 						}
 
@@ -169,9 +187,9 @@ public class LobbyControleur implements Initializable {
 							this.joueurs = new ArrayList<>(j);
 							this.updateJoueurs();
 						}
-						
+
 					}
-					
+
 					System.out.println("fin lecture");
 
 				} catch (IOException | ClassNotFoundException e) {
@@ -184,7 +202,7 @@ public class LobbyControleur implements Initializable {
 		}
 
 	}
-	
+
 //	private void sendInitStream() throws IOException {
 //		//TODO
 //		client.lancerRequete("i");
@@ -199,7 +217,7 @@ public class LobbyControleur implements Initializable {
 
 	private void readInitStream() {
 		// TODO
-		
+
 	}
 
 	private void lancerThread() {

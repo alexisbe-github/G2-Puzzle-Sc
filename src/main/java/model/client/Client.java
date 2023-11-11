@@ -16,8 +16,9 @@ public class Client {
 	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
+	ObjectOutputStream oos;
 
-	public Client(Joueur joueur) {
+	public Client(Joueur joueur) throws IOException {
 		this.joueur = joueur;
 		this.estConnecte = false;
 	}
@@ -33,6 +34,7 @@ public class Client {
 	public void seConnecter(String ip, int port) throws IOException, ClassNotFoundException {
 		socket = new Socket(ip, port);
 		setConnection();
+		oos = new ObjectOutputStream(socket.getOutputStream());
 		this.ajouterJoueur();
 	}
 
@@ -40,16 +42,12 @@ public class Client {
 		return socket;
 	}
 
-	public void lancerRequete(String content) throws IOException {
-		BufferedReader fluxEntrant = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		PrintStream fluxSortant = new PrintStream(socket.getOutputStream());
-		String requete = content;
-		fluxSortant.println(requete); // envoi de la requete au serveur
+	public void lancerRequete(Object content) throws IOException {
+		oos.writeObject(content); // envoi de la requete au serveur
 	}
 
 	private void ajouterJoueur() throws IOException {
-		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-		outputStream.writeObject(joueur);
+		oos.writeObject(joueur);
 	}
 	
 }
