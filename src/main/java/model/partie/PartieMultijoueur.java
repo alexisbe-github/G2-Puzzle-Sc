@@ -15,6 +15,8 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 
 	protected List<Joueur> joueurs;
 	protected Map<Joueur, Socket> tableSocketDesJoueurs;
+	protected byte[] image;
+	protected int taille;
 
 	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
 
@@ -44,22 +46,27 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 //		}
 //	}
 
-	public void envoyerJoueurs(String param, Socket s, List<Object> l) throws IOException {
+	public void setInfos(byte[] img, int t) {
+		this.image = img;
+		this.taille = t;
+	}
+	
+	public void envoyerJoueurs(String param, Socket s) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
-		
+
 		output.add(param);
 		output.add(joueurs);
-		
-//		if(param.equals("i")) {
-//			output.add(l.get(2));
-//			output.add(l.get(3));
-//			output.add(l.get(4));
-//		}
+
+		if (param.equals("i")) {
+				output.add(this.image);
+				output.add(this.taille);
+				output.add(this instanceof PartieMultijoueurCooperative);
+		}
 
 		oop.writeObject(output);
 	}
-	
+
 	public List<Joueur> getJoueurs() {
 		return this.joueurs;
 	}

@@ -2,7 +2,7 @@ package main.java.model.serveur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ServeurThread extends Thread {
 
 	private Socket socket;
 	private int noConnexion; // numero du client distant
-	ObjectInputStream inputStream;
+	private ObjectInputStream inputStream;
 	private boolean flagJoueurAjoute = false;
 	private Joueur joueur;
 	private Serveur serveur;
@@ -41,6 +41,8 @@ public class ServeurThread extends Thread {
 				if (!flagJoueurAjoute) {
 					this.joueur = (Joueur) inputStream.readObject();
 					serveur.getPartie().ajouterJoueur(joueur, socket);
+					ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+					oos.writeObject(noConnexion);
 					flagJoueurAjoute = true;
 				} else {
 					Object input = inputStream.readObject();
@@ -54,10 +56,9 @@ public class ServeurThread extends Thread {
 					}
 
 					if (ligne != null) {
-						System.out.println("Le client numéro " + this.noConnexion + " a envoye : ");
-						System.out.println(ligne); // echo de la question sur la console
-
+						System.out.println("Le client numéro " + this.noConnexion + " a envoye : "+ligne); // echo de la question sur la console
 						reponse = ligne; // calcul de la reponse
+						
 						char c = reponse.charAt(0);
 						switch (c) {
 						case 'h':
@@ -73,13 +74,20 @@ public class ServeurThread extends Thread {
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
 						case 'l':
-							serveur.getPartie().envoyerJoueurs(ligne, socket, liste);
+							serveur.getPartie().envoyerJoueurs(ligne, socket);
 							break;
 						case 's':
-							serveur.getPartie().envoyerJoueurs(ligne, socket, liste);
+							serveur.getPartie().envoyerJoueurs(ligne, socket);
 							break;
-//						case 'i':
-//							serveur.getPartie().envoyerJoueurs(ligne,socket, liste);
+						case 'i':
+							if(liste != null) {
+									if(liste.get(1) instanceof byte[] /*&& liste.get(2) instanceof Integer*/) {
+										byte[] img = (byte[]) liste.get(1);
+										int taille = (int) liste.get(2);
+									serveur.getPartie().setInfos(img, taille);
+									}
+								}
+							serveur.getPartie().envoyerJoueurs(ligne,socket);
 						}
 
 					}

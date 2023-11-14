@@ -16,11 +16,20 @@ public class Client {
 	private boolean estConnecte;
 	private Socket socket;
 	private Joueur joueur;
-	ObjectOutputStream oos;
+	private int noClient;
+	private ObjectOutputStream oos;
 
 	public Client(Joueur joueur) throws IOException {
 		this.joueur = joueur;
 		this.estConnecte = false;
+	}
+	
+	public int getNoClient() {
+		return this.noClient;
+	}
+	
+	public void setNoClient(int noClient) {
+		this.noClient = noClient;
 	}
 
 	private void setConnection() {
@@ -46,8 +55,11 @@ public class Client {
 		oos.writeObject(content); // envoi de la requete au serveur
 	}
 
-	private void ajouterJoueur() throws IOException {
-		oos.writeObject(joueur);
+	private void ajouterJoueur() throws IOException, ClassNotFoundException {
+		this.lancerRequete(joueur);
+		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+		setNoClient((int) ois.readObject());
+		System.out.println("NUMERO CLIENT : "+this.noClient);
 	}
 	
 }
