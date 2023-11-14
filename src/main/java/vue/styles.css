@@ -29,7 +29,7 @@
 
 .button {
     -fx-border-radius: 5px;
-    -fx-padding: 6px !important;
+    -fx-padding: 6px;
     -fx-font-size: 14pt;
 	-fx-background-color: #111;
 	-fx-text-fill: #fff;
