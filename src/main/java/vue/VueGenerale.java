@@ -24,7 +24,6 @@ public class VueGenerale extends Stage{
         Parent root = loader.load();
 		
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("styles.css");
         this.setScene(scene);
         this.setTitle("Taquin - "+titre);
         this.show();
