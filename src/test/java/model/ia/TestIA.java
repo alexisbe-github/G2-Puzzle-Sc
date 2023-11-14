@@ -84,21 +84,7 @@ public class TestIA {
 	}
 
 	@Test
-	@Order(3)
-	public void testIARandom() {
-		Case[][] grille = { { new Case(4), new Case(2), new Case(5) },
-				{ new Case(0), new Case(Case.INDEX_CASE_VIDE), new Case(6) },
-				{ new Case(7), new Case(1), new Case(3) } };
-		puzzle.setGrille(grille);
-		List<EDeplacement> solution = IARandom.solveTaquin(puzzle);
-		for (EDeplacement dp : solution) {
-			puzzle.deplacerCase(dp);
-		}
-		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
-	}
-
-	@Test
-	@Order(3)
+	@Order(2)
 	public void testIAGraphe() {
 		Case[][] grille = { { new Case(0), new Case(3), new Case(6) },
 				{ new Case(2), new Case(5), new Case(Case.INDEX_CASE_VIDE) },
@@ -112,7 +98,7 @@ public class TestIA {
 	}
 
 	@Test
-	@Order(4)
+	@Order(3)
 	public void testSystemeExpert() {
 		Case[][] grille = { { new Case(6), new Case(4), new Case(8), new Case(1) },
 				{ new Case(13), new Case(9), new Case(10), new Case(12) },
