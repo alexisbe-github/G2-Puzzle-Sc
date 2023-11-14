@@ -202,6 +202,7 @@ public class ServletClassement extends HttpServlet {
 						json.append("},\r\n");
 						i++;
 					}
+					json.deleteCharAt(json.length() - 3); // Suppression de la dernière virgule
 				}
 			}
 		} catch (SQLException e) {
@@ -262,6 +263,7 @@ public class ServletClassement extends HttpServlet {
 						json.append("},\r\n");
 						i++;
 					}
+					json.deleteCharAt(json.length() - 3); // Suppression de la dernière virgule
 				}
 			}
 		} catch (SQLException e) {
@@ -306,15 +308,19 @@ public class ServletClassement extends HttpServlet {
 				}
 				pstmt.execute();
 				try (ResultSet rs = pstmt.getResultSet()) {
+					int i = 1;
 					while (rs.next()) {
 						long id = rs.getLong("id");
 						int duree_partie = rs.getInt("temps_partie");
-						json.append("{id_partie: ");
+						json.append(i);
+						json.append(": {id_partie: ");
 						json.append(id);
 						json.append(", duree_partie: ");
 						json.append(duree_partie);
 						json.append("},\r\n");
+						i++;
 					}
+					json.deleteCharAt(json.length() - 3); // Suppression de la dernière virgule
 				}
 			}
 		} catch (SQLException e) {
@@ -359,15 +365,19 @@ public class ServletClassement extends HttpServlet {
 				}
 				pstmt.execute();
 				try (ResultSet rs = pstmt.getResultSet()) {
+					int i = 1;
 					while (rs.next()) {
 						long id = rs.getLong("id");
 						int nb_coups = rs.getInt("nb_coups");
-						json.append("{id_partie: ");
+						json.append(i);
+						json.append(": {id_partie: ");
 						json.append(id);
 						json.append(", nb_coups: ");
 						json.append(nb_coups);
 						json.append("},\r\n");
+						i++;
 					}
+					json.deleteCharAt(json.length() - 3); // Suppression de la dernière virgule
 				}
 			}
 		} catch (SQLException e) {

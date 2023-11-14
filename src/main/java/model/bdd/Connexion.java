@@ -18,16 +18,16 @@ public enum Connexion {
 
 	Connexion() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection c = DriverManager.getConnection(EnvironmentVariablesUtils.getBDDURL(),
-					EnvironmentVariablesUtils.getBDDUSER(), EnvironmentVariablesUtils.getBDDMDP());
+			Context initContext = new InitialContext();
+			Context envContext = (Context) initContext.lookup("java:comp/env");
+			DataSource dataSource = (DataSource) envContext.lookup("jdbc/taquin");
+			Connection c = dataSource.getConnection();
 			if (c != null) {
 				this.connection = c;
 			} else {
-				Context initContext = new InitialContext();
-				Context envContext = (Context) initContext.lookup("java:comp/env");
-				DataSource dataSource = (DataSource) envContext.lookup("jdbc/taquin");
-				this.connection = dataSource.getConnection();
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				this.connection = DriverManager.getConnection(EnvironmentVariablesUtils.getBDDURL(),
+						EnvironmentVariablesUtils.getBDDUSER(), EnvironmentVariablesUtils.getBDDMDP());
 			}
 		} catch (NamingException | ClassNotFoundException | SQLException e) {
 			System.err.println("Erreur lors de la connexion : " + e.getMessage());
