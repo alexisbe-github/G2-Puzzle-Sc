@@ -18,18 +18,18 @@
     -fx-background-size: stretch;
     -fx-background-position: no-repeat; */
     /* -fx-background: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, gray, darkgray 75%, dimgray); */
-    -fx-background: radial-gradient(center 25% 25%, radius 40%, reflect, #111213 0%, #131934 100%);
+    -fx-background: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934 100%);
 }
 
 #titre {
-	-fx-font-family: "Gotham Black";
+	-fx-font-family: "monospace";
 	-fx-text-fill: white;
-	-fx-text-shadow: black;
+	-fx-effect: dropshadow(gaussian, black, 20px, 0.25, 0, 0);
 }
 
 .button {
     -fx-border-radius: 5px;
-    -fx-padding: 6px;
+    -fx-padding: 6px !important;
     -fx-font-size: 14pt;
 	-fx-background-color: #111;
 	-fx-text-fill: #fff;
