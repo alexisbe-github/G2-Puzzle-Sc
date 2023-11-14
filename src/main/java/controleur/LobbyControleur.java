@@ -170,7 +170,8 @@ public class LobbyControleur implements Initializable {
 									((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
 							flagThreadEnd = true;
 							this.owner.close();
-							} else if (flagLancement)
+							
+						} else if (flagLancement)
 							client.lancerRequete("s");
 
 						else
