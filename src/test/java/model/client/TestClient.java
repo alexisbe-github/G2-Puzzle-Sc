@@ -1,5 +1,6 @@
 package test.java.model.client;
 
+import java.io.IOException;
 import java.net.Socket;
 
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +19,6 @@ import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 import test.java.aserveur.TestServeur;
 
-
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestClient {
 
@@ -33,12 +32,16 @@ public class TestClient {
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException {
-		joueur1 = new Joueur("Joueur hôte", null);
-		client1 = new Client(joueur1);
-		joueur2 = new Joueur("Joueur 2", null);
-		client2 = new Client(joueur2);
+		try {
+			joueur1 = new Joueur("Joueur hôte", null);
+			client1 = new Client(joueur1);
+			joueur2 = new Joueur("Joueur 2", null);
+			client2 = new Client(joueur2);
+		} catch (IOException e) {
+
+		}
 		partieMultiCoop = new PartieMultijoueurCooperative();
-		if(TestServeur.serveur == null) {
+		if (TestServeur.serveur == null) {
 			TestServeur.serveur = new Serveur();
 			TestServeur.serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		}

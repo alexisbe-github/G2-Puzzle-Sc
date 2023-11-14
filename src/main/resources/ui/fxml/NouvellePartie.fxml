@@ -49,7 +49,7 @@
 
 <VBox alignment="CENTER" prefHeight="596.0" prefWidth="549.0" spacing="30.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Nouvelle Partie">
+      <Label text="Nouvelle partie">
          <VBox.margin>
             <Insets top="10.0" />
          </VBox.margin>
@@ -67,12 +67,12 @@
           <RowConstraints minHeight="10.0" prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button onAction="#creerProfilBouton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="96.0" text="Créer Profil">
+            <Button onAction="#creerProfilBouton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="96.0" text="Créer un profil">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Button>
-            <MenuButton fx:id="menuProfils" mnemonicParsing="false" text="Choix Profil" GridPane.columnIndex="2">
+            <MenuButton fx:id="menuProfils" mnemonicParsing="false" text="Choisir un profil" GridPane.columnIndex="2">
               <items>
                 <MenuItem mnemonicParsing="false" text="popsimoke" />
                 <MenuItem mnemonicParsing="false" text="babar" />
@@ -80,9 +80,9 @@
             </MenuButton>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="Profil choisi :" />
+                  <Label text="Profil choisi :" />
                   <ImageView fx:id="imageJoueur" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="pseudoJoueur" text="username" />
+                  <Label fx:id="pseudoJoueur" text="Nom d'utilisateur" />
                </children>
             </VBox>
          </children>
@@ -94,7 +94,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Button onAction="#changerImageBouton" text="Changer image" />
+                  <Button onAction="#changerImageBouton" text="Changer l'image" />
                   <ImageView fx:id="imagePerso" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                   <TextField fx:id="saisieTaille" promptText="Taille">
                      <VBox.margin>
@@ -106,16 +106,16 @@
             <VBox alignment="CENTER_LEFT" prefHeight="172.0" prefWidth="166.0" spacing="7.0">
                <children>
                   <RadioButton fx:id="soloRadio" mnemonicParsing="false" text="Solo" />
-                  <RadioButton fx:id="multiCoopRadio" mnemonicParsing="false" text="Multijoueur Co-op" />
-                  <RadioButton fx:id="multiCompetRadio" mnemonicParsing="false" text="Multijoueur Compétitif" />
-                  <RadioButton fx:id="IARadio" mnemonicParsing="false" text="Jeu Contre IA" />
+                  <RadioButton fx:id="multiCoopRadio" mnemonicParsing="false" text="Multijoueur coopératif" />
+                  <RadioButton fx:id="multiCompetRadio" mnemonicParsing="false" text="Multijoueur compétitif" />
+                  <RadioButton fx:id="IARadio" mnemonicParsing="false" text="Jouer contre l'IA" />
                </children>
             </VBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="597.0">
          <children>
-            <Button mnemonicParsing="false" text="Lancer Partie" onAction="#lancerPartie">
+            <Button mnemonicParsing="false" text="Lancer la partie" onAction="#lancerPartie">
                <font>
                   <Font size="20.0" />
                </font>
