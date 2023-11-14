@@ -1,20 +1,151 @@
 package main.java.model.ia;
 
-import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-import main.java.model.Case;
+import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
+import main.java.utils.Utils;
 
 public class IA {
 
+	public static void main(String[] args) {
+		Puzzle puzzle = new Puzzle(3);
+		System.out.println(puzzle);
+		List<EDeplacement> solveur = solveTaquin(puzzle);
+		for (EDeplacement dp : solveur) {
+			puzzle.deplacerCase(dp);
+			System.out.println(dp);
+			//System.out.println(puzzle);
+		}
+		System.out.println(solveur.size());
+
+	}
+	
+	private static List<EDeplacement> solveTaquin4(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+		Deque<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+		
+		Noeud noeudTmp = chercherNoeudResolu(ouverts);
+		while (noeudTmp.getPere() != null) {
+			solution.add(noeudTmp.getdeplacement());
+			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
+	}
+
+	private static List<EDeplacement> solveTaquin3(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+		Deque<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+
+		Deque<Noeud> fermes = new LinkedList<>();
+		boolean succes = false;
+		while (!ouverts.isEmpty() && !succes) {
+			Noeud n = ouverts.element();
+			if (n.getPuzzle().verifierGrille())
+				succes = true;
+			else {
+				ouverts.remove(n);
+				fermes.add(n);
+				for (Noeud s : n.successeurs()) {
+					if (!ouverts.contains(s) && !fermes.contains(s)) {
+						ouverts.add(s);
+						s.setPere(n);
+					} 
+				}
+			}
+		}
+		Noeud noeudTmp = chercherNoeudResolu(ouverts);
+		while (noeudTmp.getPere() != null) {
+			solution.add(noeudTmp.getdeplacement());
+			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
+	}
+
+	public static List<EDeplacement> solveTaquin(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+		Deque<Noeud> ouverts = new LinkedList<>();
+		ouverts.add(new Noeud(puzzle));
+
+		Deque<Noeud> fermes = new LinkedList<>();
+		boolean succes = false;
+		while (!ouverts.isEmpty() && !succes) {
+			Noeud n = getMinimum(ouverts);
+			if (n.getPuzzle().verifierGrille())
+				succes = true;
+			else {
+				ouverts.remove(n);
+				fermes.add(n);
+				for (Noeud s : n.successeurs()) {
+					if (!ouverts.contains(s) && !fermes.contains(s)) {
+						ouverts.add(s);
+						s.setPere(n);
+						s.setG(n.getG() + 1);
+					} else {
+						if (s.getG() > n.getG() + Math.abs(s.getG() - n.getG())) {
+							s.setPere(n);
+							s.setG(n.getG() + Math.abs(s.getG() - n.getG()));
+							if (fermes.contains(s)) {
+								fermes.remove(s);
+								ouverts.add(s);
+							}
+						}
+					}
+				}
+			}
+		}
+		Noeud noeudTmp = chercherNoeudResolu(ouverts);
+		while (noeudTmp.getPere() != null) {
+			solution.add(noeudTmp.getdeplacement());
+			noeudTmp = noeudTmp.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
+	}
+
 	/**
-	 * Recupere le noeud minimum pour A* dans une file de Noeud
+	 * Solveur en déplacements aléatoires (taille < 4)
 	 * 
-	 * @param ouverts, file de Noeud
-	 * @return Noeud ayant le f minimal, f(n) = g(n) + h(n)
+	 * @param puzzle
+	 * @return
 	 */
-	public static Noeud getMinimum(Queue<Noeud> ouverts) {
+	private static List<EDeplacement> solveTaquin2(Puzzle puzzle) {
+		List<EDeplacement> solution = new ArrayList<>();
+
+		boolean succes = false;
+		Noeud noeudCourant = new Noeud(puzzle);
+		while (!succes) {
+			if (noeudCourant.getPuzzle().verifierGrille()) {
+				succes = true;
+			}
+			List<Noeud> successeurs = noeudCourant.successeurs();
+			Noeud successeurChoisi;
+			do {
+				int random = Utils.getRandomNumberInRange(0, successeurs.size() - 1);
+				successeurChoisi = successeurs.get(random);
+			} while (successeurChoisi.deplacementNulPere());
+			successeurChoisi.setPere(noeudCourant);
+			noeudCourant = successeurChoisi;
+		}
+
+		while (noeudCourant.getPere() != null) {
+			solution.add(noeudCourant.getdeplacement());
+			noeudCourant = noeudCourant.getPere();
+		}
+		Collections.reverse(solution);
+		return solution;
+	}
+
+	private static Noeud getMinimum(Queue<Noeud> ouverts) {
 		Noeud minimumNode = null;
 		int min = 9999;
 
@@ -28,141 +159,13 @@ public class IA {
 		return minimumNode;
 	}
 
-	/**
-	 * Cherche dans la file le noeud qui a résolu le puzzle
-	 * 
-	 * @param ouverts, File de Noeud
-	 * @return Noeud résolu
-	 */
-	public static Noeud chercherNoeudResolu(Queue<Noeud> ouverts) {
+	private static Noeud chercherNoeudResolu(Queue<Noeud> ouverts) {
 		Noeud noeudResolu = null;
 		for (Noeud noeud : ouverts) {
 			if (noeud.getPuzzle().verifierGrille())
 				noeudResolu = noeud;
 		}
 		return noeudResolu;
-	}
-
-	/**
-	 * Calcul la distance de manhattan entre l'index d'un puzzle et la position
-	 * finale à laquelle il devrait être
-	 * 
-	 * @param index,  int sur lequel on calcule
-	 * @param puzzle, Puzzle dans lequel on calcule
-	 * @return int, distance de manhattan
-	 */
-	public static int manhattanDistance(int index, Puzzle puzzle) {
-		if (index == Case.INDEX_CASE_VIDE) {
-			return Math.abs(puzzle.getXCaseVide() - (puzzle.getTaille() - 1))
-					+ Math.abs(puzzle.getYCaseVide() - (puzzle.getTaille() - 1));
-		}
-		int distance = getDistanceXAbs(index, puzzle) + getDistanceYAbs(index, puzzle);
-		return distance;
-	}
-
-	/**
-	 * Cherche les coordonnées de l'index dans le puzzle, puis le retourne dans un
-	 * Point
-	 * 
-	 * @param index,  int de l'index à chercher
-	 * @param puzzle, Puzzle dans lequel chercher
-	 * @return Point contenant les coordonnées à retourner
-	 */
-	public static Point chercherCoordonneesIndex(int index, Puzzle puzzle) {
-		Case[][] grille = puzzle.getGrille();
-		for (int i = 0; i < grille.length; i++) {
-			for (int j = 0; j < grille.length; j++) {
-				if (grille[j][i].getIndex() == index)
-					return new Point(j, i);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Calcule la distance entre l'index et la position finale en y à laquelle il
-	 * devrait être pour que le puzzle devienne résolu
-	 * 
-	 * @param index,  int de l'index à chercher
-	 * @param puzzle, Puzzle dans lequel calculer
-	 * @return int, la distance de l'index en y - position finale de l'index en y
-	 */
-	public static int getDistanceY(int index, Puzzle puzzle) {
-		Case[][] grille = puzzle.getGrille();
-		int compteur = 0;
-		int distance = 0;
-		int xBut, yBut;
-		xBut = 0;
-		yBut = 0;
-		for (int i = 0; i < puzzle.getTaille(); i++) {
-			for (int j = 0; j < puzzle.getTaille(); j++) {
-				if (compteur == index) {
-					xBut = j;
-					yBut = i;
-				}
-				compteur++;
-			}
-		}
-
-		Point point = chercherCoordonneesIndex(index, puzzle);
-		distance = point.y - yBut;
-		return distance;
-	}
-
-	/**
-	 * Calcule la distance entre l'index et la position finale en x à laquelle il
-	 * devrait être pour que le puzzle devienne résolu
-	 * 
-	 * @param index,  int de l'index à chercher
-	 * @param puzzle, Puzzle dans lequel calculer
-	 * @return int, la distance de l'index en x - position finale de l'index en x
-	 */
-	public static int getDistanceX(int index, Puzzle puzzle) {
-		Case[][] grille = puzzle.getGrille();
-		int compteur = 0;
-		int distance = 0;
-		int xBut, yBut;
-		xBut = 0;
-		yBut = 0;
-		for (int i = 0; i < puzzle.getTaille(); i++) {
-			for (int j = 0; j < puzzle.getTaille(); j++) {
-				if (compteur == index) {
-					xBut = j;
-					yBut = i;
-				}
-				compteur++;
-			}
-		}
-
-		Point point = chercherCoordonneesIndex(index, puzzle);
-		distance = point.x - xBut;
-		return distance;
-	}
-
-	/**
-	 * Calcule la distance en valeur absolue entre l'index et la position finale en
-	 * y à laquelle il devrait être pour que le puzzle devienne résolu
-	 * 
-	 * @param index,  int de l'index à chercher
-	 * @param puzzle, Puzzle dans lequel calculer
-	 * @return int, la distance de l'index en valeur absolue en y - position finale
-	 *         de l'index en y
-	 */
-	private static int getDistanceYAbs(int index, Puzzle puzzle) {
-		return Math.abs(getDistanceY(index, puzzle));
-	}
-
-	/**
-	 * Calcule la distance en valeur absolue entre l'index et la position finale en
-	 * x à laquelle il devrait être pour que le puzzle devienne résolu
-	 * 
-	 * @param index,  int de l'index à chercher
-	 * @param puzzle, Puzzle dans lequel calculer
-	 * @return int, la distance en valeur absolue de l'index en x - position finale
-	 *         de l'index en x
-	 */
-	private static int getDistanceXAbs(int index, Puzzle puzzle) {
-		return Math.abs(getDistanceX(index, puzzle));
 	}
 
 }
