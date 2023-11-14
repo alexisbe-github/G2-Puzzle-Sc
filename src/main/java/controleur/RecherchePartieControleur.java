@@ -45,7 +45,6 @@ public class RecherchePartieControleur implements Initializable{
 		try {
 			this.updateListeProfils();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
