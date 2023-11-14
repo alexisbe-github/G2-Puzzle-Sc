@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Context>
+    <Resource name="jdbc/taquin" auth="Container" type="javax.sql.DataSource"
+        maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+        username="mi-1000_taquin" password="SNriA!BumSAF&amp;Kp917AM2bT*/AE!Lh)r5UiH]uirAaFVNJ!ehA"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://mysql-mi-1000.alwaysdata.net:3306/mi-1000_taquin?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;autoReconnect=true&amp;allowMultiQueries=true"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" />
+</Context>

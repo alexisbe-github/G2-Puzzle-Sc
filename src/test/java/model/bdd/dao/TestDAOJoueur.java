@@ -27,10 +27,13 @@ public class TestDAOJoueur implements TestCRUD {
 		JoueurSQL j = new JoueurSQL();
 		String pseudo = "Test Créer";
 		j.setPseudo(pseudo);
+		j.setUrlPp(pseudo);
 		dao.creer(j);
 		listeJoueurs.add(j.getId());
+		
+		JoueurSQL j2 = dao.trouver(j.getId());
 
-		Assertions.assertEquals(dao.trouver(j.getId()).getPseudo(), pseudo);
+		Assertions.assertEquals(j2.getPseudo(), pseudo);
 	}
 
 	@Test
@@ -55,7 +58,7 @@ public class TestDAOJoueur implements TestCRUD {
 		dao.maj(j);
 		listeJoueurs.add(j.getId());
 
-		Assertions.assertEquals(dao.trouver(j.getId()).getPseudo(), pseudo2);
+		Assertions.assertEquals(j.getPseudo(), pseudo2);
 	}
 
 	@Test

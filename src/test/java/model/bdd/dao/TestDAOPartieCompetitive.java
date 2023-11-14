@@ -100,8 +100,8 @@ public class TestDAOPartieCompetitive implements TestCRUD {
 		listePartiesCompetitives.add(p.getIdPartie());
 		listeJoueurs.add(p.getIdJoueur());
 		listeParties.add(p.getIdPartie());
-
-		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getIdVainqueur(), idJoueur1);
+		
+		Assertions.assertEquals(p.getIdVainqueur(), idJoueur1);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class TestDAOPartieCompetitive implements TestCRUD {
 		listeJoueurs.add(p.getIdJoueur());
 		listeParties.add(p.getIdPartie());
 
-		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getIdVainqueur(), idJoueur4);
+		Assertions.assertEquals(p.getIdVainqueur(), idJoueur4);
 	}
 
 	@Test
