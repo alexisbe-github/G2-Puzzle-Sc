@@ -86,9 +86,9 @@ public class TestPuzzle {
 			}
 		}
 
-		grilleCorrecte[TAILLE - 1][TAILLE - 1] = new Case(-1);
+		grilleCorrecte[TAILLE - 1][TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
 		int numChangement = grilleIncorrecte[TAILLE - 1][TAILLE - 2].getIndex();
-		grilleIncorrecte[TAILLE - 1][TAILLE - 2] = new Case(-1);
+		grilleIncorrecte[TAILLE - 1][TAILLE - 2] = new Case(Case.INDEX_CASE_VIDE);
 		grilleIncorrecte[TAILLE - 1][TAILLE - 1] = new Case(numChangement);
 
 		puzzle.setGrille(grilleCorrecte);
