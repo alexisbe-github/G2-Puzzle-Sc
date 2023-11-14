@@ -94,7 +94,6 @@ public class TestIA {
 		for (EDeplacement dp : solution) {
 			puzzle.deplacerCase(dp);
 		}
-		System.out.println(puzzle);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
 	}
 
@@ -109,7 +108,6 @@ public class TestIA {
 		for (EDeplacement dp : solution) {
 			puzzle.deplacerCase(dp);
 		}
-		System.out.println(puzzle);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
 	}
 
@@ -125,7 +123,6 @@ public class TestIA {
 		for (EDeplacement dp : solution) {
 			puzzle.deplacerCase(dp);
 		}
-		System.out.println(puzzle);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
 
 	}
