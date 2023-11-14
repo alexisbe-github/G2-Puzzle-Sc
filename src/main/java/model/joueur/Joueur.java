@@ -3,15 +3,19 @@ package main.java.model.joueur;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Joueur implements Serializable{
+/**
+ * Représente un joueur.
+ *
+ */
+public class Joueur implements Serializable {
 
 	private String nom;
 	private byte[] image;
 
 	/**
 	 * 
-	 * @param nom   String du nom du joueur
-	 * @param URL de l'Image correspondant à l'avatar du joueur
+	 * @param nom   Nom du joueur
+	 * @param image Image au format binaire correspondant à l'avatar du joueur
 	 */
 	public Joueur(String nom, byte[] image) {
 		this.nom = nom;
@@ -25,7 +29,7 @@ public class Joueur implements Serializable{
 	public byte[] getImage() {
 		return image;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.nom;
@@ -48,5 +52,4 @@ public class Joueur implements Serializable{
 		return Objects.equals(nom, other.nom);
 	}
 
-	
 }
