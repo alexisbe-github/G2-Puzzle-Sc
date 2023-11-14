@@ -9,7 +9,7 @@ import main.java.model.ia.expertsystem.SystemeExpert;
 public class TestIA {
 
 	public static void main(String[] args) {
-		Puzzle puzzle = new Puzzle(3);
+		Puzzle puzzle = new Puzzle(4);
 		System.out.println(puzzle);
 		List<EDeplacement> solution = SystemeExpert.solveTaquin(puzzle);
 		System.out.println("************************ SOLUTION TROUVEE *************************");

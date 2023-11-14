@@ -37,10 +37,15 @@ public class IARandom {
 				noeudCourant = successeurChoisi;
 			}
 
-			while (noeudCourant.getPere() != null) {
+			if(noeudCourant.getPuzzle().getXCaseVide() == noeudCourant.getPuzzle().getTaille() - 1) {
+				solution.add(EDeplacement.HAUT);
+			}else {
+				solution.add(EDeplacement.GAUCHE);
+			}
+			do{
 				solution.add(noeudCourant.getdeplacement());
 				noeudCourant = noeudCourant.getPere();
-			}
+			}while (noeudCourant.getPere() != null);
 		}
 		Collections.reverse(solution);
 		return solution;

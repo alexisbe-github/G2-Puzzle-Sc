@@ -15,6 +15,8 @@ import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.ia.IA;
 import main.java.model.ia.Noeud;
+import main.java.model.ia.expertsystem.SystemeExpert;
+import main.java.model.ia.graphe.IAGraphe;
 import main.java.model.ia.random.IARandom;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -89,12 +91,43 @@ public class TestIA {
 				{ new Case(7), new Case(1), new Case(3) } };
 		puzzle.setGrille(grille);
 		List<EDeplacement> solution = IARandom.solveTaquin(puzzle);
-		for(EDeplacement dp:solution) {
+		for (EDeplacement dp : solution) {
 			puzzle.deplacerCase(dp);
 		}
 		System.out.println(puzzle);
 		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
-		
+	}
+
+	@Test
+	@Order(3)
+	public void testIAGraphe() {
+		Case[][] grille = { { new Case(0), new Case(3), new Case(6) },
+				{ new Case(2), new Case(5), new Case(Case.INDEX_CASE_VIDE) },
+				{ new Case(7), new Case(1), new Case(4) } };
+		puzzle.setGrille(grille);
+		List<EDeplacement> solution = IAGraphe.solveTaquin(puzzle);
+		for (EDeplacement dp : solution) {
+			puzzle.deplacerCase(dp);
+		}
+		System.out.println(puzzle);
+		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
+	}
+
+	@Test
+	@Order(4)
+	public void testSystemeExpert() {
+		Case[][] grille = { { new Case(6), new Case(4), new Case(8), new Case(1) },
+				{ new Case(13), new Case(9), new Case(10), new Case(12) },
+				{ new Case(3), new Case(0), new Case(2), new Case(11) },
+				{ new Case(Case.INDEX_CASE_VIDE), new Case(7), new Case(14), new Case(5) } };
+		puzzle.setGrille(grille);
+		List<EDeplacement> solution = SystemeExpert.solveTaquin(puzzle);
+		for (EDeplacement dp : solution) {
+			puzzle.deplacerCase(dp);
+		}
+		System.out.println(puzzle);
+		Assertions.assertTrue(puzzle.verifierGrille(), "La grille devrait être résolue");
+
 	}
 
 }
