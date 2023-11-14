@@ -79,7 +79,7 @@ public class LobbyControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		lancerPartie.setManaged(estHote);
 		this.updateInfos();
-		
+
 		this.lancerThread();
 		try {
 			if (estHote) {
@@ -164,27 +164,18 @@ public class LobbyControleur implements Initializable {
 							this.updateInfos();
 							client.lancerRequete("l");
 
-						} else if (flagLancement)
+						} else if (tab.get(0).equals("s")) {
+							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, partie.getJoueurs(),
+									((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
+									((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+							flagThreadEnd = true;
+							this.owner.close();
+							} else if (flagLancement)
 							client.lancerRequete("s");
 
 						else
 							client.lancerRequete("l");
 
-						if (tab.get(0) instanceof String) {
-
-							if (tab.get(0).equals("s")) {
-								VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, partie.getJoueurs(),
-										((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-										((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
-								flagThreadEnd = true;
-//							} else if (tab.get(0).equals("i")) {
-//								this.img = (byte[]) tab.get(2);
-//								this.estCoop = (boolean) tab.get(3);
-//								this.taille = (int) tab.get(4);
-//								this.updateInfos();
-							}
-
-						}
 						if (tab.get(1) instanceof List) {
 
 							j = (List<Joueur>) tab.get(1);
