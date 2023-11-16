@@ -197,22 +197,6 @@ public class LobbyControleur implements Initializable {
 
 	}
 
-//	private void sendInitStream() throws IOException {
-//		//TODO
-//		client.lancerRequete("i");
-//		ObjectOutputStream oos = new ObjectOutputStream(client.getSocket().getOutputStream());
-//		List<Object> output = new ArrayList<Object>();
-//		output.add(true);
-//		output.add(this.img);
-//		output.add(this.taille);
-//		output.add(this.estCoop);
-//		oos.writeObject(output);
-//	}
-
-	private void readInitStream() {
-		// TODO
-
-	}
 
 	private void lancerThread() {
 		new Thread(() -> {

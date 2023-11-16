@@ -88,6 +88,10 @@ public class ServeurThread extends Thread {
 									}
 								}
 							serveur.getPartie().envoyerJoueurs(ligne,socket);
+							break;
+						case 'p':
+							serveur.getPartie().envoyerPuzzle(ligne,socket);
+							break;
 						}
 
 					}

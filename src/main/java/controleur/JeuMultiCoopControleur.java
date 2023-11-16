@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,6 +34,7 @@ import javafx.stage.Stage;
 import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
+import main.java.vue.VueJeuMultiCoop;
 
 public class JeuMultiCoopControleur implements Initializable {
 
@@ -41,6 +44,7 @@ public class JeuMultiCoopControleur implements Initializable {
 	private int numJoueurCourant;
 	private List<Joueur> joueurs;
 
+	boolean flagThreadEnd = false;
 	private int numJoueur;
 	private Joueur joueur;
 	private boolean estEnPause = false;
@@ -49,31 +53,31 @@ public class JeuMultiCoopControleur implements Initializable {
 	private Client client;
 
 	@FXML
-	VBox boxJoueurs;
+	private VBox boxJoueurs;
 
 	@FXML
-	Label chrono;
+	private Label chrono;
 
 	@FXML
-	Label victoireLabel;
+	private Label victoireLabel;
 
 	@FXML
-	ImageView logoJoueur;
+	private ImageView logoJoueur;
 
 	@FXML
-	Label pseudoJoueur;
+	private Label pseudoJoueur;
 
 	@FXML
-	Button boutonUndo;
+	private Button boutonUndo;
 
 	@FXML
-	Label nbCoups;
+	private Label nbCoups;
 
 	@FXML
-	AnchorPane grille;
+	private AnchorPane grille;
 
 	@FXML
-	Button boutonPause;
+	private Button boutonPause;
 
 	/**
 	 * 
@@ -101,14 +105,15 @@ public class JeuMultiCoopControleur implements Initializable {
 
 		this.updateImages();
 		this.initJoueur();
+		this.updateJoueurs();
 
 		// grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) ->
 		// this.handlePressAction(event));
 		// grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) ->
 		// this.handleReleaseAction(event));
 
-		this.updateJoueurs();
-
+		
+		this.lancerThread();
 	}
 
 	/**
@@ -200,31 +205,20 @@ public class JeuMultiCoopControleur implements Initializable {
 						switch (event.getCode()) {
 						case UP:
 							client.lancerRequete("h");
-							readStream();
-							// partie.deplacerCase(EDeplacement.HAUT, joueur, numJoueur);
 							break;
 						case DOWN:
 							client.lancerRequete("b");
-							readStream();
-							// partie.deplacerCase(EDeplacement.BAS, joueur, numJoueur);
 							break;
 						case LEFT:
 							client.lancerRequete("g");
-							readStream();
-							// partie.deplacerCase(EDeplacement.GAUCHE, joueur, numJoueur);
 							break;
 						case RIGHT:
 							client.lancerRequete("d");
-							readStream();
-							// partie.deplacerCase(EDeplacement.DROITE, joueur, numJoueur);
 							break;
 						default:
 							break;
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -251,12 +245,67 @@ public class JeuMultiCoopControleur implements Initializable {
 		this.updateInfos();
 	}
 
-	private void readStream() throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(client.getSocket().getInputStream());
-		puzzle = (Puzzle) ois.readObject();
-		BufferedReader fluxEntrant = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
-		System.out.println(fluxEntrant.readLine());
-		updateAll();
+	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
+
+		System.out.println("super");
+		
+		this.client.lancerRequete("p");
+
+		while (!flagThreadEnd) {
+			Platform.runLater(() -> {
+
+				try {
+					ObjectInputStream ois;
+					ois = new ObjectInputStream(client.getSocket().getInputStream());
+
+					Object oisObj = ois.readObject();
+
+					if (oisObj instanceof List) {
+
+						List<Object> tab = (List<Object>) oisObj;
+
+						System.out.println("SIUUUU " + tab.get(0));
+
+						if (tab.get(0).equals("p")) {
+							
+							this.puzzle = (Puzzle) tab.get(2);
+							this.numJoueurCourant = (int) tab.get(1);
+
+//							// 0: param, 1: joueurs, 2: image, 3: taille, 4: estCoop
+//							System.out.println("BIEN RECU : " + tab.get(0));
+//							this.taille = (int) tab.get(3);
+//							this.img = (byte[]) tab.get(2);
+//							this.estCoop = (boolean) tab.get(4);
+//							this.updateInfos();
+//							client.lancerRequete("l");
+							
+							updateAll();
+						}
+						client.lancerRequete("p");
+						
+					}
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+
+			});
+
+			Thread.sleep(200);
+		}
+
+	}
+
+
+	private void lancerThread() {
+		new Thread(() -> {
+			try {
+				readStream();
+			} catch (InterruptedException | ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}).start();
+
 	}
 
 	/*
