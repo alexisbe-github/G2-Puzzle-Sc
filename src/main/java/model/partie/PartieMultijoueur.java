@@ -17,6 +17,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 	protected Map<Joueur, Socket> tableSocketDesJoueurs;
 	protected byte[] image;
 	protected int taille;
+	protected boolean partieLancee = false;
 
 	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
 
@@ -62,8 +63,21 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 				output.add(this.image);
 				output.add(this.taille);
 				output.add(this instanceof PartieMultijoueurCooperative);
+		}else if(param.equals("s")) {
+			this.partieLancee=true;
 		}
-
+		
+		if(partieLancee) {
+			output.set(0, "s");
+			if(this instanceof PartieMultijoueurCooperative) {
+				output.add(((PartieMultijoueurCooperative) this).getIndexJoueurCourant());
+				output.add(((PartieMultijoueurCooperative) this).getPuzzleCommun());
+			}else if(this instanceof PartieMultijoueurCompetitive) {
+				
+			}
+		}
+		
+		if(partieLancee) System.out.println("SPSPSPSPSP");
 		oop.writeObject(output);
 	}
 

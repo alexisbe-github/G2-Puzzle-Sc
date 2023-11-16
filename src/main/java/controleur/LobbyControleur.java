@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
@@ -164,16 +165,16 @@ public class LobbyControleur implements Initializable {
 							this.updateInfos();
 							client.lancerRequete("l");
 
-						} else if (tab.get(0).equals("s")) {
-							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, partie.getJoueurs(),
-									((PartieMultijoueurCooperative) partie).getIndexJoueurCourant(),
-									((PartieMultijoueurCooperative) partie).getPuzzleCommun(), this.client);
+						} else if (tab.get(0).equals("s") && tab.get(3) instanceof Puzzle) {
+							int indexJ = (int) tab.get(2);
+							Puzzle puzzleC = (Puzzle) tab.get(3);
+							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, this.joueurs,
+									indexJ, puzzleC, this.client);
 							flagThreadEnd = true;
 							this.owner.close();
 							
 						} else if (flagLancement)
 							client.lancerRequete("s");
-
 						else
 							client.lancerRequete("l");
 
