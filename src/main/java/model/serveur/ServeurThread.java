@@ -81,7 +81,7 @@ public class ServeurThread extends Thread {
 							break;
 						case 'i':
 							if(liste != null) {
-									if(liste.get(1) instanceof byte[] /*&& liste.get(2) instanceof Integer*/) {
+									if(liste.get(1) instanceof byte[]) {
 										byte[] img = (byte[]) liste.get(1);
 										int taille = (int) liste.get(2);
 									serveur.getPartie().setInfos(img, taille);
