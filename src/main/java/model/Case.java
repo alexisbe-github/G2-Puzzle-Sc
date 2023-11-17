@@ -3,7 +3,7 @@ package main.java.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Case implements Serializable{
+public class Case implements Serializable,Cloneable{
 
 	public final static int INDEX_CASE_VIDE = -1;
 	private int index;
@@ -58,7 +58,11 @@ public class Case implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Case other = (Case) obj;
-		return Objects.equals(image, other.image) && index == other.index;
+		return index == other.index;
 	}
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

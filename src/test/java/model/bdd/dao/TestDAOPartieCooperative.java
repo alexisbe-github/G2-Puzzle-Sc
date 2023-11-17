@@ -98,7 +98,7 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		listeJoueurs.add(p.getIdJoueur());
 		listeParties.add(p.getIdPartie());
 
-		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), val);
+		Assertions.assertEquals(p.getNbCoups(), val);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class TestDAOPartieCooperative implements TestCRUD {
 		listeJoueurs.add(p.getIdJoueur());
 		listeParties.add(p.getIdPartie());
 
-		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), val2);
+		Assertions.assertEquals(p.getNbCoups(), val2);
 	}
 
 	@Test
