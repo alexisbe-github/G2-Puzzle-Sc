@@ -76,9 +76,6 @@ public class JeuMultiCoopControleur implements Initializable {
 	@FXML
 	private AnchorPane grille;
 
-	@FXML
-	private Button boutonPause;
-
 	/**
 	 * 
 	 * @param stage  : fenêtre dans laquelle la scene est affichée
@@ -100,7 +97,6 @@ public class JeuMultiCoopControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		boutonPause.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
 
 		this.updateImages();
@@ -233,13 +229,6 @@ public class JeuMultiCoopControleur implements Initializable {
 		// TODO not implemented
 	}
 
-	@FXML
-	private void pauseButton(ActionEvent event) {
-		if (!this.puzzle.verifierGrille()) {
-			this.estEnPause = !estEnPause;
-		}
-	}
-
 	public void updateAll() {
 		this.updateJeu();
 		this.updateInfos();
@@ -257,39 +246,22 @@ public class JeuMultiCoopControleur implements Initializable {
 				try {
 					ObjectInputStream ois;
 					ois = new ObjectInputStream(client.getSocket().getInputStream());
-
 					Object oisObj = ois.readObject();
-
+					
 					if (oisObj instanceof List) {
-
 						List<Object> tab = (List<Object>) oisObj;
-
-						System.out.println("SIUUUU " + tab.get(0));
-
 						if (tab.get(0).equals("p")) {
-							
 							this.puzzle = (Puzzle) tab.get(2);
-							this.numJoueurCourant = (int) tab.get(1);
-
-//							// 0: param, 1: joueurs, 2: image, 3: taille, 4: estCoop
-//							System.out.println("BIEN RECU : " + tab.get(0));
-//							this.taille = (int) tab.get(3);
-//							this.img = (byte[]) tab.get(2);
-//							this.estCoop = (boolean) tab.get(4);
-//							this.updateInfos();
-//							client.lancerRequete("l");
-							
+							this.numJoueurCourant = (int) tab.get(1);					
 							updateAll();
 						}
 						client.lancerRequete("p");
-						
 					}
+					
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-
 			});
-
 			Thread.sleep(200);
 		}
 

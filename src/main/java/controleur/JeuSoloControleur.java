@@ -95,6 +95,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	public void initialize(URL location, ResourceBundle resources) {
 		boutonPause.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
+		boutonQuitter.setFocusTraversable(false);
 		
 		this.updateImages();
 		this.initJoueur();
