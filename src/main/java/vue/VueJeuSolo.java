@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -26,7 +25,7 @@ public class VueJeuSolo extends Stage{
         
         this.setTitle("Taquin - Jeu Solo");
         Parent root = loader.load();
-        Scene scene = new Scene(root);        
+        Scene scene = new Scene(root);
         
         //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         this.setScene(scene);

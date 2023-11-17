@@ -5,10 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,8 +29,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import main.java.model.EDeplacement;
 import main.java.model.partie.PartieSolo;
+import main.java.model.serialisation.Serialisation;
 
 public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 
@@ -55,6 +58,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	Button boutonUndo;
 	
 	@FXML
+	Button boutonQuitter;
+	
+	@FXML
 	Label nbCoups;
 	
 	@FXML
@@ -73,6 +79,8 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		this.owner = stage;
 		this.partie = partie;
 		partie.lancerPartie(img, taille);
+		
+		owner.setOnCloseRequest(event -> this.handleExit(event));
 	}
 	
 	
@@ -88,7 +96,6 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
-		
 	}
 	
 
@@ -178,7 +185,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	
 	@FXML
 	private void undoButton(ActionEvent event) {
-		 System.out.println("undo");
+		 System.out.println("annuler");
 		 //TODO not implemented
 	}
 	
@@ -187,6 +194,12 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		if(!this.partie.getPuzzle().verifierGrille()) {
 			this.estEnPause = !estEnPause;
 		}
+	}
+	
+	@FXML
+	private void quitButton(ActionEvent event) {
+		handleExit(event);
+		owner.close();
 	}
 
 
@@ -216,6 +229,17 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
     	}
     }
     
+	private void handleExit(Event e) {
+		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
+			return;
+		}
+		// TODO Ne pas sérialiser si la partie est terminée
+		String dossier = "src/main/java/model/serialisation/objets/";
+		String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
+		String chemin = dossier + nom;
+		Serialisation.serialiserObjet(this.partie, chemin);
+	}
+
     /* DEPLACEMENT, ANIMATION (Code un peu déstructuré, c'est normal)
     private void dpAnim(KeyCode key) {
     	double largeurCase = owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5;

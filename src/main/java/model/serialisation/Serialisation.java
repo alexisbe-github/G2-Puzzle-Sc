@@ -1,5 +1,6 @@
 package main.java.model.serialisation;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class Serialisation {
 	 * @return <code>true</code> en cas de succès, <code>false</code> sinon
 	 */
 	public static boolean serialiserObjet(Object objet, String chemin) {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(chemin))) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(chemin)))) {
 			oos.writeObject(objet);
 			return true;
 		} catch (IOException e) {
