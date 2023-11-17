@@ -14,7 +14,7 @@ import main.java.vue.VueJeuSolo;
 
 public class MenuControleur implements Initializable{
 	
-	Stage owner;
+	private Stage owner;
 
 	public MenuControleur(Stage stage) {
 		this.owner = stage;

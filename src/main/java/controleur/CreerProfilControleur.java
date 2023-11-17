@@ -25,14 +25,14 @@ import main.java.model.bdd.dao.beans.JoueurSQL;
 
 public class CreerProfilControleur implements Initializable{
 
-	Stage owner;
-	BufferedImage image;
+	private Stage owner;
+	private BufferedImage image;
 	
 	@FXML
-	ImageView imageJoueur;
+	private ImageView imageJoueur;
 	
 	@FXML
-	TextField saisiePseudo;
+	private TextField saisiePseudo;
 	
 	
 	

@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class StatistiquesControleur implements Initializable{
 
-	Stage owner;
+	private Stage owner;
 	
 	public StatistiquesControleur(Stage stage) {
 		this.owner = stage;

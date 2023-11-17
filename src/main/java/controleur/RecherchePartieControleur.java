@@ -24,17 +24,17 @@ import main.java.vue.VueGenerale;
 
 public class RecherchePartieControleur implements Initializable{
 
-	Stage owner;
-	JoueurSQL joueurChoisi;
+	private Stage owner;
+	private JoueurSQL joueurChoisi;
 	
 	@FXML
-	TextField saisieIP;
+	private TextField saisieIP;
 	
 	@FXML
-	TextField saisiePort;
+	private TextField saisiePort;
 	
 	@FXML
-	MenuButton menuProfils;
+	private MenuButton menuProfils;
 	
 	public RecherchePartieControleur(Stage stage) {
 		this.owner = stage;

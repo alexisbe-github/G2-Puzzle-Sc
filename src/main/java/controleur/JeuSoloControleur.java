@@ -43,31 +43,31 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 	private double yClick;
 	
 	@FXML
-	Label chrono;
+	private Label chrono;
 	
 	@FXML
-	Label victoireLabel;
+	private Label victoireLabel;
 	
 	@FXML
-	ImageView logoJoueur;
+	private ImageView logoJoueur;
 	
 	@FXML
-	Label pseudoJoueur;
+	private Label pseudoJoueur;
 	
 	@FXML
-	Button boutonUndo;
+	private Button boutonUndo;
 	
 	@FXML
-	Button boutonQuitter;
+	private Button boutonQuitter;
 	
 	@FXML
-	Label nbCoups;
+	private Label nbCoups;
 	
 	@FXML
-	AnchorPane grille; 
+	private AnchorPane grille; 
 	
 	@FXML
-	Button boutonPause;
+	private Button boutonPause;
 	
 	/**
 	 * 
