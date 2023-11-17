@@ -58,7 +58,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
-			notifierClients();
 		}
 		if (puzzleCommun.verifierGrille()) {
 			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
@@ -68,18 +67,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
 				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
 			}
-		}
-	}
-	
-	private void notifierClients() throws IOException {
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur j = mapEntry.getKey();
-			Socket s = mapEntry.getValue();
-
-			ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
-			oop.writeObject(this.puzzleCommun);
-			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-			fluxSortant.println(this.indexJoueurCourant);
 		}
 	}
 	
