@@ -83,6 +83,13 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		owner.setOnCloseRequest(event -> this.handleExit(event));
 	}
 	
+	public JeuSoloControleur(Stage stage, PartieSolo partie) {
+		this.owner = stage;
+		this.partie = partie;
+		
+		owner.setOnCloseRequest(event -> this.handleExit(event));
+	}
+	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

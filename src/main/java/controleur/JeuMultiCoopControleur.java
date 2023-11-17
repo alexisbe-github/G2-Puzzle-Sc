@@ -251,7 +251,7 @@ public class JeuMultiCoopControleur implements Initializable {
 		
 		this.client.lancerRequete("p");
 
-		while (!flagThreadEnd) {
+		while (this.puzzle.verifierGrille()) {
 			Platform.runLater(() -> {
 
 				try {

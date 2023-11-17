@@ -8,7 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import main.java.model.serialisation.Serialisation;
 import main.java.vue.VueGenerale;
+import main.java.vue.VueJeuSolo;
 
 public class MenuControleur implements Initializable{
 	
@@ -35,7 +37,9 @@ public class MenuControleur implements Initializable{
 	
 	@FXML
 	private void continuerPartie(ActionEvent event) {
-		System.out.println("Continuer Partie");
+//		Serialisation s = new Serialisation(); ?
+//		PartieSolo p = (PartieSolo) objet deserialisé
+//		new VueJeuSolo(this, (PartieSolo) p);
 	}
 	
 	@FXML
