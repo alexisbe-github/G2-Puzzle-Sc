@@ -5,9 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -29,8 +31,8 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import main.java.model.EDeplacement;
+import main.java.model.ia.expertsystem.SystemeExpert;
 import main.java.model.partie.PartieSolo;
 import main.java.model.serialisation.Serialisation;
 
@@ -41,6 +43,10 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	private boolean estEnPause = false;
 	private double xClick;
 	private double yClick;
+	private List<EDeplacement> solution;
+	private Thread threadIA;
+	private int i; // index solution IA
+	private boolean iaLance = false;
 
 	@FXML
 	private Label chrono;
@@ -53,6 +59,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 
 	@FXML
 	private Label pseudoJoueur;
+
+	@FXML
+	private Button boutonIA;
 
 	@FXML
 	private Button boutonUndo;
@@ -177,25 +186,33 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 						if (!partie.getPuzzle().undoActive()) {
 							boutonUndo.setDisable(true);
 						}
-						partie.deplacerCase(EDeplacement.HAUT);
+						if (!iaLance) {
+							partie.deplacerCase(EDeplacement.HAUT);
+						}
 						break;
 					case DOWN:
 						if (!partie.getPuzzle().undoActive()) {
 							boutonUndo.setDisable(true);
 						}
-						partie.deplacerCase(EDeplacement.BAS);
+						if (!iaLance) {
+							partie.deplacerCase(EDeplacement.BAS);
+						}
 						break;
 					case LEFT:
 						if (!partie.getPuzzle().undoActive()) {
 							boutonUndo.setDisable(true);
 						}
-						partie.deplacerCase(EDeplacement.GAUCHE);
+						if (!iaLance) {
+							partie.deplacerCase(EDeplacement.GAUCHE);
+						}
 						break;
 					case RIGHT:
 						if (!partie.getPuzzle().undoActive()) {
 							boutonUndo.setDisable(true);
 						}
-						partie.deplacerCase(EDeplacement.DROITE);
+						if (!iaLance) {
+							partie.deplacerCase(EDeplacement.DROITE);
+						}
 						break;
 					default:
 						break;
@@ -203,6 +220,42 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 				}
 			}
 		});
+	}
+
+	@FXML
+	private void startIAButton(ActionEvent event) {
+
+		if (boutonIA.getText().equals("Lancer IA")) {
+			i = 0;
+			solution = SystemeExpert.solveTaquin(partie.getPuzzle());
+			Task<Void> task = new Task<Void>() { // tâche parallèle mise à jour vue
+				public Void call() throws Exception {
+
+					while (!partie.getPuzzle().verifierGrille()) {
+						Platform.runLater(new Runnable() { // classe anonyme
+
+							public void run() {
+								if (i < solution.size()) {
+									partie.deplacerCase(solution.get(i));
+									i++;
+								}
+							}
+						});
+						Thread.sleep(300);
+					}
+					return null;
+				}
+			};
+			boutonIA.setText("Arrêter IA");
+			threadIA = new Thread(task);
+			threadIA.start();
+			iaLance = true;
+		} else {
+			boutonIA.setText("Lancer IA");
+			threadIA.interrupt();
+			iaLance = false;
+		}
+
 	}
 
 	@FXML

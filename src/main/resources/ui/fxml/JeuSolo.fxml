@@ -72,11 +72,12 @@
                </children>
             </VBox>
             <Button fx:id="boutonPause" mnemonicParsing="false" onAction="#pauseButton" text="Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button fx:id="boutonUndo" mnemonicParsing="false" onAction="#undoButton" text="Annuler le coup" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button fx:id="boutonQuitter" mnemonicParsing="false" onAction="#quitButton" text="Quitter la partie" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Label fx:id="victoireLabel" mnemonicParsing="false" text="Vous avez gagné !" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Label fx:id="nbCoups" text="Nb de coups : 21" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <Label fx:id="chrono" text="00:00" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+            <Button fx:id="boutonIA" mnemonicParsing="false" onAction="#startIAButton" text="Lancer IA" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button fx:id="boutonUndo" mnemonicParsing="false" onAction="#undoButton" text="Annuler le coup" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button fx:id="boutonQuitter" mnemonicParsing="false" onAction="#quitButton" text="Quitter la partie" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Label fx:id="victoireLabel" mnemonicParsing="false" text="Vous avez gagné !" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Label fx:id="nbCoups" text="Nb de coups : 21" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+            <Label fx:id="chrono" text="00:00" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
