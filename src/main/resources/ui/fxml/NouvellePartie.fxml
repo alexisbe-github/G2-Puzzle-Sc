@@ -108,7 +108,6 @@
                   <RadioButton fx:id="soloRadio" mnemonicParsing="false" text="Solo" />
                   <RadioButton fx:id="multiCoopRadio" mnemonicParsing="false" text="Multijoueur coopératif" />
                   <RadioButton fx:id="multiCompetRadio" mnemonicParsing="false" text="Multijoueur compétitif" />
-                  <RadioButton fx:id="IARadio" mnemonicParsing="false" text="Jouer contre l'IA" />
                </children>
             </VBox>
          </children>

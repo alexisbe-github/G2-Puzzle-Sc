@@ -54,8 +54,6 @@ public class NouvellePartieControleur implements Initializable {
 	private RadioButton multiCoopRadio;
 	@FXML
 	private RadioButton multiCompetRadio;
-	@FXML
-	private RadioButton IARadio;
 
 	@FXML
 	private MenuButton menuProfils;
@@ -83,7 +81,6 @@ public class NouvellePartieControleur implements Initializable {
 
 		this.radioGroupe = new ToggleGroup();
 
-		this.IARadio.setToggleGroup(radioGroupe);
 		this.multiCompetRadio.setToggleGroup(radioGroupe);
 		this.multiCoopRadio.setToggleGroup(radioGroupe);
 		this.soloRadio.setToggleGroup(radioGroupe);
@@ -190,10 +187,10 @@ public class NouvellePartieControleur implements Initializable {
 						ContextePartie cp = new ContextePartie(j);
 						PartieMultijoueurCooperative pm = new PartieMultijoueurCooperative();
 						cp.setStrategy(pm);
-						
+
 						Serveur s = new Serveur();
 						s.lancerServeur(pm, 8080);
-						
+
 						Client c = new Client(j);
 						c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
 
@@ -205,8 +202,6 @@ public class NouvellePartieControleur implements Initializable {
 						e.printStackTrace();
 					}
 				} else if (multiCompetRadio.isSelected()) {
-					// TODO
-				} else if (IARadio.isSelected()) {
 					// TODO
 				}
 			} catch (NumberFormatException e) {
