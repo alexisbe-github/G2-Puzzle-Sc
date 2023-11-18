@@ -247,7 +247,7 @@ public class JeuMultiCoopControleur implements Initializable {
 					e.printStackTrace();
 				}
 			});
-			Thread.sleep(200);
+			Thread.sleep(500);
 		}
 
 	}
