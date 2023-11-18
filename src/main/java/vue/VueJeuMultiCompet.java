@@ -28,7 +28,7 @@ public class VueJeuMultiCompet extends Stage{
         		joueurs, puzzle, client);
         loader.setController(controller);
         
-        this.setTitle("Taquin - Jeu Multijoueur Coopératif");
+        this.setTitle("Taquin - Jeu Multijoueur Compétitif");
         Parent root = loader.load();
         Scene scene = new Scene(root);        
         
