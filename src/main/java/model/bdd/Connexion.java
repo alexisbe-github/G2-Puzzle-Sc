@@ -57,7 +57,4 @@ public enum Connexion {
 		}
 	}
 
-	public static void main(String[] args) {
-		Connexion.getInstance();
-	}
 }
