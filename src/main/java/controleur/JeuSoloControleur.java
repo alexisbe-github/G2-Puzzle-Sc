@@ -103,6 +103,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		boutonPause.setFocusTraversable(false);
+		boutonIA.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
 		boutonQuitter.setFocusTraversable(false);
 
@@ -248,11 +249,16 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 			};
 			boutonIA.setText("Arrêter IA");
 			threadIA = new Thread(task);
+			threadIA.setDaemon(true);
 			threadIA.start();
 			iaLance = true;
+			boutonUndo.setDisable(true);
 		} else {
 			boutonIA.setText("Lancer IA");
 			threadIA.interrupt();
+			if (partie.getPuzzle().undoActive()) {
+				boutonUndo.setDisable(false);
+			}
 			iaLance = false;
 		}
 
