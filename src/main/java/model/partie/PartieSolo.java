@@ -48,6 +48,11 @@ public class PartieSolo implements StrategyPartie, Serializable {
 		puzzle.deplacerCase(dp);
 		pcs.firePropertyChange("property", 1, 0);
 	}
+	
+	public void undo() {
+		puzzle.undo();
+		pcs.firePropertyChange("property", 1, 0);
+	}
 
 	public Puzzle getPuzzle() {
 		return this.puzzle;

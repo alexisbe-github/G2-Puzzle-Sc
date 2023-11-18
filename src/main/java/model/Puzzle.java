@@ -13,15 +13,16 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import javafx.scene.image.Image;
 import main.java.utils.Utils;
 
 public class Puzzle implements Serializable, Cloneable {
 
 	public static final int TAILLE_MINI = 3;
+	private boolean undoUtilise, undoActive;
 	private Case[][] grille;
 	private byte[] image;
 	private int nbCoups;
+	private Caretaker ct;
 
 	/**
 	 * Définit la taille du puzzle : si inferieur à 3, remise automatiquement à 3.
@@ -33,6 +34,9 @@ public class Puzzle implements Serializable, Cloneable {
 		this.grille = new Case[TAILLE][TAILLE];
 		this.initGrille();
 		this.nbCoups = 0;
+		this.ct = new Caretaker();
+		this.undoUtilise = false;
+		this.undoActive = true;
 	}
 
 	/**
@@ -118,7 +122,25 @@ public class Puzzle implements Serializable, Cloneable {
 			break;
 		}
 		if (newCoordX < this.grille.length && newCoordX >= 0 && newCoordY < this.grille.length && newCoordY >= 0) {
+			if (ct != null && !this.undoUtilise) {
+				Memento m = (Memento) this.saveToMemento();
+				ct.addMemento(m);
+			}
+			if (this.undoUtilise) {
+				this.undoActive = false;
+			}
 			this.echangerCase(new Point(oldCoordX, oldCoordY), new Point(newCoordX, newCoordY));
+		}
+	}
+
+	public void undo() {
+		Object memento = ct.getMemento();
+		if (memento != null && this.undoActive) {
+			this.restoreFromMemento(memento);
+			this.undoUtilise = true;
+		}
+		if (ct.getNbMementos() == 0) {
+			this.undoActive = false;
 		}
 	}
 
@@ -219,10 +241,9 @@ public class Puzzle implements Serializable, Cloneable {
 				// Initialisation de la sous image
 				BufferedImage subImg;
 				index = this.grille[j][i].getIndex();
-				if(index==-1) index = this.grille.length;
-				subImg = img.getSubimage(
-						width * (index % this.grille.length), 
-						height * (index / this.grille.length), 
+				if (index == -1)
+					index = this.grille.length;
+				subImg = img.getSubimage(width * (index % this.grille.length), height * (index / this.grille.length),
 						width, height); // "Découpe" de l'image
 				byte[] newImg = Utils.bufferedImageToByteArray(subImg, null);
 				this.grille[j][i].setImage(newImg);
@@ -293,7 +314,7 @@ public class Puzzle implements Serializable, Cloneable {
 		}
 	}
 
-	public Memento saveToMemento() {
+	public Object saveToMemento() {
 		Case[][] tmp = new Case[this.grille.length][this.grille.length];
 		for (int i = 0; i < this.grille.length; i++) {
 			for (int j = 0; j < this.grille.length; j++) {
@@ -307,12 +328,15 @@ public class Puzzle implements Serializable, Cloneable {
 		return new Memento(tmp, nbCoups);
 	}
 
-	public void restoreFromMemento(Memento memento) {
-		grille = memento.grille;
-		nbCoups = memento.nbCoups;
+	public void restoreFromMemento(Object m) {
+		if (m instanceof Memento) {
+			Memento memento = (Memento) m;
+			this.grille = memento.grille;
+			this.nbCoups = memento.nbCoups;
+		}
 	}
 
-	public class Memento { // définition d’une classe interne pour la sauvegarde
+	private static class Memento implements Serializable { // définition d’une classe interne pour la sauvegarde
 		private Case[][] grille;
 		private int nbCoups;
 
@@ -363,6 +387,10 @@ public class Puzzle implements Serializable, Cloneable {
 		}
 		clonedPuzzle.grille = clonedGrille;
 		return clonedPuzzle;
+	}
+
+	public boolean undoActive() {
+		return this.undoActive;
 	}
 
 }
