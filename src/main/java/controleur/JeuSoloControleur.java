@@ -81,6 +81,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
 		partie.lancerPartie(img, taille);
 		
 		owner.setOnCloseRequest(event -> this.handleExit(event));
+		this.owner.requestFocus();
 	}
 	
 	
@@ -229,10 +230,15 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener{
     	}
     }
     
+    /**
+     * Gère la situation dans laquelle l'utilisateur quitte la partie en cours
+     * 
+     * @param e L'événement
+     */
 	private void handleExit(Event e) {
-		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
-			return;
-		}
+//		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
+//			return;
+//		}
 		// TODO Ne pas sérialiser si la partie est terminée
 		String dossier = "src/main/java/model/serialisation/objets/";
 		String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
