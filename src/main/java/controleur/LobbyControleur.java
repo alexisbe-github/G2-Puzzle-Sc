@@ -23,6 +23,7 @@ import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
+import main.java.vue.VueJeuMultiCompet;
 import main.java.vue.VueJeuMultiCoop;
 
 public class LobbyControleur implements Initializable {
@@ -142,17 +143,23 @@ public class LobbyControleur implements Initializable {
 
 							// 0: param, 1: joueurs, 2: image, 3: taille, 4: estCoop
 							System.out.println("BIEN RECU : " + tab.get(0));
+							this.estCoop = (boolean) tab.get(4);
 							this.taille = (int) tab.get(3);
 							this.img = (byte[]) tab.get(2);
-							this.estCoop = (boolean) tab.get(4);
 							this.updateInfos();
 							client.lancerRequete("l");
 
-						} else if (tab.get(0).equals("s") && tab.get(3) instanceof Puzzle) {
+						} else if (tab.get(0).equals("s") && this.estCoop) {
 							int indexJ = (int) tab.get(2);
 							Puzzle puzzleC = (Puzzle) tab.get(3);
 							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, this.joueurs, indexJ,
 									puzzleC, this.client);
+							flagThreadEnd = true;
+							this.owner.close();
+							
+						} else if (tab.get(0).equals("s") && !this.estCoop) {
+							Puzzle puzzleI = (Puzzle) tab.get(2);
+							VueJeuMultiCompet vj = new VueJeuMultiCompet(client.getNoClient(), joueur, this.joueurs, puzzleI, this.client);
 							flagThreadEnd = true;
 							this.owner.close();
 
