@@ -47,7 +47,6 @@ public class JeuMultiCoopControleur implements Initializable {
 	boolean flagThreadEnd = false;
 	private int numJoueur;
 	private Joueur joueur;
-	private boolean estEnPause = false;
 	private double xClick;
 	private double yClick;
 	private Client client;
@@ -66,9 +65,6 @@ public class JeuMultiCoopControleur implements Initializable {
 
 	@FXML
 	private Label pseudoJoueur;
-
-	@FXML
-	private Button boutonUndo;
 
 	@FXML
 	private Label nbCoups;
@@ -97,7 +93,6 @@ public class JeuMultiCoopControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		boutonUndo.setFocusTraversable(false);
 
 		this.updateImages();
 		this.initJoueur();
@@ -108,7 +103,6 @@ public class JeuMultiCoopControleur implements Initializable {
 		// grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) ->
 		// this.handleReleaseAction(event));
 
-		
 		this.lancerThread();
 	}
 
@@ -177,7 +171,6 @@ public class JeuMultiCoopControleur implements Initializable {
 
 	private void updateVictoire() {
 		victoireLabel.setVisible(true);
-		this.estEnPause = true;
 	}
 
 	private void initJoueur() {
@@ -195,38 +188,30 @@ public class JeuMultiCoopControleur implements Initializable {
 		this.owner.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				if (!estEnPause) {
-					// dpAnim(event.getCode());
-					try {
-						switch (event.getCode()) {
-						case UP:
-							client.lancerRequete("h");
-							break;
-						case DOWN:
-							client.lancerRequete("b");
-							break;
-						case LEFT:
-							client.lancerRequete("g");
-							break;
-						case RIGHT:
-							client.lancerRequete("d");
-							break;
-						default:
-							break;
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				// dpAnim(event.getCode());
+				try {
+					switch (event.getCode()) {
+					case UP:
+						client.lancerRequete("h");
+						break;
+					case DOWN:
+						client.lancerRequete("b");
+						break;
+					case LEFT:
+						client.lancerRequete("g");
+						break;
+					case RIGHT:
+						client.lancerRequete("d");
+						break;
+					default:
+						break;
 					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
-	}
-
-	@FXML
-	private void undoButton(ActionEvent event) {
-		System.out.println("undo");
-		// TODO not implemented
 	}
 
 	public void updateAll() {
@@ -237,27 +222,27 @@ public class JeuMultiCoopControleur implements Initializable {
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
 
 		System.out.println("super");
-		
+
 		this.client.lancerRequete("p");
 
-		while (this.puzzle.verifierGrille()) {
+		while (!this.puzzle.verifierGrille()) {
 			Platform.runLater(() -> {
 
 				try {
 					ObjectInputStream ois;
 					ois = new ObjectInputStream(client.getSocket().getInputStream());
 					Object oisObj = ois.readObject();
-					
+
 					if (oisObj instanceof List) {
 						List<Object> tab = (List<Object>) oisObj;
 						if (tab.get(0).equals("p")) {
 							this.puzzle = (Puzzle) tab.get(2);
-							this.numJoueurCourant = (int) tab.get(1);					
+							this.numJoueurCourant = (int) tab.get(1);
 							updateAll();
 						}
 						client.lancerRequete("p");
 					}
-					
+
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -266,7 +251,6 @@ public class JeuMultiCoopControleur implements Initializable {
 		}
 
 	}
-
 
 	private void lancerThread() {
 		new Thread(() -> {

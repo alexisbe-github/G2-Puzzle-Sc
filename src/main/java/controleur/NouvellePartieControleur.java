@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -54,6 +55,8 @@ public class NouvellePartieControleur implements Initializable {
 	private RadioButton multiCoopRadio;
 	@FXML
 	private RadioButton multiCompetRadio;
+	@FXML
+	private TextField saisiePort;
 
 	@FXML
 	private MenuButton menuProfils;
@@ -78,13 +81,20 @@ public class NouvellePartieControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		this.menuProfils.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handleMenuClick(event));
-
+		
 		this.radioGroupe = new ToggleGroup();
 
+		EventHandler<? super MouseEvent> l = (MouseEvent event) -> this.handleRadioClick(event);
+		
 		this.multiCompetRadio.setToggleGroup(radioGroupe);
+		this.multiCompetRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
+		
 		this.multiCoopRadio.setToggleGroup(radioGroupe);
+		this.multiCoopRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
+		
 		this.soloRadio.setToggleGroup(radioGroupe);
-
+		this.soloRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
+		
 		try {
 			this.updateAll();
 		} catch (IOException e) {
@@ -105,10 +115,10 @@ public class NouvellePartieControleur implements Initializable {
 	private void updateAll() throws IOException {
 		this.updateImagePartie();
 		this.updateInfosJoueur();
-		this.updateListeProfils();
+		this.updateJoueurs();
 	}
 
-	private void updateListeProfils() throws IOException {
+	private void updateJoueurs() throws IOException {
 		List<JoueurSQL> joueurs = new ArrayList<JoueurSQL>();
 		DAOJoueur j = new DAOJoueur();
 		joueurs = j.trouverTout();
@@ -159,12 +169,22 @@ public class NouvellePartieControleur implements Initializable {
 
 	private void handleMenuClick(MouseEvent event) {
 		try {
-			this.updateListeProfils();
+			this.updateJoueurs();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void handleRadioClick(MouseEvent event) {
+		if(event.getSource().equals(this.multiCoopRadio) || event.getSource().equals(this.multiCompetRadio)) {
+			saisiePort.setManaged(true);
+			saisiePort.setVisible(true);
+		}else {
+			saisiePort.setManaged(false);
+			saisiePort.setVisible(false);
+		}
+	}
+	
 	private void erreurLancement() {
 		System.out.println("erreurlancement");
 	}
@@ -180,29 +200,31 @@ public class NouvellePartieControleur implements Initializable {
 					// new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(),
 					// joueurChoisi.getImage()), taille, imageChoisie);
 					new VueJeuSolo(new PartieSolo(j), taille, Utils.imageToByteArray(imageChoisie, null));
-				} else if (multiCoopRadio.isSelected()) {
+				} else if (multiCoopRadio.isSelected() || multiCompetRadio.isSelected()) {
 					try {
+						boolean estCoop = multiCoopRadio.isSelected();
+						
 						VueGenerale vg = new VueGenerale(this.owner);
-
+						
 						ContextePartie cp = new ContextePartie(j);
 						PartieMultijoueurCooperative pm = new PartieMultijoueurCooperative();
 						cp.setStrategy(pm);
 
 						Serveur s = new Serveur();
-						s.lancerServeur(pm, 8080);
+						s.lancerServeur(pm, Integer.parseInt(this.saisiePort.getText()));
 
 						Client c = new Client(j);
-						c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
+						c.seConnecter(NetworkUtils.getServeurIPV4(true), 
+								Integer.parseInt(this.saisiePort.getText()));
 
-						LobbyControleur lc = new LobbyControleur(vg, pm, j, true,
+						LobbyControleur lc = new LobbyControleur(vg, pm, j, estCoop,
 								Utils.imageToByteArray(imageChoisie, null), taille, c);
+						
 						vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
 					} catch (InvalidPortException e) {
 						// TODO
 						e.printStackTrace();
 					}
-				} else if (multiCompetRadio.isSelected()) {
-					// TODO
 				}
 			} catch (NumberFormatException e) {
 				this.erreurLancement();

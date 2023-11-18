@@ -111,8 +111,10 @@ public class LobbyControleur implements Initializable {
 
 	@FXML
 	private void lancerPartieMulti() throws IOException {
-		partie.lancerPartie(this.img, taille);
-		this.flagLancement = true;
+		if(this.joueurs.size()>1) {
+			partie.lancerPartie(this.img, taille);
+			this.flagLancement = true;
+		}
 	}
 
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {

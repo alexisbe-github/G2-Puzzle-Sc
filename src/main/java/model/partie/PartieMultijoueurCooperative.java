@@ -59,15 +59,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
 		}
-		if (puzzleCommun.verifierGrille()) {
-			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-				Joueur j = mapEntry.getKey();
-				Socket s = mapEntry.getValue();
-
-				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
-			}
-		}
 	}
 	
 	public boolean partieFinie() {
