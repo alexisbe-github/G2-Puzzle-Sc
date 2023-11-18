@@ -43,33 +43,33 @@ import main.java.vue.VueJeuSolo;
 
 public class NouvellePartieControleur implements Initializable {
 
-	Stage owner;
-	JoueurSQL joueurChoisi;
-	Image imageChoisie;
-	ToggleGroup radioGroupe;
+	private Stage owner;
+	private JoueurSQL joueurChoisi;
+	private Image imageChoisie;
+	private ToggleGroup radioGroupe;
 
 	@FXML
-	RadioButton soloRadio;
+	private RadioButton soloRadio;
 	@FXML
-	RadioButton multiCoopRadio;
+	private RadioButton multiCoopRadio;
 	@FXML
-	RadioButton multiCompetRadio;
+	private RadioButton multiCompetRadio;
 	@FXML
-	RadioButton IARadio;
+	private RadioButton IARadio;
 
 	@FXML
-	MenuButton menuProfils;
+	private MenuButton menuProfils;
 
 	@FXML
-	ImageView imageJoueur;
+	private ImageView imageJoueur;
 	@FXML
-	Label pseudoJoueur;
+	private Label pseudoJoueur;
 
 	@FXML
-	TextField saisieTaille;
+	private TextField saisieTaille;
 
 	@FXML
-	ImageView imagePerso;
+	private ImageView imagePerso;
 
 	public NouvellePartieControleur(Stage stage) throws IOException {
 		this.owner = stage;

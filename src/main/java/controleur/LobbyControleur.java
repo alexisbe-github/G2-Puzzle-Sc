@@ -23,7 +23,6 @@ import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.PartieMultijoueur;
-import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.vue.VueJeuMultiCoop;
 
 public class LobbyControleur implements Initializable {
@@ -57,7 +56,7 @@ public class LobbyControleur implements Initializable {
 	@FXML
 	private Label labelType;
 
-	public LobbyControleur(Stage stage, Joueur j, Client client) throws IOException {
+	public LobbyControleur(Stage stage, Joueur j, Client client) {
 		this.owner = stage;
 		this.estHote = false;
 		this.client = client;
@@ -65,38 +64,20 @@ public class LobbyControleur implements Initializable {
 	}
 
 	public LobbyControleur(Stage stage, PartieMultijoueur partie, Joueur j, boolean estCoop, byte[] img, int taille,
-			Client client) throws IOException {
-		this.owner = stage;
+			Client client) {
+		this(stage, j, client);
 		this.estHote = true;
 		this.estCoop = estCoop;
 		this.img = img;
 		this.taille = taille;
-		this.client = client;
 		this.partie = partie;
-		this.joueur = j;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		lancerPartie.setManaged(estHote);
 		this.updateInfos();
-
 		this.lancerThread();
-		try {
-			if (estHote) {
-				List<Object> output = new ArrayList<Object>();
-				output.add("i");
-				output.add(this.img);
-				// output.add(this.estCoop);
-				output.add(this.taille);
-				client.lancerRequete(output);
-			} else {
-				client.lancerRequete("i");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void updateJoueurs() {
@@ -168,11 +149,11 @@ public class LobbyControleur implements Initializable {
 						} else if (tab.get(0).equals("s") && tab.get(3) instanceof Puzzle) {
 							int indexJ = (int) tab.get(2);
 							Puzzle puzzleC = (Puzzle) tab.get(3);
-							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, this.joueurs,
-									indexJ, puzzleC, this.client);
+							VueJeuMultiCoop vj = new VueJeuMultiCoop(client.getNoClient(), joueur, this.joueurs, indexJ,
+									puzzleC, this.client);
 							flagThreadEnd = true;
 							this.owner.close();
-							
+
 						} else if (flagLancement)
 							client.lancerRequete("s");
 						else
@@ -196,7 +177,18 @@ public class LobbyControleur implements Initializable {
 		}
 
 	}
-
+	
+	private void initStream() throws IOException {
+		if (estHote) {
+			List<Object> output = new ArrayList<Object>();
+			output.add("i");
+			output.add(this.img);
+			output.add(this.taille);
+			client.lancerRequete(output);
+		} else {
+			client.lancerRequete("i");
+		}
+	}
 
 	private void lancerThread() {
 		new Thread(() -> {
@@ -207,7 +199,12 @@ public class LobbyControleur implements Initializable {
 				e.printStackTrace();
 			}
 		}).start();
-
+		try {
+			this.initStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

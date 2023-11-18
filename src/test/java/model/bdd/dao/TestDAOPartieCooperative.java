@@ -88,17 +88,17 @@ public class TestDAOPartieCooperative implements TestCRUD {
 	@Test
 	@Override
 	public void testCreate() {
-//		PartieCooperativeSQL p = new PartieCooperativeSQL();
-//		int val = 999;
-//		p.setIdPartie(idPartie1);
-//		p.setIdJoueur(idJoueur1);
-//		p.setNbCoups(val);
-//		dao.creer(p);
-//		listePartiesCooperatives.add(p.getIdPartie());
-//		listeJoueurs.add(p.getIdJoueur());
-//		listeParties.add(p.getIdPartie());
-//
-//		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), val);
+/*		PartieCooperativeSQL p = new PartieCooperativeSQL();
+		int val = 999;
+		p.setIdPartie(idPartie1);
+		p.setIdJoueur(idJoueur1);
+		p.setNbCoups(val);
+		dao.creer(p);
+		listePartiesCooperatives.add(p.getIdPartie());
+		listeJoueurs.add(p.getIdJoueur());
+		listeParties.add(p.getIdPartie());
+
+		Assertions.assertEquals(p.getNbCoups(), val);*/
 	}
 
 	@Test
@@ -120,19 +120,19 @@ public class TestDAOPartieCooperative implements TestCRUD {
 	@Test
 	@Override
 	public void testUpdate() {
-//		PartieCooperativeSQL p = new PartieCooperativeSQL();
-//		int val1 = 999, val2 = 9999;
-//		p.setIdPartie(idPartie2);
-//		p.setIdJoueur(idJoueur3);
-//		p.setNbCoups(val1);
-//		dao.creer(p);
-//		p.setNbCoups(val2);
-//		dao.maj(p);
-//		listePartiesCooperatives.add(p.getIdPartie());
-//		listeJoueurs.add(p.getIdJoueur());
-//		listeParties.add(p.getIdPartie());
-//
-//		Assertions.assertEquals(dao.trouver(p.getIdPartie()).getNbCoups(), val2);
+/*		PartieCooperativeSQL p = new PartieCooperativeSQL();
+		int val1 = 999, val2 = 9999;
+		p.setIdPartie(idPartie2);
+		p.setIdJoueur(idJoueur3);
+		p.setNbCoups(val1);
+		dao.creer(p);
+		p.setNbCoups(val2);
+		dao.maj(p);
+		listePartiesCooperatives.add(p.getIdPartie());
+		listeJoueurs.add(p.getIdJoueur());
+		listeParties.add(p.getIdPartie());
+
+		Assertions.assertEquals(p.getNbCoups(), val2);*/
 	}
 
 	@Test
