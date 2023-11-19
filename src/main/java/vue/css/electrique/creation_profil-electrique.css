@@ -13,26 +13,14 @@
 	-fx-effect: dropshadow(gaussian, black, 20px, 0.25, 0, 0);
 }
 
-.button, .menu-button {
-	-fx-border-radius: 5px;
+.button {
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+	-fx-effect: dropshadow(three-pass-box, #000c, 5, 0, 0, 0);
 	-fx-font-size: 9pt;
 	-fx-background-color: #111;
 	-fx-text-fill: #fff;
 	-fx-font-family: "monospace";
-}
-
-.menu .label, .menu-item .label {
-	-fx-text-fill: black !important;
-	-fx-effect: none !important;
-}
-
-.menu-item:focused {
-	-fx-background-color: #00113e !important;
-	-fx-cursor: hand;
-}
-
-.menu-item:focused .label {
-	-fx-text-fill: #eee !important;
 }
 
 .button:hover {
@@ -52,36 +40,7 @@
 	-fx-display-caret: true;	 
 }
 
-.radio-button {
-	-fx-font-size: 8pt;
-	-fx-background-color: #1111;
-	-fx-text-fill: #fff;
-	-fx-font-family: "monospace";
-}
-
-.radio-button .radio {
-    -fx-background-color: #eee;
-    -fx-border-color: #eee;
-    -fx-shape: "M 0 0 L 8 0 L 8 8 L 0 8 Z";
-}
-
-.radio-button:hover {
+#imageJoueur:hover {
+	-fx-blend-mode: screen;
 	-fx-cursor: hand;
-}
-
-.radio-button:selected .radio {
-    -fx-background-color: #00113e;
-}
-
-.radio-button .radio .dot {
-	-fx-background-color: transparent;
-}
-
-#titre {
-	-fx-font-size: 36pt !important;
-	-fx-effect: dropshadow(gaussian, black, 10px, 0.2, 0, 0);
-}
-
-#menuProfils .text {
-	-fx-font-size: 8.5pt !important;
 }

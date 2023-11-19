@@ -9,37 +9,48 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="499.0" spacing="30.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox alignment="CENTER" prefHeight="0.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="NEVER">
-         <children>
-            <Label alignment="CENTER" text="Joueurs :">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <HBox fx:id="boxJoueurs" alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0"
+	prefWidth="499.0" spacing="30.0" fx:id="fenetre"
+	stylesheets="@../../../java/vue/css/electrique/lobby-electrique.css"
+	xmlns="http://javafx.com/javafx/20.0.1"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<VBox alignment="CENTER" prefHeight="0.0" prefWidth="100.0"
+			spacing="10.0" VBox.vgrow="NEVER">
+			<children>
+				<Label alignment="CENTER" text="Joueurs :">
+					<font>
+						<Font size="16.0" />
+					</font>
+				</Label>
+				<HBox fx:id="boxJoueurs" alignment="CENTER" fillHeight="false"
+					prefHeight="100.0" prefWidth="200.0" spacing="10.0"
+					VBox.vgrow="NEVER">
 
-            </HBox>
-         </children>
-      </VBox>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" VBox.vgrow="NEVER">
-         <children>
-            <Label text="Image :">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <ImageView fx:id="imagePuzzle" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true">
-            </ImageView>
-            <Label fx:id="labelTaille" text="Taille : 4" />
-            <Label fx:id="labelType" text="Partie coopérative" />
-         </children>
-      </VBox>
-      <Button fx:id="lancerPartie" onAction="#lancerPartieMulti" mnemonicParsing="false" text="Lancer Partie">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-   </children>
+				</HBox>
+			</children>
+		</VBox>
+		<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0"
+			spacing="5.0" VBox.vgrow="NEVER">
+			<children>
+				<Label text="Image :">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<ImageView fx:id="imagePuzzle" fitHeight="130.0"
+					fitWidth="130.0" pickOnBounds="true">
+				</ImageView>
+				<Label fx:id="labelTaille" text="Taille : 4" />
+				<Label fx:id="labelType" text="Partie coopérative" />
+			</children>
+		</VBox>
+		<Button fx:id="lancerPartie" onAction="#lancerPartieMulti"
+			mnemonicParsing="false" text="Lancer Partie">
+			<font>
+				<Font size="18.0" />
+			</font>
+		</Button>
+	</children>
 </VBox>
