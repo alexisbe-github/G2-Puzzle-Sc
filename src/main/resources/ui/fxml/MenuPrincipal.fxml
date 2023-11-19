@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="414.0" prefWidth="498.0" fx:id="fenetre" stylesheets="@../../../java/vue/styles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="414.0" prefWidth="498.0" fx:id="fenetre" stylesheets="@../../../java/vue/css/electrique/menu-electrique.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <GridPane prefHeight="459.0" prefWidth="591.0" VBox.vgrow="ALWAYS">
         <columnConstraints>

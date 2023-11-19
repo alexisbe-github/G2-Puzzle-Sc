@@ -181,7 +181,7 @@ public class JeuMultiCoopControleur implements Initializable {
 	}
 
 	private void updateInfos() {
-		this.nbCoups.setText("nbCoups : " + this.puzzle.getNbCoups());
+		this.nbCoups.setText("Nombre de coups : " + this.puzzle.getNbCoups());
 	}
 
 	public void setKeyController() {

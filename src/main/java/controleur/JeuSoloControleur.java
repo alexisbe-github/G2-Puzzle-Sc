@@ -172,7 +172,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	}
 
 	private void updateInfos() {
-		this.nbCoups.setText("nbCoups : " + this.partie.getPuzzle().getNbCoups());
+		this.nbCoups.setText("Nombre de coups : " + this.partie.getPuzzle().getNbCoups());
 	}
 
 	public void setKeyController() {
@@ -247,14 +247,14 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 					return null;
 				}
 			};
-			boutonIA.setText("Arrêter IA");
+			boutonIA.setText("Arrêter l'IA");
 			threadIA = new Thread(task);
 			threadIA.setDaemon(true);
 			threadIA.start();
 			iaLance = true;
 			boutonUndo.setDisable(true);
 		} else {
-			boutonIA.setText("Lancer IA");
+			boutonIA.setText("Lancer l'IA");
 			threadIA.interrupt();
 			if (partie.getPuzzle().undoActive()) {
 				boutonUndo.setDisable(false);
