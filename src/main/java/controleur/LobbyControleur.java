@@ -32,7 +32,6 @@ public class LobbyControleur implements Initializable {
 	private boolean estHote;
 	private boolean estCoop;
 	private Stage owner;
-	// private Image img;
 	private byte[] img;
 	private int taille;
 	private Client client;

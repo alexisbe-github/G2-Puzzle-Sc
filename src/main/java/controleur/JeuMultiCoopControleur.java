@@ -1,30 +1,16 @@
 package main.java.controleur;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.java.model.Puzzle;
 import main.java.model.client.Client;
@@ -37,6 +23,9 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	boolean flagThreadEnd = false;
 	private int numJoueur;
 
+	@FXML
+	private Label aVotreTour;
+	
 	/**
 	 * 
 	 * @param stage  : fenêtre dans laquelle la scene est affichée
@@ -53,7 +42,25 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 		this.numJoueurCourant = numJoueurCourant;
 		this.puzzle = puzzle;
 		this.joueurs = joueurs;
+	}
 
+	@Override
+	protected void updateAll() {
+		super.updateAll();
+		this.updateJoueurCourant();
+	}
+
+	private void updateJoueurCourant() {
+		for (Node n : this.boxJoueurs.getChildren()) {
+			VBox v = (VBox) n;
+			Label l = (Label) v.getChildren().get(1);
+			if (boxJoueurs.getChildren().indexOf(n) == this.numJoueurCourant) {
+				l.setTextFill(Color.GREEN);
+				if(boxJoueurs.getChildren().indexOf(n) == this.numJoueur-1) {
+					this.aVotreTour.setVisible(true);
+				}else this.aVotreTour.setVisible(false);
+			}else l.setTextFill(Color.RED);
+		}
 	}
 
 	@Override
@@ -91,7 +98,7 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	}
 
 	@Override
-	protected  void lancerThread() {
+	protected void lancerThread() {
 		new Thread(() -> {
 			try {
 				readStream();
@@ -102,7 +109,5 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 		}).start();
 
 	}
-
-
 
 }
