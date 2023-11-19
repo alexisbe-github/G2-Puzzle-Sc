@@ -36,45 +36,22 @@ import main.java.model.ia.expertsystem.SystemeExpert;
 import main.java.model.partie.PartieSolo;
 import main.java.model.serialisation.Serialisation;
 
-public class JeuSoloControleur implements Initializable, PropertyChangeListener {
+public class JeuSoloControleur extends JeuControleur implements Initializable, PropertyChangeListener {
 
-	private Stage owner;
 	private PartieSolo partie;
 	private boolean estEnPause = false;
-	private double xClick;
-	private double yClick;
+	
 	private List<EDeplacement> solution;
 	private Thread threadIA;
 	private int i; // index solution IA
 	private boolean iaLance = false;
 
 	@FXML
-	private Label chrono;
-
-	@FXML
-	private Label victoireLabel;
-
-	@FXML
-	private ImageView logoJoueur;
-
-	@FXML
-	private Label pseudoJoueur;
-
-	@FXML
 	private Button boutonIA;
-
 	@FXML
 	private Button boutonUndo;
-
 	@FXML
 	private Button boutonQuitter;
-
-	@FXML
-	private Label nbCoups;
-
-	@FXML
-	private AnchorPane grille;
-
 	@FXML
 	private Button boutonPause;
 
@@ -87,8 +64,8 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille, byte[] img) throws IOException {
 		this.owner = stage;
 		this.partie = partie;
+		
 		partie.lancerPartie(img, taille);
-
 		owner.setOnCloseRequest(event -> this.handleExit(event));
 		this.owner.requestFocus();
 	}
@@ -96,7 +73,6 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	public JeuSoloControleur(Stage stage, PartieSolo partie) {
 		this.owner = stage;
 		this.partie = partie;
-
 		owner.setOnCloseRequest(event -> this.handleExit(event));
 	}
 
@@ -120,7 +96,8 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	 * mise a jour des images affichées en fonction de la position des cases dans la
 	 * grille
 	 */
-	private void updateImages() {
+	@Override
+	protected void updateImages() {
 		// Définition de la taille d'une case
 		double largeurCase = owner.getWidth() / this.partie.getPuzzle().getTaille() * 0.5;
 		Image image;
@@ -153,28 +130,33 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 		}
 	}
 
-	private void updateJeu() {
+	@Override
+	protected void updateJeu() {
 		this.updateImages();
 		if (this.partie.getPuzzle().verifierGrille())
 			this.updateVictoire();
 	}
 
-	private void updateVictoire() {
+	@Override
+	protected void updateVictoire() {
 		victoireLabel.setVisible(true);
 		this.estEnPause = true;
 	}
 
-	private void initJoueur() {
+	@Override
+	protected void initJoueur() {
 		Image image = new Image(new ByteArrayInputStream(this.partie.getJoueur().getImage()));
 		this.logoJoueur.setImage(image);
 		this.pseudoJoueur.setText(this.partie.getJoueur().getNom());
 		this.updateInfos();
 	}
 
-	private void updateInfos() {
+	@Override
+	protected void updateInfos() {
 		this.nbCoups.setText("Nombre de coups : " + this.partie.getPuzzle().getNbCoups());
 	}
 
+	@Override
 	public void setKeyController() {
 
 		this.owner.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -287,8 +269,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		this.updateJeu();
-		this.updateInfos();
+		this.updateAll();
 	}
 
 	private void handlePressAction(MouseEvent event) {
@@ -329,6 +310,9 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 		String chemin = dossier + nom;
 		Serialisation.serialiserObjet(this.partie, chemin);
 	}
+
+
+	
 
 	/*
 	 * DEPLACEMENT, ANIMATION (Code un peu déstructuré, c'est normal) private void

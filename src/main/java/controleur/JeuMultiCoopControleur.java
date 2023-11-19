@@ -1,22 +1,17 @@
 package main.java.controleur;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,43 +29,13 @@ import javafx.stage.Stage;
 import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
-import main.java.vue.VueJeuMultiCoop;
 
-public class JeuMultiCoopControleur implements Initializable {
+public class JeuMultiCoopControleur extends JeuMultiControleur implements Initializable {
 
-	private Stage owner;
-
-	private Puzzle puzzle;
 	private int numJoueurCourant;
-	private List<Joueur> joueurs;
 
 	boolean flagThreadEnd = false;
 	private int numJoueur;
-	private Joueur joueur;
-	private double xClick;
-	private double yClick;
-	private Client client;
-
-	@FXML
-	private VBox boxJoueurs;
-
-	@FXML
-	private Label chrono;
-
-	@FXML
-	private Label victoireLabel;
-
-	@FXML
-	private ImageView logoJoueur;
-
-	@FXML
-	private Label pseudoJoueur;
-
-	@FXML
-	private Label nbCoups;
-
-	@FXML
-	private AnchorPane grille;
 
 	/**
 	 * 
@@ -92,134 +57,7 @@ public class JeuMultiCoopControleur implements Initializable {
 	}
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-		this.updateImages();
-		this.initJoueur();
-		this.updateJoueurs();
-
-		// grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) ->
-		// this.handlePressAction(event));
-		// grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) ->
-		// this.handleReleaseAction(event));
-
-		this.lancerThread();
-	}
-
-	/**
-	 * mise a jour des images affichées en fonction de la position des cases dans la
-	 * grille
-	 */
-	private void updateImages() {
-		// Définition de la taille d'une case
-		double largeurCase = owner.getWidth() / this.puzzle.getTaille() * 0.5;
-		Image image;
-		grille.getChildren().clear();
-
-		for (int i = 0; i < puzzle.getTaille(); i++) {
-			for (int j = 0; j < puzzle.getTaille(); j++) {
-				Label l = new Label();
-				if (puzzle.getCase(j, i).getIndex() != -1)
-					l.setText("" + ((int) puzzle.getCase(j, i).getIndex() + 1));
-				l.setFont(new Font(18));
-				l.setTextFill(Color.YELLOW);
-				l.setPrefWidth(largeurCase);
-				l.setPrefHeight(largeurCase);
-				l.setAlignment(Pos.CENTER);
-				l.setLayoutX(j * largeurCase);
-				l.setLayoutY(i * largeurCase);
-
-				l.setId("case" + puzzle.getCase(j, i).getIndex());
-
-				image = new Image(new ByteArrayInputStream(puzzle.getCase(j, i).getImage()));
-
-				Background bgi = new Background(
-						new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-								BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, false)));
-				if (puzzle.getCase(j, i).getIndex() != -1)
-					l.setBackground(bgi);
-				grille.getChildren().add(l);
-			}
-		}
-	}
-
-	private void updateJoueurs() {
-		this.boxJoueurs.getChildren().clear();
-		for (Joueur j : joueurs) {
-			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
-			v.setAlignment(Pos.CENTER);
-			v.setPrefHeight(200);
-			v.setPrefWidth(100);
-			ImageView i = new ImageView(); // Logo du joueur
-			i.setFitHeight(60);
-			i.setFitWidth(60);
-			Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
-			i.setImage(image);
-			Label l = new Label(j.getNom()); // Pseudo du joueur
-			v.setId("box" + j.getNom());
-			v.getChildren().add(i);
-			v.getChildren().add(l);
-			boxJoueurs.getChildren().add(v); // Ajout a la box principal
-		}
-	}
-
-	private void updateJeu() {
-		this.updateImages();
-		if (this.puzzle.verifierGrille())
-			this.updateVictoire();
-	}
-
-	private void updateVictoire() {
-		victoireLabel.setVisible(true);
-	}
-
-	private void initJoueur() {
-		Image image = new Image(new ByteArrayInputStream(this.joueur.getImage()));
-		this.logoJoueur.setImage(image);
-		this.pseudoJoueur.setText(joueur.getNom());
-		this.updateInfos();
-	}
-
-	private void updateInfos() {
-		this.nbCoups.setText("Nombre de coups : " + this.puzzle.getNbCoups());
-	}
-
-	public void setKeyController() {
-		this.owner.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				// dpAnim(event.getCode());
-				try {
-					switch (event.getCode()) {
-					case UP:
-						client.lancerRequete("h");
-						break;
-					case DOWN:
-						client.lancerRequete("b");
-						break;
-					case LEFT:
-						client.lancerRequete("g");
-						break;
-					case RIGHT:
-						client.lancerRequete("d");
-						break;
-					default:
-						break;
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public void updateAll() {
-		this.updateJeu();
-		this.updateInfos();
-	}
-
-	private void readStream() throws IOException, InterruptedException {
+	protected void readStream() throws IOException, InterruptedException {
 
 		System.out.println("super");
 
@@ -252,7 +90,8 @@ public class JeuMultiCoopControleur implements Initializable {
 
 	}
 
-	private void lancerThread() {
+	@Override
+	protected  void lancerThread() {
 		new Thread(() -> {
 			try {
 				readStream();

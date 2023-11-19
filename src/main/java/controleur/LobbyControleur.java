@@ -159,7 +159,7 @@ public class LobbyControleur implements Initializable {
 							
 						} else if (tab.get(0).equals("s") && !this.estCoop) {
 							Puzzle puzzleI = (Puzzle) tab.get(2);
-							VueJeuMultiCompet vj = new VueJeuMultiCompet(client.getNoClient(), joueur, this.joueurs, puzzleI, this.client);
+							VueJeuMultiCompet vj = new VueJeuMultiCompet(joueur, this.joueurs, puzzleI, this.client);
 							flagThreadEnd = true;
 							this.owner.close();
 

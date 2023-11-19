@@ -17,14 +17,14 @@ import main.java.model.joueur.Joueur;
 
 public class VueJeuMultiCompet extends Stage{
 
-	public VueJeuMultiCompet(int numJoueur, Joueur joueur,
+	public VueJeuMultiCompet(Joueur joueur,
 		List<Joueur> joueurs, Puzzle puzzle, Client client) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuMultiCoop.fxml").toUri().toURL());
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
-        JeuMultiCompetControleur controller = new JeuMultiCompetControleur(this, numJoueur, joueur,
+        JeuMultiCompetControleur controller = new JeuMultiCompetControleur(this, joueur,
         		joueurs, puzzle, client);
         loader.setController(controller);
         
