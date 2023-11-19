@@ -312,52 +312,5 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	}
 
 
-	
-
-	/*
-	 * DEPLACEMENT, ANIMATION (Code un peu déstructuré, c'est normal) private void
-	 * dpAnim(KeyCode key) { double largeurCase =
-	 * owner.getWidth()/this.partie.getPuzzle().getTaille()*0.5; int xMultiplier =
-	 * 0,yMultiplier = 0; if(key==KeyCode.UP) { yMultiplier=-1; }else
-	 * if(key==KeyCode.DOWN) { yMultiplier=1; }else if(key==KeyCode.RIGHT) {
-	 * xMultiplier=1; }else if(key==KeyCode.LEFT) { xMultiplier=-1; }
-	 * 
-	 * 
-	 * Node casedp = null;
-	 * 
-	 * if(partie.getPuzzle().getXCaseVide()+xMultiplier <
-	 * partie.getPuzzle().getTaille() &&
-	 * partie.getPuzzle().getXCaseVide()+xMultiplier>=0 &&
-	 * partie.getPuzzle().getYCaseVide()+yMultiplier <
-	 * partie.getPuzzle().getTaille() &&
-	 * partie.getPuzzle().getYCaseVide()+yMultiplier>=0 || true) {
-	 * 
-	 * int idCase = partie.getPuzzle().getCase(
-	 * partie.getPuzzle().getXCaseVide()+xMultiplier,
-	 * partie.getPuzzle().getYCaseVide()+yMultiplier).getIndex();
-	 * 
-	 * for(int i=0;i<grille.getChildren().size();i++) { String id1 = "case"+idCase;
-	 * String id2 = grille.getChildren().get(i).getId();
-	 * if(grille.getChildren().get(i).getId().equals("case"+idCase)) {
-	 * casedp=grille.getChildren().get(i); } }
-	 * 
-	 * System.out.println(partie.getPuzzle());
-	 * 
-	 * TranslateTransition translateTransition = new TranslateTransition();
-	 * translateTransition.setNode(casedp);
-	 * translateTransition.setDuration(Duration.millis(50));
-	 * translateTransition.setToX(largeurCase*xMultiplier);
-	 * translateTransition.setToY(largeurCase*yMultiplier);
-	 * translateTransition.setOnFinished(new EventHandler<ActionEvent>() {
-	 * 
-	 * @Override public void handle(ActionEvent event) { switch (key) { case UP:
-	 * partie.deplacerCase(EDeplacement.HAUT); break; case DOWN:
-	 * partie.deplacerCase(EDeplacement.BAS); break; case LEFT:
-	 * partie.deplacerCase(EDeplacement.GAUCHE); break; case RIGHT:
-	 * partie.deplacerCase(EDeplacement.DROITE); break; default: break; } } });
-	 * translateTransition.play(); }
-	 * 
-	 * }
-	 */
 
 }
