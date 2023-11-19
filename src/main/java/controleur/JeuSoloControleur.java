@@ -226,7 +226,7 @@ public class JeuSoloControleur implements Initializable, PropertyChangeListener 
 	@FXML
 	private void startIAButton(ActionEvent event) {
 
-		if (boutonIA.getText().equals("Lancer IA")) {
+		if (boutonIA.getText().equals("Lancer l'IA")) {
 			i = 0;
 			solution = SystemeExpert.solveTaquin(partie.getPuzzle());
 			Task<Void> task = new Task<Void>() { // tâche parallèle mise à jour vue
