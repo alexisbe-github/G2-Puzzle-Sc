@@ -33,7 +33,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		this.taille = t;
 	}
 	
-	public void envoyerJoueurs(String param, Socket s) throws IOException {
+	public void envoyerJoueurs(String param, Socket s, Joueur j) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
 
@@ -44,6 +44,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 				output.add(this.image);
 				output.add(this.taille);
 				output.add(this instanceof PartieMultijoueurCooperative);
+				System.out.println(this instanceof PartieMultijoueurCooperative);
 		}else if(param.equals("s")) {
 			this.partieLancee=true;
 		}
@@ -54,7 +55,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 				output.add(((PartieMultijoueurCooperative) this).getIndexJoueurCourant());
 				output.add(((PartieMultijoueurCooperative) this).getPuzzleCommun());
 			}else if(this instanceof PartieMultijoueurCompetitive) {
-				
+				output.add(((PartieMultijoueurCompetitive) this).getPuzzleDuJoueur(j));
 			}
 		}
 		
@@ -62,7 +63,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		oop.writeObject(output);
 	}
 	
-	public void envoyerPuzzle(String param, Socket s) throws IOException {
+	public void envoyerPuzzle(String param, Socket s, Joueur j) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
 
@@ -71,7 +72,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 			output.add(((PartieMultijoueurCooperative) this).getIndexJoueurCourant());
 			output.add(((PartieMultijoueurCooperative) this).getPuzzleCommun());
 		}else if(this instanceof PartieMultijoueurCompetitive) {
-			
+			output.add(((PartieMultijoueurCompetitive) this).getPuzzleDuJoueur(j));
 		}
 		
 		oop.writeObject(output);

@@ -74,10 +74,10 @@ public class ServeurThread extends Thread {
 							serveur.getPartie().deplacerCase(EDeplacement.DROITE, joueur, this.noConnexion);
 							break;
 						case 'l':
-							serveur.getPartie().envoyerJoueurs(ligne, socket);
+							serveur.getPartie().envoyerJoueurs(ligne, socket,joueur);
 							break;
 						case 's':
-							serveur.getPartie().envoyerJoueurs(ligne, socket);
+							serveur.getPartie().envoyerJoueurs(ligne, socket,joueur);
 							break;
 						case 'i':
 							if(liste != null) {
@@ -87,10 +87,10 @@ public class ServeurThread extends Thread {
 									serveur.getPartie().setInfos(img, taille);
 									}
 								}
-							serveur.getPartie().envoyerJoueurs(ligne,socket);
+							serveur.getPartie().envoyerJoueurs(ligne,socket,joueur);
 							break;
 						case 'p':
-							serveur.getPartie().envoyerPuzzle(ligne,socket);
+							serveur.getPartie().envoyerPuzzle(ligne,socket,joueur);
 							break;
 						}
 

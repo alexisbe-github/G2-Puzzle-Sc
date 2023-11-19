@@ -33,6 +33,8 @@ import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.ContextePartie;
+import main.java.model.partie.PartieMultijoueur;
+import main.java.model.partie.PartieMultijoueurCompetitive;
 import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.partie.PartieSolo;
 import main.java.model.serveur.Serveur;
@@ -203,21 +205,27 @@ public class NouvellePartieControleur implements Initializable {
 				} else if (multiCoopRadio.isSelected() || multiCompetRadio.isSelected()) {
 					try {
 						boolean estCoop = multiCoopRadio.isSelected();
-						
 						VueGenerale vg = new VueGenerale(this.owner);
 						
 						ContextePartie cp = new ContextePartie(j);
-						PartieMultijoueurCooperative pm = new PartieMultijoueurCooperative();
-						cp.setStrategy(pm);
+						
+						PartieMultijoueur p;
+						
+						if(estCoop)
+							p = new PartieMultijoueurCooperative();
+						else
+							p = new PartieMultijoueurCompetitive();
+						
+						cp.setStrategy(p);
 
 						Serveur s = new Serveur();
-						s.lancerServeur(pm, Integer.parseInt(this.saisiePort.getText()));
+						s.lancerServeur(p, Integer.parseInt(this.saisiePort.getText()));
 
 						Client c = new Client(j);
 						c.seConnecter(NetworkUtils.getServeurIPV4(true), 
 								Integer.parseInt(this.saisiePort.getText()));
 
-						LobbyControleur lc = new LobbyControleur(vg, pm, j, estCoop,
+						LobbyControleur lc = new LobbyControleur(vg, p, j, estCoop,
 								Utils.imageToByteArray(imageChoisie, null), taille, c);
 						
 						vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);

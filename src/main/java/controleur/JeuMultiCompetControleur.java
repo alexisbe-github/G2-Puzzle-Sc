@@ -36,12 +36,11 @@ import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.vue.VueJeuMultiCoop;
 
-public class JeuMultiCoopControleur implements Initializable {
+public class JeuMultiCompetControleur implements Initializable {
 
 	private Stage owner;
 
 	private Puzzle puzzle;
-	private int numJoueurCourant;
 	private List<Joueur> joueurs;
 
 	boolean flagThreadEnd = false;
@@ -78,14 +77,13 @@ public class JeuMultiCoopControleur implements Initializable {
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuMultiCoopControleur(Stage stage, int numJoueur, Joueur joueur, List<Joueur> joueurs, int numJoueurCourant,
+	public JeuMultiCompetControleur(Stage stage, int numJoueur, Joueur joueur, List<Joueur> joueurs, 
 			Puzzle puzzle, Client client) throws IOException {
 		this.owner = stage;
 		this.joueur = joueur;
 		this.numJoueur = numJoueur;
 		this.client = client;
 
-		this.numJoueurCourant = numJoueurCourant;
 		this.puzzle = puzzle;
 		this.joueurs = joueurs;
 
@@ -181,7 +179,7 @@ public class JeuMultiCoopControleur implements Initializable {
 	}
 
 	private void updateInfos() {
-		this.nbCoups.setText("Nombre de coups : " + this.puzzle.getNbCoups());
+		this.nbCoups.setText("nbCoups : " + this.puzzle.getNbCoups());
 	}
 
 	public void setKeyController() {
@@ -219,7 +217,7 @@ public class JeuMultiCoopControleur implements Initializable {
 		this.updateInfos();
 	}
 
-	private void readStream() throws IOException, InterruptedException {
+	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
 
 		System.out.println("super");
 
@@ -236,8 +234,7 @@ public class JeuMultiCoopControleur implements Initializable {
 					if (oisObj instanceof List) {
 						List<Object> tab = (List<Object>) oisObj;
 						if (tab.get(0).equals("p")) {
-							this.puzzle = (Puzzle) tab.get(2);
-							this.numJoueurCourant = (int) tab.get(1);
+							this.puzzle = (Puzzle) tab.get(1);
 							updateAll();
 						}
 						client.lancerRequete("p");
@@ -256,7 +253,7 @@ public class JeuMultiCoopControleur implements Initializable {
 		new Thread(() -> {
 			try {
 				readStream();
-			} catch (InterruptedException | IOException e) {
+			} catch (InterruptedException | ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
