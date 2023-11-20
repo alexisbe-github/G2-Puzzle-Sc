@@ -201,7 +201,9 @@ public class NouvellePartieControleur implements Initializable {
 				if (soloRadio.isSelected()) {
 					// new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(),
 					// joueurChoisi.getImage()), taille, imageChoisie);
-					new VueJeuSolo(new PartieSolo(j), taille, Utils.imageToByteArray(imageChoisie, null));
+					PartieSolo p = new PartieSolo(j);
+					p.lancerPartie(Utils.imageToByteArray(imageChoisie, null), taille);
+					new VueJeuSolo(p);
 				} else if (multiCoopRadio.isSelected() || multiCompetRadio.isSelected()) {
 					try {
 						boolean estCoop = multiCoopRadio.isSelected();

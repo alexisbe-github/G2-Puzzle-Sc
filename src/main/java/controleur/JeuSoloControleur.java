@@ -53,25 +53,11 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	@FXML
 	private Button boutonPause;
 
-	/**
-	 * 
-	 * @param stage  : fenêtre dans laquelle la scene est affichée
-	 * @param partie : partie jouée
-	 * @throws IOException : Exception lors d'un problème de lecture de l'image
-	 */
-	public JeuSoloControleur(Stage stage, PartieSolo partie, int taille, byte[] img) throws IOException {
-		this.owner = stage;
-		this.partie = partie;
-		
-		partie.lancerPartie(img, taille);
-		owner.setOnCloseRequest(event -> this.handleExit(event));
-		this.owner.requestFocus();
-	}
-
 	public JeuSoloControleur(Stage stage, PartieSolo partie) {
 		this.owner = stage;
 		this.partie = partie;
 		owner.setOnCloseRequest(event -> this.handleExit(event));
+		this.owner.requestFocus();
 	}
 
 	@Override
@@ -81,13 +67,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		boutonUndo.setFocusTraversable(false);
 		boutonQuitter.setFocusTraversable(false);
 
-		this.updateImages();
-		this.initJoueur();
-
 		this.partie.addPropertyChangeListener(this);
 
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
+		
+		this.updateAll();
 	}
 
 	/**

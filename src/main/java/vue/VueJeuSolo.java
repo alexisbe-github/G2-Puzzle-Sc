@@ -14,13 +14,13 @@ import main.java.model.partie.PartieSolo;
 
 public class VueJeuSolo extends Stage{
 
-	public VueJeuSolo(PartieSolo partie, int taille, byte[] img) throws IOException {
+	public VueJeuSolo(PartieSolo partie) throws IOException {
 		this.initModality(Modality.NONE);
 		FXMLLoader loader = new FXMLLoader(Paths.get("src/main/resources/ui/fxml/JeuSolo.fxml").toUri().toURL());
 		this.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
         this.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         this.setResizable(false);
-        JeuSoloControleur controller = new JeuSoloControleur(this, partie, taille, img);
+        JeuSoloControleur controller = new JeuSoloControleur(this, partie);
         loader.setController(controller);
         
         this.setTitle("Taquin - Jeu Solo");

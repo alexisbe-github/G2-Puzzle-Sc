@@ -1,5 +1,6 @@
 package main.java.controleur;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -17,10 +18,13 @@ import main.java.model.partie.ContextePartie;
 import main.java.model.partie.PartieMultijoueur;
 import main.java.model.partie.PartieMultijoueurCompetitive;
 import main.java.model.partie.PartieMultijoueurCooperative;
+import main.java.model.partie.PartieSolo;
+import main.java.model.serialisation.Serialisation;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
 import main.java.vue.VueGenerale;
+import main.java.vue.VueJeuSolo;
 
 public class MenuControleur implements Initializable {
 
@@ -50,10 +54,17 @@ public class MenuControleur implements Initializable {
 	}
 
 	@FXML
-	private void continuerPartie(ActionEvent event) {
-//		Serialisation s = new Serialisation(); ?
-//		PartieSolo p = (PartieSolo) objet deserialisé
-//		new VueJeuSolo(this, (PartieSolo) p);
+	private void continuerPartie(ActionEvent event) throws IOException {
+		File folder = new File("src/main/java/model/serialisation/objets");
+		File[] filesList = folder.listFiles();
+		File choisi = null;
+		long last = Long.MIN_VALUE;
+		for(File f : filesList) {
+			if(f.lastModified() > last)
+				choisi = f;
+		}
+		PartieSolo p = (PartieSolo) Serialisation.deserialiserObjet(PartieSolo.class, choisi.getPath());
+		new VueJeuSolo(p);
 	}
 
 	@FXML
