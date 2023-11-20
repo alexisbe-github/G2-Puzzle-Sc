@@ -44,7 +44,6 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 				output.add(this.image);
 				output.add(this.taille);
 				output.add(this instanceof PartieMultijoueurCooperative);
-				System.out.println(this instanceof PartieMultijoueurCooperative);
 		}else if(param.equals("s")) {
 			this.partieLancee=true;
 		}

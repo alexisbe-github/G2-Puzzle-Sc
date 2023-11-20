@@ -1,8 +1,11 @@
 package main.java.model.partie;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import main.java.model.EDeplacement;
@@ -50,6 +53,18 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 		}
 		return false;
 	}
+	
+//	@Override
+//	protected void envoyerLancement(Socket s, Joueur j) throws IOException {
+//		List<Object> output = new ArrayList<Object>();
+//		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
+//		
+//		output.add("s");
+//		output.add(this.joueurs);
+//		output.add(this.getPuzzleDuJoueur(j));
+//		
+//		oop.writeObject(output);
+//	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {

@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import main.java.model.EDeplacement;
@@ -31,6 +32,19 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
 		puzzleCommun = new Puzzle(taillePuzzle, image);
 	}
+	
+//	@Override
+//	protected void envoyerLancement(Socket s, Joueur j) throws IOException {
+//		List<Object> output = new ArrayList<Object>();
+//		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
+//		
+//		output.add("s");
+//		output.add(this.joueurs);
+//		output.add(this.indexJoueurCourant);
+//		output.add(this.puzzleCommun);
+//		
+//		oop.writeObject(output);
+//	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {
