@@ -239,5 +239,10 @@ public class NouvellePartieControleur implements Initializable {
 			}
 		}
 	}
+	
+	@FXML
+	private void retourBouton(ActionEvent event) throws IOException {
+		((VueGenerale) this.owner).changerVue("Menu" ,"src/main/resources/ui/fxml/MenuPrincipal.fxml", new MenuControleur(this.owner));
+	}
 
 }
