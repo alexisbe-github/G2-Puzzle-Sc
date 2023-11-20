@@ -153,7 +153,7 @@ public class NouvellePartieControleur implements Initializable {
 	@FXML
 	private void changerImageBouton(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG Images (*.jpg, *.jpeg)", "*.jpg", "*.jpeg"));
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG Images (*.jpg, *.jpeg, *.png, *.gif)", "*.jpg", "*.jpeg", "*.png", "*.gif"));
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if (file != null) {
@@ -238,6 +238,11 @@ public class NouvellePartieControleur implements Initializable {
 				this.erreurLancement();
 			}
 		}
+	}
+	
+	@FXML
+	private void retourBouton(ActionEvent event) throws IOException {
+		((VueGenerale) this.owner).changerVue("Menu" ,"src/main/resources/ui/fxml/MenuPrincipal.fxml", new MenuControleur(this.owner));
 	}
 
 }
