@@ -1,7 +1,7 @@
 package main.java.utils;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 
 import org.apache.http.HttpEntity;
@@ -12,7 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-//import org.apache.http.*;
+import javafx.scene.image.Image;
 
 public class UploadImage {
 
@@ -22,7 +22,7 @@ public class UploadImage {
 	public static String uploadImage(String cheminImage) {
 		try {
 			// Charger l'image depuis le chemin spécifié
-			byte[] imageBytes = Files.readAllBytes(Paths.get(cheminImage));
+			byte[] imageBytes = Utils.imageToByteArray(new Image(cheminImage), "png"); // Files.readAllBytes(Paths.get(cheminImage));
 			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
 			try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
@@ -32,7 +32,7 @@ public class UploadImage {
 				httpPost.setHeader("Content-type", "application/json");
 
 				// Set the request body
-				String request = "{\"key\":\"%s\", \"action\":\"upload\", \"source\": \"%s\"}";
+				String request = "{\"key\":\"%s\", \"action\":\"upload\", \"source\": \"%s\", \"format\": \"json\"}";
 				request = String.format(request, API_CLE, base64Image);
 				System.out.println(request);
 				StringEntity entity = new StringEntity(request);
@@ -51,7 +51,7 @@ public class UploadImage {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "";
+			return null;
 		}
 	}
 
@@ -60,9 +60,10 @@ public class UploadImage {
 		return "URL_de_l_image";
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// Exemple d'utilisation
-		String imagePath = "src/main/resources/images/defaulticon.png";
+		String imagePath = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png";// "src/main/resources/images/defaulticon.png";
+		System.err.println(Utils.imageToByteArray(new Image(imagePath), "png") != null);
 		String uploadedImageUrl = uploadImage(imagePath);
 
 		if (uploadedImageUrl != null) {
