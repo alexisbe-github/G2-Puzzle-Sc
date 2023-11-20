@@ -57,8 +57,8 @@ public class CreerProfilControleur implements Initializable{
 			@Override
 			public void handle(MouseEvent event) {
 				FileChooser fileChooser = new FileChooser();
-				fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG Images (*.jpg, *.jpeg)", "*.jpg", "*.jpeg"));
-				fileChooser.setTitle("Open Resource File");
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png, *.gif)", "*.jpg", "*.jpeg", "*.png", "*.gif"));
+				fileChooser.setTitle("Sélectionner une image");
 				File file = fileChooser.showOpenDialog(owner);
 				if(file!=null) {
 					try {
@@ -75,10 +75,13 @@ public class CreerProfilControleur implements Initializable{
 	@FXML
 	public void creerProfilBouton() {
 		if(this.image != null && this.saisiePseudo.getText() != null) {
-			DAOJoueur j = new DAOJoueur();
+			DAOJoueur dao = new DAOJoueur();
 			JoueurSQL joueur = new JoueurSQL();
 			joueur.setPseudo(this.saisiePseudo.getText());
-			j.creer(joueur);
+			joueur.setUrlPp("");
+			// TODO Enregistrer l'image
+			dao.creer(joueur);
+			this.owner.close();
 		}
 	}
 	
