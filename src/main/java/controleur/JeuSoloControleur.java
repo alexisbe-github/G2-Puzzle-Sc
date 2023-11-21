@@ -3,8 +3,8 @@ package main.java.controleur;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,6 +29,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.ia.expertsystem.SystemeExpert;
 import main.java.model.partie.PartieSolo;
@@ -38,11 +39,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	private PartieSolo partie;
 	private boolean estEnPause = false;
-	
+
 	private List<EDeplacement> solution;
 	private Thread threadIA;
 	private int i; // index solution IA
 	private boolean iaLance = false;
+	private List<Label> cases = new ArrayList<>();
 
 	@FXML
 	private Button boutonIA;
@@ -71,7 +73,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
-		
+
 		this.updateAll();
 	}
 
@@ -109,6 +111,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 				if (partie.getPuzzle().getCase(j, i).getIndex() != -1)
 					l.setBackground(bgi);
 				grille.getChildren().add(l);
+				cases.add(l);
 			}
 		}
 	}
@@ -139,6 +142,15 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		this.nbCoups.setText("Nombre de coups : " + this.partie.getPuzzle().getNbCoups());
 	}
 
+	public void deplacerCase(EDeplacement dir) {
+		if (!partie.getPuzzle().undoActive()) {
+			boutonUndo.setDisable(true);
+		}
+		if (!iaLance) {
+			partie.deplacerCase(dir);
+		}
+	}
+
 	@Override
 	public void setKeyController() {
 
@@ -146,39 +158,18 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			@Override
 			public void handle(KeyEvent event) {
 				if (!estEnPause) {
-					// dpAnim(event.getCode());
 					switch (event.getCode()) {
 					case UP:
-						if (!partie.getPuzzle().undoActive()) {
-							boutonUndo.setDisable(true);
-						}
-						if (!iaLance) {
-							partie.deplacerCase(EDeplacement.HAUT);
-						}
+						animCase(EDeplacement.HAUT);
 						break;
 					case DOWN:
-						if (!partie.getPuzzle().undoActive()) {
-							boutonUndo.setDisable(true);
-						}
-						if (!iaLance) {
-							partie.deplacerCase(EDeplacement.BAS);
-						}
+						animCase(EDeplacement.BAS);
 						break;
 					case LEFT:
-						if (!partie.getPuzzle().undoActive()) {
-							boutonUndo.setDisable(true);
-						}
-						if (!iaLance) {
-							partie.deplacerCase(EDeplacement.GAUCHE);
-						}
+						animCase(EDeplacement.GAUCHE);
 						break;
 					case RIGHT:
-						if (!partie.getPuzzle().undoActive()) {
-							boutonUndo.setDisable(true);
-						}
-						if (!iaLance) {
-							partie.deplacerCase(EDeplacement.DROITE);
-						}
+						animCase(EDeplacement.DROITE);
 						break;
 					default:
 						break;
@@ -278,6 +269,14 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		}
 	}
 
+	private Label getLabelParIndex(int index) {
+		for (Label l : cases) {
+			if (l.getId().equals("case" + index))
+				return l;
+		}
+		return null;
+	}
+
 	/**
 	 * Gère la situation dans laquelle l'utilisateur quitte la partie en cours
 	 * 
@@ -294,6 +293,118 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		Serialisation.serialiserObjet(this.partie, chemin);
 	}
 
+	private void animCase(EDeplacement dir) {
 
+		int xMultiplier = 0, yMultiplier = 0;
+
+		switch (dir) {
+		case HAUT:
+			yMultiplier = -1;
+			break;
+		case BAS:
+			yMultiplier = 1;
+			break;
+		case DROITE:
+			xMultiplier = 1;
+			break;
+		case GAUCHE:
+			xMultiplier = -1;
+			break;
+		}
+
+		System.out.println("avantif");
+		int nCoordX = partie.getPuzzle().getXCaseVide() - xMultiplier;
+		int nCoordY = partie.getPuzzle().getYCaseVide() - yMultiplier;
+
+		if (nCoordX < partie.getPuzzle().getTaille() && nCoordX >= 0 && nCoordY < partie.getPuzzle().getTaille()
+				&& nCoordY >= 0) {
+
+			System.out.println("coups " + partie.getPuzzle().getNbCoups());
+			Case c = partie.getPuzzle().getCase(nCoordX, nCoordY);
+			Label p = getLabelParIndex(c.getIndex());
+			int largeurCase = (int) p.getWidth();
+
+			System.out.println("CASE " + c.getIndex() + " DEPLACEE VERS " + dir);
+			int objectifX = (int) (p.getLayoutX()+xMultiplier*largeurCase);
+			int objectifY = (int) (p.getLayoutX()+xMultiplier*largeurCase);
+			
+			this.animate(xMultiplier * largeurCase, yMultiplier * largeurCase, p, dir);
+			
+
+//			TranslateTransition anim = new TranslateTransition(Duration.millis(200), p);
+//
+//			anim.setByX(xMultiplier * largeurCase);
+//			anim.setByY(yMultiplier * largeurCase);
+//			System.out.println("dpx " + xMultiplier * largeurCase);
+//			System.out.println("dpy " + yMultiplier * largeurCase);
+//			System.out.println("node: " + p.getId());
+//
+//			anim.play();
+//
+//			anim.setOnFinished((event) -> {
+//				deplacerCase(dir);
+//
+//			});
+			//Y'a aucune raison apparente que ça ne marche pas mais ça marche pas
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * ça marche pas non plus
+	 * 
+	 * @param x
+	 * @param y
+	 * @param l
+	 * @param dir
+	 */
+	private void animate(int x, int y, Label l, EDeplacement dir) {
+		
+		Task<Void> t = new Task<>(){
+			@Override
+			public Void call() throws Exception{
+				int dpx = 0;
+				int dpy = 0;
+				int ogx = (int) l.getLayoutX();
+				int ogy = (int) l.getLayoutY();
+				while (dpx != x || dpy != y) {
+					if (x < 0)
+						dpx--;
+					else if(x>0)
+						dpx++;
+					if (y < 0)
+						dpy--;
+					else if(y > 0)
+						dpy++;
+					
+					final int innerDpx = dpx;
+					final int innerDpy = dpy;
+					System.out.println("innerDpx"+innerDpx+" innerdpy"+innerDpy);
+					System.out.println("x "+x+"  y "+y);
+					Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            l.relocate(ogx+innerDpx, ogy+innerDpy);
+//                            l.setTranslateX(x);
+//                            l.setTranslateY(y);
+                            l.setVisible(true);    
+                        }
+                    }
+                    );
+					Thread.sleep(1);
+					
+				}
+				deplacerCase(dir);
+				return null;
+			}
+		};
+		
+		Thread th = new Thread(t);
+		th.setDaemon(false);
+		th.run();
+		
+	}
 
 }
