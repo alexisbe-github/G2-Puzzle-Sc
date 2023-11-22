@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -193,6 +195,22 @@ public class HostedImage {
 			BufferedImage img = ImageIO.read(urlImage);
 			return SwingFXUtils.toFXImage(img, null);
 		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Renvoie une image à partir d'une URL
+	 * 
+	 * @param url L'URL de l'image
+	 * @return Un tableau d'octets représentant l'image en cas de succès,
+	 *         <code>null</code> sinon
+	 */
+	public static byte[] getImageBytes(String url) {
+		try {
+			URL urlImage = new URL(url);
+			return Files.readAllBytes(Path.of(urlImage.toURI()));
+		} catch (IOException | URISyntaxException e) {
 			return null;
 		}
 	}
