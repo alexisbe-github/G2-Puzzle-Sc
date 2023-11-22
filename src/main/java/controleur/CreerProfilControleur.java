@@ -22,11 +22,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
+import main.java.utils.HostedImage;
 
 public class CreerProfilControleur implements Initializable{
 
 	private Stage owner;
 	private BufferedImage image;
+	private String extension;
 	
 	@FXML
 	private ImageView imageJoueur;
@@ -63,6 +65,9 @@ public class CreerProfilControleur implements Initializable{
 				if(file!=null) {
 					try {
 						image = Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_EXACT, 1000, 1000);
+						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length());
+						if (extension.equals("jpeg"))
+							extension = "jpg";
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -78,8 +83,7 @@ public class CreerProfilControleur implements Initializable{
 			DAOJoueur dao = new DAOJoueur();
 			JoueurSQL joueur = new JoueurSQL();
 			joueur.setPseudo(this.saisiePseudo.getText());
-			joueur.setUrlPp("");
-			// TODO Enregistrer l'image
+			joueur.setUrlPp(HostedImage.uploadImage(image, extension));
 			dao.creer(joueur);
 			this.owner.close();
 		}

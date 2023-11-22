@@ -40,6 +40,7 @@ import main.java.model.partie.PartieSolo;
 import main.java.model.serveur.Serveur;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
+import main.java.utils.HostedImage;
 import main.java.utils.Utils;
 import main.java.vue.VueGenerale;
 import main.java.vue.VueJeuSolo;
@@ -105,11 +106,7 @@ public class NouvellePartieControleur implements Initializable {
 	}
 
 	private void updateInfosJoueur() throws IOException {
-		if (this.joueurChoisi != null) {
-			// imageJoueur.setImage(SwingFXUtils.toFXImage(this.joueurChoisi.getImage(),
-			// null));
-			imageJoueur.setImage(
-					SwingFXUtils.toFXImage(ImageIO.read(new File("src/main/resources/images/defaulticon.png")), null));
+			imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlPp()));
 			pseudoJoueur.setText(this.joueurChoisi.getPseudo());
 		}
 	}
