@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -29,6 +30,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.ia.expertsystem.SystemeExpert;
@@ -74,6 +76,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 
+		this.initJoueur();
 		this.updateAll();
 	}
 
@@ -287,10 +290,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 //			return;
 //		}
 		// TODO Ne pas sérialiser si la partie est terminée
-		String dossier = "src/main/java/model/serialisation/objets/";
-		String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
-		String chemin = dossier + nom;
-		Serialisation.serialiserObjet(this.partie, chemin);
+		if(!partie.getPuzzle().verifierGrille()) {
+			String dossier = "src/main/java/model/serialisation/objets/";
+			String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
+			String chemin = dossier + nom;
+			Serialisation.serialiserObjet(this.partie, chemin);
+		}
 	}
 
 	private void animCase(EDeplacement dir) {
@@ -324,27 +329,29 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			Label p = getLabelParIndex(c.getIndex());
 			int largeurCase = (int) p.getWidth();
 
-			System.out.println("CASE " + c.getIndex() + " DEPLACEE VERS " + dir);
-			int objectifX = (int) (p.getLayoutX()+xMultiplier*largeurCase);
-			int objectifY = (int) (p.getLayoutX()+xMultiplier*largeurCase);
 			
-			this.animate(xMultiplier * largeurCase, yMultiplier * largeurCase, p, dir);
+			
+//			System.out.println("CASE " + c.getIndex() + " DEPLACEE VERS " + dir);
+//			int objectifX = (int) (p.getLayoutX()+xMultiplier*largeurCase);
+//			int objectifY = (int) (p.getLayoutX()+xMultiplier*largeurCase);
+//			
+//			this.animate(xMultiplier * largeurCase, yMultiplier * largeurCase, p, dir);
 			
 
-//			TranslateTransition anim = new TranslateTransition(Duration.millis(200), p);
-//
-//			anim.setByX(xMultiplier * largeurCase);
-//			anim.setByY(yMultiplier * largeurCase);
-//			System.out.println("dpx " + xMultiplier * largeurCase);
-//			System.out.println("dpy " + yMultiplier * largeurCase);
-//			System.out.println("node: " + p.getId());
-//
-//			anim.play();
-//
-//			anim.setOnFinished((event) -> {
-//				deplacerCase(dir);
-//
-//			});
+			TranslateTransition anim = new TranslateTransition(Duration.millis(200), p);
+
+			anim.setByX(xMultiplier * largeurCase);
+			anim.setByY(yMultiplier * largeurCase);
+			System.out.println("dpx " + xMultiplier * largeurCase);
+			System.out.println("dpy " + yMultiplier * largeurCase);
+			System.out.println("node: " + p.getId());
+
+			anim.play();
+
+			anim.setOnFinished((event) -> {
+				deplacerCase(dir);
+
+			});
 			//Y'a aucune raison apparente que ça ne marche pas mais ça marche pas
 
 		}
