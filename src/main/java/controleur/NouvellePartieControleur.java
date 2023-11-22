@@ -144,7 +144,7 @@ public class NouvellePartieControleur implements Initializable {
 	@FXML
 	private void changerImageBouton(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG Images (*.jpg, *.jpeg, *.png, *.gif)", "*.jpg", "*.jpeg", "*.png", "*.gif"));
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if (file != null) {
@@ -156,7 +156,7 @@ public class NouvellePartieControleur implements Initializable {
 	@FXML
 	private void creerProfilBouton(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("Creation Profil", "src/main/resources/ui/fxml/CreationProfil.fxml",
+		vm.changerVue("Création du profil", "src/main/resources/ui/fxml/CreationProfil.fxml",
 				new CreerProfilControleur(vm));
 	}
 
@@ -190,8 +190,6 @@ public class NouvellePartieControleur implements Initializable {
 				Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if (soloRadio.isSelected()) {
-					// new VueJeuSolo(new PartieSolo(new Joueur(joueurChoisi.getPseudo(),
-					// joueurChoisi.getImage()), taille, imageChoisie);
 					PartieSolo p = new PartieSolo(j);
 					p.lancerPartie(Utils.imageToByteArray(imageChoisie, null), taille);
 					new VueJeuSolo(p);
