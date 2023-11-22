@@ -95,11 +95,9 @@ public class NouvellePartieControleur implements Initializable {
 		this.soloRadio.setToggleGroup(radioGroupe);
 		this.soloRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
 		
-		try {
-			this.updateAll();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.updateImagePartie();
+		
+		
 	}
 
 	private void updateInfosJoueur() throws IOException {
