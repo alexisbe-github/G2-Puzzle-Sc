@@ -3,8 +3,6 @@ package main.java.controleur;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -186,7 +184,7 @@ public class NouvellePartieControleur implements Initializable {
 	private void lancerPartie(ActionEvent event) throws IOException, ClassNotFoundException {
 		if (joueurChoisi != null) {
 			try {
-				byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
+				byte[] img = HostedImage.getImageBytes(joueurChoisi.getUrlPp());
 				Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if (soloRadio.isSelected()) {
