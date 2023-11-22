@@ -6,16 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -207,11 +206,21 @@ public class HostedImage {
 	 *         <code>null</code> sinon
 	 */
 	public static byte[] getImageBytes(String url) {
+		InputStream in = null;
 		try {
 			URL urlImage = new URL(url);
-			return Files.readAllBytes(Path.of(urlImage.toURI()));
-		} catch (IOException | URISyntaxException e) {
+			in = urlImage.openStream();
+			return IOUtils.toByteArray(in);
+		} catch (IOException e) {
 			return null;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					return null;
+				}
+			}
 		}
 	}
 }
