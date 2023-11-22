@@ -57,14 +57,17 @@ public class MenuControleur implements Initializable {
 	private void continuerPartie(ActionEvent event) throws IOException {
 		File folder = new File("src/main/java/model/serialisation/objets");
 		File[] filesList = folder.listFiles();
-		File choisi = null;
-		long last = Long.MIN_VALUE;
-		for(File f : filesList) {
-			if(f.lastModified() > last)
-				choisi = f;
+		if(filesList.length!=0) {
+			File choisi = filesList[0];
+			long last = Long.MIN_VALUE;
+			for(File f : filesList) {
+				if(f.lastModified() > last)
+					choisi = f;
+			}
+			PartieSolo p = (PartieSolo) Serialisation.deserialiserObjet(PartieSolo.class, choisi.getPath());
+			new VueJeuSolo(p);
 		}
-		PartieSolo p = (PartieSolo) Serialisation.deserialiserObjet(PartieSolo.class, choisi.getPath());
-		new VueJeuSolo(p);
+		
 	}
 
 	@FXML

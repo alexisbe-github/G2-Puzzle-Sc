@@ -1,31 +1,38 @@
 package main.java.model;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-public class Chrono {
+public class Chrono implements Serializable{
 
 	int seconds = 0;
 	boolean isRunning = false; //Booleen qui gère si le thread tourne ou pas.
+	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 	/*
 	 * Lance le chronomètre. Incrémente la variable seconde toutes les 1000ms.
 	 */
 	public void lancerChrono() {
 		isRunning = true;
-		Thread th = new Thread() {
+		Runnable r = new Runnable() {
 			@Override
 			public void run() {
 				while (isRunning) {
 					try {
 						Thread.sleep(1000);
 						seconds++;
+						support.firePropertyChange("property", 0, 1);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					System.out.println(seconds);
 				}
 			}
 		};
-		th.run();
+		Thread th = new Thread(r);
+		th.setDaemon(true);
+		th.start();
 	}
 
 	/*
@@ -54,5 +61,9 @@ public class Chrono {
 		}
 		return r;
 	}
+	
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+	    support.addPropertyChangeListener(propertyName, listener);
+	  }
 
 }
