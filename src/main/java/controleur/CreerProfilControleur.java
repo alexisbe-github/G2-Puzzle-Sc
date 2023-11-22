@@ -59,7 +59,7 @@ public class CreerProfilControleur implements Initializable{
 			@Override
 			public void handle(MouseEvent event) {
 				FileChooser fileChooser = new FileChooser();
-				fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png, *.gif)", "*.jpg", "*.jpeg", "*.png", "*.gif"));
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
 				fileChooser.setTitle("Sélectionner une image");
 				File file = fileChooser.showOpenDialog(owner);
 				if(file!=null) {
