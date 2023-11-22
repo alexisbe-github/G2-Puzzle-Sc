@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,9 +35,9 @@ import main.java.model.partie.PartieMultijoueurCompetitive;
 import main.java.model.partie.PartieMultijoueurCooperative;
 import main.java.model.partie.PartieSolo;
 import main.java.model.serveur.Serveur;
+import main.java.utils.HostedImage;
 import main.java.utils.InvalidPortException;
 import main.java.utils.NetworkUtils;
-import main.java.utils.HostedImage;
 import main.java.utils.Utils;
 import main.java.vue.VueGenerale;
 import main.java.vue.VueJeuSolo;
@@ -108,7 +105,6 @@ public class NouvellePartieControleur implements Initializable {
 	private void updateInfosJoueur() throws IOException {
 			imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlPp()));
 			pseudoJoueur.setText(this.joueurChoisi.getPseudo());
-		}
 	}
 
 	private void updateAll() throws IOException {
