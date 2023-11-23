@@ -1,12 +1,19 @@
+@font-face {
+    font-family: "Gotham";
+    src: url("../../../../resources/polices/GOTHAMMEDIUM.TTF");
+}
+
 #fenetre {
-	-fx-background: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934 100%);
+	-fx-background-image: url("../../../../resources/images/espace.gif");
+    -fx-background-size: stretch;
+    -fx-background-position: no-repeat;
 }
 
 .label {
-	-fx-font-family: "monospace";
+	-fx-font-family: "Gotham";
 	-fx-text-fill: white;
 	-fx-font-size: 10pt;
-	-fx-effect: dropshadow(gaussian, black, 20px, 0.25, 0, 0);
+	-fx-effect: dropshadow(gaussian, #f008, 20px, 0.25, 0, 0);
 }
 
 .button, .menu-button {
@@ -14,7 +21,7 @@
 	-fx-font-size: 9pt;
 	-fx-background-color: #111;
 	-fx-text-fill: #fff;
-	-fx-font-family: "monospace";
+	-fx-font-family: "Gotham";
 }
 
 .menu .label, .menu-item .label {
@@ -23,36 +30,42 @@
 }
 
 .menu-item:focused {
-	-fx-background-color: #00113e !important;
+	-fx-background-color: #eee !important;
 	-fx-cursor: hand;
 }
 
 .menu-item:focused .label {
-	-fx-text-fill: #eee !important;
+	-fx-text-fill: #f00 !important;
+}
+
+.menu-item:focused .text {
+	-fx-effect: dropshadow(gaussian, #f008, 15px, 0.5, 0, 0);
 }
 
 .button:hover {
-	-fx-background-color: #eee;
-	-fx-text-fill: #000;
+	-fx-text-fill: #f00;
 	-fx-cursor: hand;
-	-fx-effect: dropshadow(gaussian, black, 10px, 0.2, 0, 0);
+}
+
+.button:hover .text {
+	-fx-effect: dropshadow(gaussian, #f008, 15px, 0.5, 0, 0);
 }
 
 .text-field {
-	-fx-font-family: "monospace";
-	-fx-background-color: #a4a4ff;
+	-fx-font-family: "Gotham";
+	-fx-background-color: #ffdfdf;
 	-fx-text-fill: black;
-	-fx-prompt-text-fill: #444;	 
-	-fx-highlight-fill: #00113e;	 
+	-fx-prompt-text-fill: #444;
+	-fx-highlight-fill: #b00; 
 	-fx-highlight-text-fill: #eee;	 
-	-fx-display-caret: true;	 
+	-fx-display-caret: true; 
 }
 
 .radio-button {
 	-fx-font-size: 8pt;
 	-fx-background-color: #1111;
 	-fx-text-fill: #fff;
-	-fx-font-family: "monospace";
+	-fx-font-family: "Gotham";
 }
 
 .radio-button .radio {
@@ -66,7 +79,7 @@
 }
 
 .radio-button:selected .radio {
-    -fx-background-color: #00113e;
+    -fx-background-color: #f00;
 }
 
 .radio-button .radio .dot {
@@ -75,7 +88,7 @@
 
 #titre {
 	-fx-font-size: 36pt !important;
-	-fx-effect: dropshadow(gaussian, black, 10px, 0.2, 0, 0);
+	-fx-effect: dropshadow(gaussian, #f008, 10px, 0.2, 0, 0);
 }
 
 #menuProfils .text {

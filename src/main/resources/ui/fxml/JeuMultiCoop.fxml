@@ -12,9 +12,9 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0"
 	prefWidth="700.0" fx:id="fenetre"
-	stylesheets="@../../../java/vue/css/electrique/partie_coop-electrique.css"
+	stylesheets="@../../../java/vue/css/espace/partie_coop-espace.css"
 	xmlns="http://javafx.com/javafx/20.0.1"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<columnConstraints>
@@ -87,7 +87,7 @@
 					text="Vous avez gagné !" visible="false"
 					GridPane.halignment="CENTER" GridPane.rowIndex="3"
 					GridPane.valignment="CENTER" />
-				<Label fx:id="nbCoups" text="Nb de coups : 21"
+				<Label fx:id="nbCoups" text="Nombre de coups : 0"
 					GridPane.halignment="CENTER" GridPane.rowIndex="4"
 					GridPane.valignment="CENTER" />
 				<Label fx:id="chrono" text="00:00"

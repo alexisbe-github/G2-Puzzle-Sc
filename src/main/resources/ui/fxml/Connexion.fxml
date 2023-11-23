@@ -15,7 +15,7 @@
 <GridPane alignment="CENTER" maxHeight="-Infinity"
 	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
 	prefHeight="128.0" prefWidth="600.0" fx:id="fenetre"
-	stylesheets="@../../../java/vue/css/electrique/connexion-electrique.css"
+	stylesheets="@../../../java/vue/css/espace/connexion-espace.css"
 	xmlns="http://javafx.com/javafx/20.0.1"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<columnConstraints>
