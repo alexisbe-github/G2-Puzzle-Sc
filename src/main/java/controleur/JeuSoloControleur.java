@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -41,6 +43,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	private PartieSolo partie;
 	private boolean estEnPause = false;
+	ExecutorService executor = Executors.newCachedThreadPool();
 
 	private List<EDeplacement> solution;
 	private Thread threadIA;
@@ -60,7 +63,6 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	public JeuSoloControleur(Stage stage, PartieSolo partie) {
 		this.owner = stage;
 		this.partie = partie;
-		owner.setOnCloseRequest(event -> this.handleExit(event));
 		this.owner.requestFocus();
 	}
 
@@ -72,9 +74,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		boutonQuitter.setFocusTraversable(false);
 
 		this.partie.addPropertyChangeListener(this);
+		this.partie.getTimer().addPropertyChangeListener("property", this);
+		this.partie.getTimer().lancerChrono();
 
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
+		owner.setOnCloseRequest(event -> this.handleExit(event));
 
 		this.initJoueur();
 		this.updateAll();
@@ -121,7 +126,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	@Override
 	protected void updateJeu() {
-		this.updateImages();
+		this.updateImages(); // BUG ANIM VIENT D'ICI (si tu mets le updateImages dans le "Initialize" et que
+								// commentes celui la ça """marche""")
 		if (this.partie.getPuzzle().verifierGrille())
 			this.updateVictoire();
 	}
@@ -130,6 +136,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	protected void updateVictoire() {
 		victoireLabel.setVisible(true);
 		this.estEnPause = true;
+		this.partie.getTimer().stopChrono();
 	}
 
 	@Override
@@ -137,12 +144,18 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		Image image = new Image(new ByteArrayInputStream(this.partie.getJoueur().getImage()));
 		this.logoJoueur.setImage(image);
 		this.pseudoJoueur.setText(this.partie.getJoueur().getNom());
-		this.updateInfos();
 	}
 
 	@Override
 	protected void updateInfos() {
-		this.nbCoups.setText("Nombre de coups : " + this.partie.getPuzzle().getNbCoups());
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				nbCoups.setText("Nombre de coups : " + partie.getPuzzle().getNbCoups());
+				chrono.setText(partie.getTimer().getMS());
+			}
+		});
+
 	}
 
 	public void deplacerCase(EDeplacement dir) {
@@ -152,6 +165,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		if (!iaLance) {
 			partie.deplacerCase(dir);
 		}
+		this.updateJeu();
 	}
 
 	@Override
@@ -235,6 +249,10 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	private void pauseButton(ActionEvent event) {
 		if (!this.partie.getPuzzle().verifierGrille()) {
 			this.estEnPause = !estEnPause;
+			if (estEnPause)
+				this.partie.getTimer().stopChrono();
+			else
+				this.partie.getTimer().lancerChrono();
 		}
 	}
 
@@ -246,32 +264,50 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		this.updateAll();
+		this.updateInfos();
 	}
 
+	/**
+	 * Enregistre la position du clic
+	 * 
+	 * @param event
+	 */
 	private void handlePressAction(MouseEvent event) {
 		xClick = event.getX();// translation en abscisse
 		yClick = event.getY();// translation en ordonnée
 	}
 
+	/**
+	 * Compare les clics initiaux a la position de fin des clics et bouge les cases
+	 * en conséquence.
+	 * 
+	 * @param event
+	 */
 	private void handleReleaseAction(MouseEvent event) {
 		double translateX = event.getX() - xClick;
 		double translateY = event.getY() - yClick;
 		if (!estEnPause && (Math.abs(translateY) > 10 || Math.abs(translateX) > 10)) {
 			if (Math.abs(translateX) > Math.abs(translateY)) {
 				if (translateX > 0)
-					partie.deplacerCase(EDeplacement.DROITE);
+					this.animCase(EDeplacement.DROITE);
 				else
-					partie.deplacerCase(EDeplacement.GAUCHE);
+					this.animCase(EDeplacement.GAUCHE);
 			} else {
 				if (translateY > 0)
-					partie.deplacerCase(EDeplacement.BAS);
+					this.animCase(EDeplacement.BAS);
 				else
-					partie.deplacerCase(EDeplacement.HAUT);
+					this.animCase(EDeplacement.HAUT);
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * Renvoi le label correspondant à une case à l'aide de l'index de la case.
+	 * 
+	 * @param index : index de la case
+	 * @return l : label correspondant à la case.
+	 */
 	private Label getLabelParIndex(int index) {
 		for (Label l : cases) {
 			if (l.getId().equals("case" + index))
@@ -290,7 +326,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 //			return;
 //		}
 		// TODO Ne pas sérialiser si la partie est terminée
-		if(!partie.getPuzzle().verifierGrille()) {
+		if (!this.partie.getPuzzle().verifierGrille()) {
+			this.partie.getTimer().stopChrono();
 			String dossier = "src/main/java/model/serialisation/objets/";
 			String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
 			String chemin = dossier + nom;
@@ -329,15 +366,6 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			Label p = getLabelParIndex(c.getIndex());
 			int largeurCase = (int) p.getWidth();
 
-			
-			
-//			System.out.println("CASE " + c.getIndex() + " DEPLACEE VERS " + dir);
-//			int objectifX = (int) (p.getLayoutX()+xMultiplier*largeurCase);
-//			int objectifY = (int) (p.getLayoutX()+xMultiplier*largeurCase);
-//			
-//			this.animate(xMultiplier * largeurCase, yMultiplier * largeurCase, p, dir);
-			
-
 			TranslateTransition anim = new TranslateTransition(Duration.millis(200), p);
 
 			anim.setByX(xMultiplier * largeurCase);
@@ -349,69 +377,20 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			anim.play();
 
 			anim.setOnFinished((event) -> {
-				deplacerCase(dir);
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						deplacerCase(dir);
+					}
+
+				});
 
 			});
-			//Y'a aucune raison apparente que ça ne marche pas mais ça marche pas
 
 		}
 
-	}
-
-	/**
-	 * 
-	 * ça marche pas non plus
-	 * 
-	 * @param x
-	 * @param y
-	 * @param l
-	 * @param dir
-	 */
-	private void animate(int x, int y, Label l, EDeplacement dir) {
-		
-		Task<Void> t = new Task<>(){
-			@Override
-			public Void call() throws Exception{
-				int dpx = 0;
-				int dpy = 0;
-				int ogx = (int) l.getLayoutX();
-				int ogy = (int) l.getLayoutY();
-				while (dpx != x || dpy != y) {
-					if (x < 0)
-						dpx--;
-					else if(x>0)
-						dpx++;
-					if (y < 0)
-						dpy--;
-					else if(y > 0)
-						dpy++;
-					
-					final int innerDpx = dpx;
-					final int innerDpy = dpy;
-					System.out.println("innerDpx"+innerDpx+" innerdpy"+innerDpy);
-					System.out.println("x "+x+"  y "+y);
-					Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            l.relocate(ogx+innerDpx, ogy+innerDpy);
-//                            l.setTranslateX(x);
-//                            l.setTranslateY(y);
-                            l.setVisible(true);    
-                        }
-                    }
-                    );
-					Thread.sleep(1);
-					
-				}
-				deplacerCase(dir);
-				return null;
-			}
-		};
-		
-		Thread th = new Thread(t);
-		th.setDaemon(false);
-		th.run();
-		
 	}
 
 }

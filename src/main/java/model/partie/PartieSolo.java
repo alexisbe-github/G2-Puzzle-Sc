@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serializable;
 
+import main.java.model.Chrono;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
@@ -20,10 +21,12 @@ public class PartieSolo implements StrategyPartie, Serializable {
 	private Joueur joueur;
 	private Puzzle puzzle;
 	private PropertyChangeSupport pcs;
+	private Chrono timer;
 
 	public PartieSolo(Joueur joueur) {
 		this.joueur = joueur;
 		this.pcs = new PropertyChangeSupport(this);
+		this.timer = new Chrono();
 	}
 
 	/**
@@ -60,6 +63,10 @@ public class PartieSolo implements StrategyPartie, Serializable {
 
 	public Joueur getJoueur() {
 		return this.joueur;
+	}
+	
+	public Chrono getTimer() {
+		return this.timer;
 	}
 
 	/**
