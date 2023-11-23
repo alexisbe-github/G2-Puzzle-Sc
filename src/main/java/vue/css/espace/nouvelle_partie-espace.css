@@ -89,6 +89,7 @@
 #titre {
 	-fx-font-size: 36pt !important;
 	-fx-effect: dropshadow(gaussian, #f008, 10px, 0.2, 0, 0);
+	-fx-text-fill: #f00;
 }
 
 #menuProfils .text {
