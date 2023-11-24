@@ -73,16 +73,16 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		boutonUndo.setFocusTraversable(false);
 		boutonQuitter.setFocusTraversable(false);
 
-		this.partie.addPropertyChangeListener(this);
-		this.partie.getTimer().addPropertyChangeListener("property", this);
-		this.partie.getTimer().lancerChrono();
-
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 		owner.setOnCloseRequest(event -> this.handleExit(event));
 
 		this.initJoueur();
 		this.updateAll();
+		
+		this.partie.addPropertyChangeListener(this);
+		this.partie.getTimer().addPropertyChangeListener("property", this);
+		this.partie.getTimer().lancerChrono();
 	}
 
 	/**
@@ -162,9 +162,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		if (!partie.getPuzzle().undoActive()) {
 			boutonUndo.setDisable(true);
 		}
-		if (!iaLance) {
-			partie.deplacerCase(dir);
-		}
+		partie.deplacerCase(dir);
 		this.updateJeu();
 	}
 
@@ -210,7 +208,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 							public void run() {
 								if (i < solution.size()) {
-									partie.deplacerCase(solution.get(i));
+									animCase(solution.get(i));
 									i++;
 								}
 							}
@@ -243,6 +241,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		if (!this.partie.getPuzzle().undoActive()) {
 			boutonUndo.setDisable(true);
 		}
+		this.updateJeu();
 	}
 
 	@FXML

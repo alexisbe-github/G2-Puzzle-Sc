@@ -30,26 +30,8 @@ public class StatistiquesControleur implements Initializable {
 	}
 
 	@Override
-	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-        colonnePhoto.setCellValueFactory(cellData -> {
-			try {
-				return null; // new SimpleObjectProperty<>(SwingFXUtils.toFXImage((Utils.byteArrayToBufferedImage(cellData.getValue().getImage())), null));
-			} catch (/*IO*/Exception e) {
-				return new SimpleObjectProperty<>();
-			}
-		});
-        colonnePseudo.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getNom()));
-        colonneVictoires.setCellValueFactory(cellData -> new SimpleObjectProperty<>(0));
-
-        try {
-//			tableau.getItems().add(new Joueur("Jean-Pierre", Utils.imageToByteArray(new Image("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"), "png")));
-//			tableau.getItems().add(new Joueur("Jean-Paul", Utils.imageToByteArray(new Image("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"), "png")));
-//	        tableau.getItems().add(new Joueur("Jean-Patrick", Utils.imageToByteArray(new Image("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"), "png")));
-//	        tableau.getItems().add(new Joueur("Jean-Peuplu", Utils.imageToByteArray(new Image("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"), "png")));
-		} catch (/*IO*/Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 }

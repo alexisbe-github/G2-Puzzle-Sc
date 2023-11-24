@@ -48,16 +48,8 @@ public abstract class JeuControleur implements Initializable {
 	protected abstract void updateVictoire();
 	
 	protected void updateAll() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
 				updateJeu();
 				updateInfos();
-			}
-			
-		});
-		
 	}
 
 	protected abstract void setKeyController();
