@@ -32,7 +32,6 @@ public class VueJeuMultiCompet extends Stage{
         Parent root = loader.load();
         Scene scene = new Scene(root);        
         
-        //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         this.setScene(scene);
         controller.setKeyController();
         //TODO Ameliorable : loader.getController.setKeyController() -> Permettrait de gérer cette fenetre comme les autres

@@ -12,21 +12,24 @@ import javafx.stage.Stage;
 import main.java.controleur.MenuControleur;
 import main.java.controleur.NouvellePartieControleur;
 
-public class VueGenerale extends Stage{
+public class VueGenerale extends Stage {
+
+	public static String theme = "electrique";
 
 	public VueGenerale(Stage primary) throws IOException {
 		this.initModality(Modality.NONE);
 	}
-	
+
 	public void changerVue(String titre, String fxmlPath, Initializable controller) throws IOException {
 		FXMLLoader loader = new FXMLLoader(Paths.get(fxmlPath).toUri().toURL());
-        loader.setController(controller);
-        Parent root = loader.load();
-		
-        Scene scene = new Scene(root);
-        this.setScene(scene);
-        this.setTitle("Taquin - "+titre);
-        this.show();
+		loader.setController(controller);
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add("src/main/vues/css/" + theme + "/" + titre.toLowerCase() + ".css");
+		this.setScene(scene);
+		this.setTitle("Taquin - " + titre);
+		this.show();
 	}
-	
+
 }

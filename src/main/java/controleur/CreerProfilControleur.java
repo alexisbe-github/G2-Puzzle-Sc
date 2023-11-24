@@ -83,7 +83,7 @@ public class CreerProfilControleur implements Initializable{
 			DAOJoueur dao = new DAOJoueur();
 			JoueurSQL joueur = new JoueurSQL();
 			joueur.setPseudo(this.saisiePseudo.getText());
-			joueur.setUrlPp(HostedImage.uploadImage(image, extension));
+			joueur.setUrlpp(HostedImage.uploadImage(image, extension));
 			dao.creer(joueur);
 			this.owner.close();
 		}

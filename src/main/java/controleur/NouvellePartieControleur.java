@@ -99,7 +99,7 @@ public class NouvellePartieControleur implements Initializable {
 	}
 
 	private void updateInfosJoueur() throws IOException {
-			imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlPp()));
+			imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlpp()));
 			pseudoJoueur.setText(this.joueurChoisi.getPseudo());
 	}
 
@@ -184,7 +184,7 @@ public class NouvellePartieControleur implements Initializable {
 	private void lancerPartie(ActionEvent event) throws IOException, ClassNotFoundException {
 		if (joueurChoisi != null) {
 			try {
-				byte[] img = HostedImage.getImageBytes(joueurChoisi.getUrlPp());
+				byte[] img = HostedImage.getImageBytes(joueurChoisi.getUrlpp());
 				Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if (soloRadio.isSelected()) {
