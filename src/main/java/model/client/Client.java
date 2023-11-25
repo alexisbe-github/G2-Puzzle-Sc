@@ -53,6 +53,7 @@ public class Client {
 
 	public void lancerRequete(Object content) throws IOException {
 		oos.writeObject(content); // envoi de la requete au serveur
+		oos.flush();
 	}
 
 	private void ajouterJoueur() throws IOException, ClassNotFoundException {
