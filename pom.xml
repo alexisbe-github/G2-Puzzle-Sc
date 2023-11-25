@@ -60,7 +60,8 @@
 				<configuration>
 					<excludes>
 						<exclude>**/*Controleur.*</exclude>
-						<exclude>**/*SystemeExpert*</exclude>
+						<exclude>**/utils/*</exclude>
+						<exclude>**/vue/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
