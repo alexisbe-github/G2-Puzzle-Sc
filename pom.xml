@@ -59,7 +59,7 @@
 				<version>0.8.8</version>
 				<configuration>
 					<excludes>
-						<exclude>**/*Controleur.*</exclude>
+						
 					</excludes>
 				</configuration>
 				<executions>
