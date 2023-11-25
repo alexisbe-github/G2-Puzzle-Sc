@@ -31,11 +31,12 @@ public class VueJeuMultiCoop extends Stage{
         this.setTitle("Taquin - Jeu Multijoueur Coopératif");
         Parent root = loader.load();
         Scene scene = new Scene(root);        
+        scene.getStylesheets().clear();
+		String cssPath = "src/main/java/vue/css/"+ VueGenerale.theme + "/jeu multijoueur.css";
+		scene.getStylesheets().add(Paths.get(cssPath).toUri().toURL().toString());
         
-        //scene.getStylesheets().add("src/main/resources/ui/styles/style.css");
         this.setScene(scene);
         controller.setKeyController();
-        //TODO Ameliorable : loader.getController.setKeyController() -> Permettrait de gérer cette fenetre comme les autres
         this.show();
 	}
 	

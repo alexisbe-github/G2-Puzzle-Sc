@@ -37,7 +37,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="fenetre" alignment="CENTER" prefHeight="596.0" prefWidth="549.0" spacing="30.0" stylesheets="@../../../java/vue/css/espace/nouvelle_partie-espace.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="fenetre" alignment="CENTER" prefHeight="596.0" prefWidth="549.0" spacing="30.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label fx:id="titre" text="Nouvelle partie">
 			<VBox.margin>

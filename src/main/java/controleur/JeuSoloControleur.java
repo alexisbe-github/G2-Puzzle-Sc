@@ -3,6 +3,7 @@ package main.java.controleur;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	private Thread threadIA;
 	private int i; // index solution IA
 	private boolean iaLance = false;
-	private List<Label> cases = new ArrayList<>();
+	//private List<Label> cases = new ArrayList<>();
+	private Label[][] tabCases;
 
 	@FXML
 	private Button boutonIA;
@@ -63,6 +65,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	public JeuSoloControleur(Stage stage, PartieSolo partie) {
 		this.owner = stage;
 		this.partie = partie;
+		tabCases = new Label[partie.getPuzzle().getTaille()][partie.getPuzzle().getTaille()];
 		this.owner.requestFocus();
 	}
 
@@ -76,13 +79,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 		owner.setOnCloseRequest(event -> this.handleExit(event));
-
-		this.initJoueur();
-		this.updateAll();
 		
 		this.partie.addPropertyChangeListener(this);
 		this.partie.getTimer().addPropertyChangeListener("property", this);
 		this.partie.getTimer().lancerChrono();
+		this.initJoueur();
+		this.updateAll();
 	}
 
 	/**
@@ -119,7 +121,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 				if (partie.getPuzzle().getCase(j, i).getIndex() != -1)
 					l.setBackground(bgi);
 				grille.getChildren().add(l);
-				cases.add(l);
+				tabCases[i][j] = l;
+				//cases.add(l);
 			}
 		}
 	}
@@ -308,9 +311,16 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	 * @return l : label correspondant à la case.
 	 */
 	private Label getLabelParIndex(int index) {
-		for (Label l : cases) {
-			if (l.getId().equals("case" + index))
-				return l;
+//		for (Label l : cases) {
+//			if (l.getId().equals("case" + index))
+//				return l;
+//		}
+		
+		for (int i = 0; i < tabCases.length; i++) {
+			for (int j = 0; j < tabCases.length; j++) {
+				if(tabCases[i][j].getId().equals("case"+index))
+					return tabCases[i][j];
+			}
 		}
 		return null;
 	}
@@ -392,4 +402,6 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	}
 
+	
+	
 }

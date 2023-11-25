@@ -2,9 +2,13 @@ package main.java.controleur;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -29,6 +33,7 @@ import main.java.vue.VueJeuSolo;
 public class MenuControleur implements Initializable {
 
 	private Stage owner;
+	private final List<String> themes = new ArrayList<String>(Arrays.asList("electrique","espace"));
 
 	@FXML
 	private RadioButton coopRadio;
@@ -84,8 +89,12 @@ public class MenuControleur implements Initializable {
 	}
 
 	@FXML
-	private void theme(ActionEvent event) {
-		System.out.println("Theme");
+	private void theme(ActionEvent event) throws MalformedURLException {
+		if(themes.indexOf(VueGenerale.theme)+1 < themes.size())
+			VueGenerale.theme = themes.get(themes.indexOf(VueGenerale.theme)+1);
+		else
+			VueGenerale.theme = themes.get(0);
+		((VueGenerale) this.owner).updateStyle();
 	}
 
 	@FXML
@@ -116,6 +125,6 @@ public class MenuControleur implements Initializable {
 		Client c2 = new Client(j2);
 		c2.seConnecter("localhost", 8080);
 		//System.out.println("Connexion ip:"+saisieIP.getText()+" Port:"+saisiePort.getText());
-		((VueGenerale) this.owner).changerVue("Lobby Multijoueur", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, j2, c2));
+		((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, j2, c2));
 	}
 }

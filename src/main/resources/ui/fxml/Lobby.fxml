@@ -12,7 +12,6 @@
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0"
 	prefWidth="499.0" spacing="30.0" fx:id="fenetre"
-	stylesheets="@../../../java/vue/css/espace/lobby-espace.css"
 	xmlns="http://javafx.com/javafx/20.0.1"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>

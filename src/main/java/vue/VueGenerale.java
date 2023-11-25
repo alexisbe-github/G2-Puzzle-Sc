@@ -1,6 +1,7 @@
 package main.java.vue;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Paths;
 
 import javafx.fxml.FXMLLoader;
@@ -25,11 +26,16 @@ public class VueGenerale extends Stage {
 		loader.setController(controller);
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add("src/main/vues/css/" + theme + "/" + titre.toLowerCase() + ".css");
 		this.setScene(scene);
 		this.setTitle("Taquin - " + titre);
+		this.updateStyle();
 		this.show();
+	}
+	
+	public void updateStyle() throws MalformedURLException {
+		getScene().getStylesheets().clear();
+		String cssPath = "src/main/java/vue/css/"+ theme + "/" + getTitle().split("\\-")[1].trim() + ".css";
+		getScene().getStylesheets().add(Paths.get(cssPath).toUri().toURL().toString());
 	}
 
 }
