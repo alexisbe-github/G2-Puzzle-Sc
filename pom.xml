@@ -60,6 +60,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/*Controleur.*</exclude>
+						<exclude>**/*SystemeExpert*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
