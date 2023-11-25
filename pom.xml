@@ -62,6 +62,7 @@
 						<exclude>**/*Controleur.*</exclude>
 						<exclude>**/utils/*</exclude>
 						<exclude>**/vue/*</exclude>
+						<exclude>**/PartieMultijoueur.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
