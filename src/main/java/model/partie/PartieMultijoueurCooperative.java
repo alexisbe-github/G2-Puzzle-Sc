@@ -1,18 +1,19 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
 import main.java.model.joueur.Joueur;
 
-public class PartieMultijoueurCooperative extends PartieMultijoueur {
+public class PartieMultijoueurCooperative extends PartieMultijoueur{ 
 
 	private Puzzle puzzleCommun;
 	private int indexJoueurCourant; // index qui indique quel joueur de la List<Joueur> joueurs doit jouer son tour
@@ -28,24 +29,22 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	}
 
 	@Override
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
-		puzzleCommun = new Puzzle(taillePuzzle);
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur j = mapEntry.getKey();
-			Socket s = mapEntry.getValue();
-
-			try {
-				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-				fluxSortant.println();
-				fluxSortant.println(puzzleCommun);
-				fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
-				fluxSortant.println();
-				fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
+		puzzleCommun = new Puzzle(taillePuzzle, image);
 	}
+	
+//	@Override
+//	protected void envoyerLancement(Socket s, Joueur j) throws IOException {
+//		List<Object> output = new ArrayList<Object>();
+//		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
+//		
+//		output.add("s");
+//		output.add(this.joueurs);
+//		output.add(this.indexJoueurCourant);
+//		output.add(this.puzzleCommun);
+//		
+//		oop.writeObject(output);
+//	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {
@@ -61,17 +60,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 	private void passerAuJoueurSuivant() throws IOException {
 		this.indexJoueurCourant++;
 		this.indexJoueurCourant %= joueurs.size();
-		for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-			Joueur j = mapEntry.getKey();
-			Socket s = mapEntry.getValue();
-
-			PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-			fluxSortant.println(puzzleCommun);
-			fluxSortant.println();
-			fluxSortant.println(this.getJoueurCourant().getNom() + " doit jouer");
-			fluxSortant.println();
-			fluxSortant.println("HAUT:h BAS:b GAUCHE:g DROITE:d");
-		}
 	}
 
 	/**
@@ -84,15 +72,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur {
 		if (numJoueur == this.indexJoueurCourant + 1 && !puzzleCommun.verifierGrille()) {
 			puzzleCommun.deplacerCase(dp);
 			passerAuJoueurSuivant();
-		}
-		if (puzzleCommun.verifierGrille()) {
-			for (Map.Entry<Joueur, Socket> mapEntry : tableSocketDesJoueurs.entrySet()) {
-				Joueur j = mapEntry.getKey();
-				Socket s = mapEntry.getValue();
-
-				PrintStream fluxSortant = new PrintStream(s.getOutputStream());
-				fluxSortant.println("VOUS AVEZ FINI LE PUZZLE EN " + puzzleCommun.getNbCoups() + " COUPS!");
-			}
 		}
 	}
 	

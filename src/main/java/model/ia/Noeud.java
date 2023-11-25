@@ -8,7 +8,6 @@ import java.util.Objects;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
-import main.java.model.ia.memento.Caretaker;
 
 public class Noeud {
 	private Puzzle puzzle;

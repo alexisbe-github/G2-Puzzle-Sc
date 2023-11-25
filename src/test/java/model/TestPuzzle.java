@@ -1,12 +1,9 @@
 package test.java.model;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.nio.file.Files;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -337,25 +334,21 @@ public class TestPuzzle {
 	}
 
 	@Test
-	public void testDecoupageImage() {
-		BufferedImage img;
-		try {
-			img = ImageIO.read(new File("src/test/resources/testimg.jpg"));
-			Puzzle pTest = new Puzzle(4, img);
-			for (int i = 0; i < pTest.getTaille(); i++) {
-				for (int j = 0; j < pTest.getTaille(); j++) {
-					Assertions
-							.assertTrue(
-									Utils.comparerImages(pTest.getCase(j, i).getImage(),
-											ImageIO.read(new File("src/test/resources/image"
-													+ pTest.getCase(j, i).getIndex() + ".png"))),
-									"Les images ne correspondent pas aux images attendues en x: " + j + " y: " + i
-											+ ".");
-				}
+	public void testDecoupageImage() throws ArrayIndexOutOfBoundsException, IOException {
+		File file = new File("src/test/resources/testimg.jpg");
+		byte[] image = Files.readAllBytes(file.toPath());
+		Puzzle pTest = new Puzzle(4, image);
+		for (int i = 0; i < pTest.getTaille(); i++) {
+			for (int j = 0; j < pTest.getTaille(); j++) {
+				File fi = new File("src/test/resources/image"+pTest.getCase(j, i).getIndex()+".png");
+				byte[] img = Files.readAllBytes(fi.toPath());
+				Assertions.assertTrue(
+								Utils.compareByteArrays(img, pTest.getCase(j, i).getImage()),
+								"Les images ne correspondent pas aux images attendues en x: "
+										 + j + " y: " + i + ".");
 			}
-		} catch (IOException e) {
-			fail("Erreur lors du chargement de l'image");
-			e.printStackTrace();
 		}
 	}
+	
+	
 }

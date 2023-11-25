@@ -32,7 +32,11 @@ public class TestServeur {
 	@BeforeAll
 	public static void setUp() {
 		joueur = new Joueur("Joueur hôte", null);
-		client = new Client(joueur);
+		try {
+			client = new Client(joueur);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		partieMultiCoop = new PartieMultijoueurCooperative();
 		serveur = new Serveur();
 	}
@@ -55,7 +59,8 @@ public class TestServeur {
 
 	@Test
 	@Order(3)
-	public void testLancerServeur() throws IOException, InvalidPortException, InterruptedException {
+	public void testLancerServeur()
+			throws IOException, InvalidPortException, InterruptedException, ClassNotFoundException {
 		Assertions.assertDoesNotThrow(() -> {
 			serveur.lancerServeur(partieMultiCoop, PORT_VALIDE);
 		});

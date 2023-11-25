@@ -16,7 +16,7 @@ public class JoueurSQL implements Serializable {
 
 	private long id;
 	private String pseudo;
-	private String url_pp;
+	private String urlpp;
 
 	/**
 	 * @return L'identifiant
@@ -49,15 +49,15 @@ public class JoueurSQL implements Serializable {
 	/**
 	 * @return L'URL de la photo de profil
 	 */
-	public String getUrlPp() {
-		return url_pp;
+	public String getUrlpp() {
+		return urlpp;
 	}
 
 	/**
 	 * @param url L'URL de la photo de profil à mettre à jour
 	 */
-	public void setUrlPp(String url) {
-		this.url_pp = url;
+	public void setUrlpp(String url) {
+		this.urlpp = url;
 	}
 
 }

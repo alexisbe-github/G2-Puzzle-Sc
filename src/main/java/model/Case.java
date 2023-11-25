@@ -1,20 +1,20 @@
 package main.java.model;
 
-import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Case implements Cloneable{
+public class Case implements Serializable, Cloneable {
 
 	public final static int INDEX_CASE_VIDE = -1;
 	private int index;
-	private BufferedImage image;
+	private byte[] image;
 
 	/**
 	 * 
 	 * @param index : index de la case
 	 * @param image : image de la case
 	 */
-	public Case(int index, BufferedImage image) {
+	public Case(int index, byte[] image) {
 		this.index = index;
 		this.image = image;
 	}
@@ -27,7 +27,7 @@ public class Case implements Cloneable{
 		this.index = index;
 	}
 
-	public void setImage(BufferedImage img) {
+	public void setImage(byte[] img) {
 		this.image = img;
 	}
 
@@ -35,7 +35,7 @@ public class Case implements Cloneable{
 		return this.index;
 	}
 
-	public BufferedImage getImage() {
+	public byte[] getImage() {
 		return this.image;
 	}
 
@@ -61,8 +61,12 @@ public class Case implements Cloneable{
 		return index == other.index;
 	}
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		if (this.image == null) {
+			return super.clone();
+		}
+		Case caseClonee = new Case(this.index, image.clone());
+		return caseClonee;
+	}
 }

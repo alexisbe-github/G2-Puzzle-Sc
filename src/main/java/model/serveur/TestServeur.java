@@ -25,7 +25,7 @@ public class TestServeur {
 		new Thread(() -> {
 			try {
 				TestClient.lancerClient(joueurHote);
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}).start();

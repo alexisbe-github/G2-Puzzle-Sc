@@ -1,7 +1,8 @@
 package main.java.model.partie;
 
-import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javafx.scene.image.Image;
 import main.java.model.joueur.Joueur;
 
 public class ContextePartie {
@@ -24,8 +25,9 @@ public class ContextePartie {
 	 * 
 	 * @param image        BufferedImage
 	 * @param taillePuzzle int
+	 * @throws IOException 
 	 */
-	public void lancerPartie(BufferedImage image, int taillePuzzle) {
+	public void lancerPartie(byte[] image, int taillePuzzle) throws IOException {
 		strategyPartie.lancerPartie(image, taillePuzzle);
 	}
 

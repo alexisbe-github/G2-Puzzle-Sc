@@ -1,32 +1,22 @@
 package main.java.utils;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.io.InputStream;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+
 public class Utils {
-
-	public static BufferedImage createTransparentBufferedImage(int width, int height) {
-	     BufferedImage bufferedImage = new BufferedImage(width, height, 
-	                        BufferedImage.TYPE_INT_ARGB);
-	     Graphics2D graphics = bufferedImage.createGraphics();
-
-	     graphics.setBackground(new Color(0, true));
-	     graphics.clearRect(0, 0, width, height);
-	     graphics.dispose();
-
-	     return bufferedImage;
-	  }
 	
 	/**
 	 * Génére un int entre min et max inclus
@@ -43,33 +33,58 @@ public class Utils {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
 	}
-
-	/**
-	 * Compare deux images pixel par pixel
-	 *
-	 * @param imga premiere image
-	 * @param imgb deconde image.
-	 * @return true si les deux images correspondent.
-	 */
-	public static boolean comparerImages(BufferedImage imga, BufferedImage imgb) {
-	  if (imga.getWidth() != imgb.getWidth() || imga.getHeight() != imgb.getHeight()) {
-	    return false;
-	  }
-
-	  int width  = imga.getWidth();
-	  int height = imga.getHeight();
-
-	  for (int y = 0; y < height; y++) {
-	    for (int x = 0; x < width; x++) {
-
-	      if (imga.getRGB(x, y) != imgb.getRGB(x, y)) { //vérifie l'identité de chaque pixels
-	        return false;
-	      }
-	      
-	    }
-	  }
-	  return true;
-	}
 	
+	public static Image getSubImage(int x, int y, int w, int h, Image stripImg)
+    {
+        PixelReader pr = stripImg.getPixelReader();
+        WritableImage wImg = new WritableImage(w, h);
+        PixelWriter pw = wImg.getPixelWriter();
+        
+        for( int readY = y ; readY < y + h; readY++ ) {
+        	for( int readX = x; readX < x + w; readX++ ) {
+                //Obtenir le pixels aux coordonnées X et Y
+                Color color = pr.getColor( readX, readY );
+                //Appliquer le pixel à la WritableImage à l'aide du Pixel Writer
+                pw.setColor(readX-x, readY-y, color);
+            }//X
+        }//Y
+        return wImg;
+    }//
+	
+	// transforme une BufferedImage en byte[]
+    public static byte[] bufferedImageToByteArray(BufferedImage bi, String format) throws IOException {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        if(format==null) format = "png";
+        ImageIO.write(bi, format, baos);
+        byte[] bytes = baos.toByteArray();
+        return bytes;
+
+    }
+
+    // transforme un byte[] en BufferedImage
+    public static BufferedImage byteArrayToBufferedImage(byte[] bytes) throws IOException {
+
+        InputStream is = new ByteArrayInputStream(bytes);
+        BufferedImage bi = ImageIO.read(is);
+        return bi;
+
+    }
+    
+    public static byte[] imageToByteArray(Image image, String format) throws IOException {
+        BufferedImage img = SwingFXUtils.fromFXImage(image, null);
+        return Utils.bufferedImageToByteArray(img, format);
+    } 
+	
+    
+
+    public static boolean compareByteArrays(byte[] a, byte[] b) {
+    	if(a.length == b.length) {
+    		for(int i=0;i<a.length;i++) {
+        		if(b[i]!=a[i]) return false;
+        	}
+    	}else return false;
+    	return true;
+    }
 	
 }

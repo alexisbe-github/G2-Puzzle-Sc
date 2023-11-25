@@ -17,12 +17,12 @@ import main.java.utils.NetworkUtils;
 
 public class TestClient {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		Joueur j = new Joueur("Client", null);
 		lancerClient(j);
 	}
 
-	public static void lancerClient(Joueur j) throws IOException {
+	public static void lancerClient(Joueur j) throws IOException, ClassNotFoundException {
 		String ip = NetworkUtils.getServeurIPV4(true);
 		int port = 8080;
 		Client c = new Client(j);
