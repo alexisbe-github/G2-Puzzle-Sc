@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class Chrono implements Serializable{
@@ -66,7 +67,7 @@ public class Chrono implements Serializable{
 //		return r;
 		
 		Date date = new Date(time*10);
-		DateFormat formatter = new SimpleDateFormat("mm:ss.SS");
+		DateFormat formatter = new SimpleDateFormat("mm:ss.SSS", Locale.FRANCE);
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		String dateFormatted = formatter.format(date);
 		return dateFormatted;

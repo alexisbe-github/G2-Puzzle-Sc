@@ -6,7 +6,7 @@
 #fenetre {
 	-fx-background-image: url("../../../../resources/images/espace.gif");
 	-fx-background-size: stretch;
-	-fx-background-position: no-repeat;
+	-fx-background-repeat: no-repeat;
 }
 
 .label {

@@ -1,5 +1,5 @@
 #fenetre {
-	-fx-background: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934
+	-fx-background-color: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934
 		100%);
 }
 

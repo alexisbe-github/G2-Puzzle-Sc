@@ -6,7 +6,7 @@
 #fenetre {
 	-fx-background-image: url("../../../../resources/images/espace.gif");
     -fx-background-size: stretch;
-    -fx-background-position: no-repeat;
+    -fx-background-repeat: no-repeat;
 }
 
 .label {
@@ -67,11 +67,7 @@
 	-fx-effect: dropshadow(gaussian, #f008, 10px, 0.2, 0, 0);
 }
 
-.table-view {
-	-fx-background-color: transparent;
-}
-
-.table-view:focused {
+.table-view, .table-view:focused, .table-view .filler {
 	-fx-background-color: transparent;
 }
 

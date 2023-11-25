@@ -1,9 +1,5 @@
 #fenetre {
-	/* -fx-background-image: url("");
-    -fx-background-size: stretch;
-    -fx-background-position: no-repeat; */
-	/* -fx-background: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, gray, darkgray 75%, dimgray); */
-	-fx-background: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934
+	-fx-background-color: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934
 		100%);
 }
 
@@ -62,11 +58,7 @@
 	-fx-effect: dropshadow(gaussian, black, 10px, 0.2, 0, 0);
 }
 
-.table-view {
-	-fx-background-color: transparent;
-}
-
-.table-view:focused {
+.table-view, .table-view:focused, .table-view .filler {
 	-fx-background-color: transparent;
 }
 

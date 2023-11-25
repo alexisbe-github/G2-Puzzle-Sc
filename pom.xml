@@ -34,7 +34,10 @@
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.4</version>
+				<version>0.0.5</version>
+				<configuration>
+					<mainClass>main.java.Main</mainClass>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

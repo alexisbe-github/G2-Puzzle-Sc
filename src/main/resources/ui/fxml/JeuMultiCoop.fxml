@@ -13,9 +13,8 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0"
-	prefWidth="700.0" fx:id="fenetre"
-	xmlns="http://javafx.com/javafx/20.0.1"
-	xmlns:fx="http://javafx.com/fxml/1">
+	prefWidth="700.0" fx:id="fenetre" xmlns="http://javafx.com/javafx"
+	xmlns:fx="http://javafx.com/fxml">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -79,7 +78,7 @@
 						<ImageView fx:id="logoJoueur" fitHeight="80.0"
 							fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
 						<Label fx:id="pseudoJoueur" text="pop simoke" />
-						<Label fx:id="aVotreTour" text="A VOTRE TOUR"/>
+						<Label fx:id="aVotreTour" text="A VOTRE TOUR" />
 					</children>
 				</VBox>
 				<Label fx:id="victoireLabel" mnemonicParsing="false"

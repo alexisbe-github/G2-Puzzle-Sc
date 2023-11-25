@@ -3,9 +3,7 @@ package main.java.controleur;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -50,7 +48,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	private Thread threadIA;
 	private int i; // index solution IA
 	private boolean iaLance = false;
-	//private List<Label> cases = new ArrayList<>();
+	// private List<Label> cases = new ArrayList<>();
 	private Label[][] tabCases;
 
 	@FXML
@@ -79,7 +77,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 		owner.setOnCloseRequest(event -> this.handleExit(event));
-		
+
 		this.partie.addPropertyChangeListener(this);
 		this.partie.getTimer().addPropertyChangeListener("property", this);
 		this.partie.getTimer().lancerChrono();
@@ -122,7 +120,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 					l.setBackground(bgi);
 				grille.getChildren().add(l);
 				tabCases[i][j] = l;
-				//cases.add(l);
+				// cases.add(l);
 			}
 		}
 	}
@@ -251,10 +249,14 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	private void pauseButton(ActionEvent event) {
 		if (!this.partie.getPuzzle().verifierGrille()) {
 			this.estEnPause = !estEnPause;
-			if (estEnPause)
+			Button b = (Button) event.getSource();
+			if (estEnPause) {
 				this.partie.getTimer().stopChrono();
-			else
+				b.setText("Reprendre");
+			} else {
 				this.partie.getTimer().lancerChrono();
+				b.setText("Pause");
+			}
 		}
 	}
 
@@ -315,10 +317,10 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 //			if (l.getId().equals("case" + index))
 //				return l;
 //		}
-		
+
 		for (int i = 0; i < tabCases.length; i++) {
 			for (int j = 0; j < tabCases.length; j++) {
-				if(tabCases[i][j].getId().equals("case"+index))
+				if (tabCases[i][j].getId().equals("case" + index))
 					return tabCases[i][j];
 			}
 		}
@@ -402,6 +404,4 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	}
 
-	
-	
 }

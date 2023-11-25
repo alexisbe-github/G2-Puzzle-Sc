@@ -1,24 +1,5 @@
-/*
-.pane {
-    -fx-background-color: #99FF33;
-    -fx-border-color: black;
-}
-
-.gridpane {
-     -fx-border-color: black;
-     -fx-grid-lines-visible: true;
-     -fx-border: 2px solid;
-     -fx-halignment: center;
-     -fx-alignment: CENTER;  
-}
-*/
-
 #fenetre {
-    /* -fx-background-image: url("");
-    -fx-background-size: stretch;
-    -fx-background-position: no-repeat; */
-    /* -fx-background: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, gray, darkgray 75%, dimgray); */
-    -fx-background: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934 100%);
+	-fx-background-color: radial-gradient(center 25% 25%, radius 60%, reflect, #111213 0%, #131934 100%);
 }
 
 #titre {
