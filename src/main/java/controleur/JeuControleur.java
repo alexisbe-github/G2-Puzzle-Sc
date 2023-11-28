@@ -36,24 +36,24 @@ public abstract class JeuControleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
-	
+
 	protected abstract void initJoueur();
 
 	protected abstract void updateImages();
 
 	protected abstract void updateJeu();
-	
+
 	protected abstract void updateInfos();
-	
+
 	protected abstract void updateVictoire();
-	
+
 	protected void updateAll() {
-				updateJeu();
-				updateInfos();
+		updateJeu();
+		updateInfos();
 	}
 
 	protected abstract void setKeyController();
-	
+
 	/*
 	 * 
 	 * private void handlePressAction(MouseEvent event) { xClick =

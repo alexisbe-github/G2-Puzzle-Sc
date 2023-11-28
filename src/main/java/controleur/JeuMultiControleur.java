@@ -38,7 +38,6 @@ import main.java.vue.VueJeuMultiCoop;
 
 public abstract class JeuMultiControleur extends JeuControleur implements Initializable {
 
-
 	protected Puzzle puzzle;
 	protected List<Joueur> joueurs;
 
@@ -192,6 +191,5 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 		}).start();
 
 	}
-
 
 }

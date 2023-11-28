@@ -23,9 +23,9 @@ import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 
 public class StatistiquesControleur implements Initializable {
-	
+
 	private Stage owner;
-	
+
 	@FXML
 	private TableView<JoueurSQL> tableau;
 	@FXML
@@ -41,54 +41,50 @@ public class StatistiquesControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		byte[] img = null;
-		
+
 		try {
 			img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		colonnePseudo.setCellValueFactory(
-				new PropertyValueFactory<JoueurSQL, String>("pseudo"));
-		colonnePhoto.setCellValueFactory(
-				new PropertyValueFactory<JoueurSQL, String>("urlpp"));
-		colonneVictoires.setCellValueFactory(
-				new PropertyValueFactory<JoueurSQL, Integer>("id"));
-		
+
+		colonnePseudo.setCellValueFactory(new PropertyValueFactory<JoueurSQL, String>("pseudo"));
+		colonnePhoto.setCellValueFactory(new PropertyValueFactory<JoueurSQL, String>("urlpp"));
+		colonneVictoires.setCellValueFactory(new PropertyValueFactory<JoueurSQL, Integer>("id"));
+
 		colonnePhoto.setCellFactory(param -> new TableCell<JoueurSQL, String>() {
 
-	        private ImageView imageView = new ImageView();
-	        
-	        @Override
+			private ImageView imageView = new ImageView();
+
+			@Override
 			protected void updateItem(String item, boolean empty) {
-	            super.updateItem(item, empty);
-	            if (item == null || empty) {
-	                setText(null);
-	                setGraphic(null);
-	            } else {
-	                imageView.setImage(new Image(item));
-	                imageView.setFitWidth(50);
-	                imageView.setFitHeight(50);
-	                this.setAlignment(Pos.CENTER);
-	                setGraphic(imageView);
-	            }
-	            this.setItem(item);
-	        }
-	        
-	    });
-		
+				super.updateItem(item, empty);
+				if (item == null || empty) {
+					setText(null);
+					setGraphic(null);
+				} else {
+					imageView.setImage(new Image(item));
+					imageView.setFitWidth(50);
+					imageView.setFitHeight(50);
+					this.setAlignment(Pos.CENTER);
+					setGraphic(imageView);
+				}
+				this.setItem(item);
+			}
+
+		});
+
 		DAOJoueur daoj = new DAOJoueur();
 		List<JoueurSQL> jsql = daoj.trouverTout();
-		
+
 		ObservableList<JoueurSQL> joueursData = FXCollections.observableArrayList(jsql);
 		colonnePhoto.setPrefWidth(60);
-		
+
 		this.tableau.setItems(joueursData);
-		
-		
+
 	}
 
 }

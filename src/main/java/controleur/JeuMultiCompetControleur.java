@@ -44,8 +44,8 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 	 * @param partie : partie jouée
 	 * @throws IOException : Exception lors d'un problème de lecture de l'image
 	 */
-	public JeuMultiCompetControleur(Stage stage, Joueur joueur, List<Joueur> joueurs, 
-			Puzzle puzzle, Client client) throws IOException {
+	public JeuMultiCompetControleur(Stage stage, Joueur joueur, List<Joueur> joueurs, Puzzle puzzle, Client client)
+			throws IOException {
 		this.owner = stage;
 		this.joueur = joueur;
 		this.client = client;
@@ -56,7 +56,7 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 	}
 
 	@Override
-	protected void readStream() throws IOException, InterruptedException{
+	protected void readStream() throws IOException, InterruptedException {
 
 		System.out.println("super");
 
@@ -100,7 +100,5 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 		}).start();
 
 	}
-
-
 
 }

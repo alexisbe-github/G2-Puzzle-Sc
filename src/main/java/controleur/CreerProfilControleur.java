@@ -24,48 +24,48 @@ import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.utils.HostedImage;
 
-public class CreerProfilControleur implements Initializable{
+public class CreerProfilControleur implements Initializable {
 
 	private Stage owner;
 	private BufferedImage image;
 	private String extension;
-	
+
 	@FXML
 	private ImageView imageJoueur;
-	
+
 	@FXML
 	private TextField saisiePseudo;
-	
-	
-	
+
 	public CreerProfilControleur(Stage stage) throws IOException {
 		this.owner = stage;
 		this.image = ImageIO.read(new File("src/main/resources/images/defaulticon.png"));
 	}
-	
+
 	private void updateImage() {
 		image = Scalr.resize(image, Scalr.Mode.FIT_EXACT, 250, 250);
 		this.imageJoueur.setImage(SwingFXUtils.toFXImage(this.image, null));
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.updateImage();
 		this.addImageAction();
 	}
-	
+
 	private void addImageAction() {
 		this.imageJoueur.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				FileChooser fileChooser = new FileChooser();
-				fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
+				fileChooser.getExtensionFilters()
+						.add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
 				fileChooser.setTitle("Sélectionner une image");
 				File file = fileChooser.showOpenDialog(owner);
-				if(file!=null) {
+				if (file != null) {
 					try {
 						image = Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_EXACT, 1000, 1000);
-						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length());
+						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
+								file.getName().length());
 						if (extension.equals("jpeg"))
 							extension = "jpg";
 					} catch (Exception e) {
@@ -76,10 +76,10 @@ public class CreerProfilControleur implements Initializable{
 			}
 		});
 	}
-	
+
 	@FXML
 	public void creerProfilBouton() {
-		if(this.image != null && this.saisiePseudo.getText() != null) {
+		if (this.image != null && this.saisiePseudo.getText() != null) {
 			DAOJoueur dao = new DAOJoueur();
 			JoueurSQL joueur = new JoueurSQL();
 			joueur.setPseudo(this.saisiePseudo.getText());
@@ -88,5 +88,5 @@ public class CreerProfilControleur implements Initializable{
 			this.owner.close();
 		}
 	}
-	
+
 }

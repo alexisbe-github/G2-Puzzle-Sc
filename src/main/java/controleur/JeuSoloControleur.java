@@ -42,7 +42,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	private PartieSolo partie;
 	private boolean estEnPause = false;
-	ExecutorService executor = Executors.newCachedThreadPool();
+	private ExecutorService executor = Executors.newCachedThreadPool();
 
 	private List<EDeplacement> solution;
 	private Thread threadIA;

@@ -79,28 +79,27 @@ public class NouvellePartieControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		this.menuProfils.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handleMenuClick(event));
-		
+
 		this.radioGroupe = new ToggleGroup();
 
 		EventHandler<? super MouseEvent> l = (MouseEvent event) -> this.handleRadioClick(event);
-		
+
 		this.multiCompetRadio.setToggleGroup(radioGroupe);
 		this.multiCompetRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
-		
+
 		this.multiCoopRadio.setToggleGroup(radioGroupe);
 		this.multiCoopRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
-		
+
 		this.soloRadio.setToggleGroup(radioGroupe);
 		this.soloRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
-		
+
 		this.updateImagePartie();
-		
-		
+
 	}
 
 	private void updateInfosJoueur() throws IOException {
-			imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlpp()));
-			pseudoJoueur.setText(this.joueurChoisi.getPseudo());
+		imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlpp()));
+		pseudoJoueur.setText(this.joueurChoisi.getPseudo());
 	}
 
 	private void updateAll() throws IOException {
@@ -142,7 +141,8 @@ public class NouvellePartieControleur implements Initializable {
 	@FXML
 	private void changerImageBouton(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
+		fileChooser.getExtensionFilters()
+				.add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(this.owner);
 		if (file != null) {
@@ -167,15 +167,15 @@ public class NouvellePartieControleur implements Initializable {
 	}
 
 	private void handleRadioClick(MouseEvent event) {
-		if(event.getSource().equals(this.multiCoopRadio) || event.getSource().equals(this.multiCompetRadio)) {
+		if (event.getSource().equals(this.multiCoopRadio) || event.getSource().equals(this.multiCompetRadio)) {
 			saisiePort.setManaged(true);
 			saisiePort.setVisible(true);
-		}else {
+		} else {
 			saisiePort.setManaged(false);
 			saisiePort.setVisible(false);
 		}
 	}
-	
+
 	private void erreurLancement() {
 		System.out.println("erreurlancement");
 	}
@@ -195,28 +195,27 @@ public class NouvellePartieControleur implements Initializable {
 					try {
 						boolean estCoop = multiCoopRadio.isSelected();
 						VueGenerale vg = new VueGenerale(this.owner);
-						
+
 						ContextePartie cp = new ContextePartie(j);
-						
+
 						PartieMultijoueur p;
-						
-						if(estCoop)
+
+						if (estCoop)
 							p = new PartieMultijoueurCooperative();
 						else
 							p = new PartieMultijoueurCompetitive();
-						
+
 						cp.setStrategy(p);
 
 						Serveur s = new Serveur();
 						s.lancerServeur(p, Integer.parseInt(this.saisiePort.getText()));
 
 						Client c = new Client(j);
-						c.seConnecter(NetworkUtils.getServeurIPV4(true), 
-								Integer.parseInt(this.saisiePort.getText()));
+						c.seConnecter(NetworkUtils.getServeurIPV4(true), Integer.parseInt(this.saisiePort.getText()));
 
 						LobbyControleur lc = new LobbyControleur(vg, p, j, estCoop,
 								Utils.imageToByteArray(imageChoisie, null), taille, c);
-						
+
 						vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
 					} catch (InvalidPortException e) {
 						// TODO
@@ -228,10 +227,11 @@ public class NouvellePartieControleur implements Initializable {
 			}
 		}
 	}
-	
+
 	@FXML
 	private void retourBouton(ActionEvent event) throws IOException {
-		((VueGenerale) this.owner).changerVue("Menu" ,"src/main/resources/ui/fxml/MenuPrincipal.fxml", new MenuControleur(this.owner));
+		((VueGenerale) this.owner).changerVue("Menu", "src/main/resources/ui/fxml/MenuPrincipal.fxml",
+				new MenuControleur(this.owner));
 	}
 
 }

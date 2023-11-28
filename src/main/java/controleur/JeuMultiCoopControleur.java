@@ -25,7 +25,7 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 
 	@FXML
 	private Label aVotreTour;
-	
+
 	/**
 	 * 
 	 * @param stage  : fenêtre dans laquelle la scene est affichée
@@ -56,10 +56,12 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 			Label l = (Label) v.getChildren().get(1);
 			if (boxJoueurs.getChildren().indexOf(n) == this.numJoueurCourant) {
 				l.setTextFill(Color.GREEN);
-				if(boxJoueurs.getChildren().indexOf(n) == this.numJoueur-1) {
+				if (boxJoueurs.getChildren().indexOf(n) == this.numJoueur - 1) {
 					this.aVotreTour.setVisible(true);
-				}else this.aVotreTour.setVisible(false);
-			}else l.setTextFill(Color.RED);
+				} else
+					this.aVotreTour.setVisible(false);
+			} else
+				l.setTextFill(Color.RED);
 		}
 	}
 

@@ -111,7 +111,7 @@ public class LobbyControleur implements Initializable {
 
 	@FXML
 	private void lancerPartieMulti() throws IOException {
-		if(this.joueurs.size()>1) {
+		if (this.joueurs.size() > 1) {
 			partie.lancerPartie(this.img, taille);
 			this.flagLancement = true;
 		}
@@ -155,7 +155,7 @@ public class LobbyControleur implements Initializable {
 									puzzleC, this.client);
 							flagThreadEnd = true;
 							this.owner.close();
-							
+
 						} else if (tab.get(0).equals("s") && !this.estCoop) {
 							Puzzle puzzleI = (Puzzle) tab.get(2);
 							VueJeuMultiCompet vj = new VueJeuMultiCompet(joueur, this.joueurs, puzzleI, this.client);
@@ -185,7 +185,7 @@ public class LobbyControleur implements Initializable {
 		}
 
 	}
-	
+
 	private void initStream() throws IOException {
 		if (estHote) {
 			List<Object> output = new ArrayList<Object>();

@@ -22,24 +22,24 @@ import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.vue.VueGenerale;
 
-public class RecherchePartieControleur implements Initializable{
+public class RecherchePartieControleur implements Initializable {
 
 	private Stage owner;
 	private JoueurSQL joueurChoisi;
-	
+
 	@FXML
 	private TextField saisieIP;
-	
+
 	@FXML
 	private TextField saisiePort;
-	
+
 	@FXML
 	private MenuButton menuProfils;
-	
+
 	public RecherchePartieControleur(Stage stage) {
 		this.owner = stage;
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -48,16 +48,16 @@ public class RecherchePartieControleur implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void updateListeProfils() throws IOException {
 		List<JoueurSQL> joueurs = new ArrayList<JoueurSQL>();
 		DAOJoueur j = new DAOJoueur();
 		joueurs = j.trouverTout();
 		menuProfils.getItems().clear();
-		if(!joueurs.isEmpty()) {
-			for(JoueurSQL jactuel : joueurs) {
+		if (!joueurs.isEmpty()) {
+			for (JoueurSQL jactuel : joueurs) {
 				MenuItem item = new MenuItem(jactuel.getPseudo());
-				item.setOnAction( value -> {
+				item.setOnAction(value -> {
 					joueurChoisi = jactuel;
 					this.menuProfils.setText(jactuel.getPseudo());
 				});
@@ -65,18 +65,20 @@ public class RecherchePartieControleur implements Initializable{
 			}
 		}
 	}
-	
+
 	@FXML
-	private void connexion(ActionEvent event) throws IOException, NumberFormatException, ClassNotFoundException{
-		if(joueurChoisi!=null) {
+	private void connexion(ActionEvent event) throws IOException, NumberFormatException, ClassNotFoundException {
+		if (joueurChoisi != null) {
 			byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
 			Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 			Client c = new Client(j);
-			c.seConnecter(saisieIP.getText(),Integer.parseInt(saisiePort.getText()));
-			//System.out.println("Connexion ip:"+saisieIP.getText()+" Port:"+saisiePort.getText());
-			((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", new LobbyControleur(this.owner, j, c));
-		
+			c.seConnecter(saisieIP.getText(), Integer.parseInt(saisiePort.getText()));
+			// System.out.println("Connexion ip:"+saisieIP.getText()+"
+			// Port:"+saisiePort.getText());
+			((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",
+					new LobbyControleur(this.owner, j, c));
+
 		}
 	}
-	
+
 }
