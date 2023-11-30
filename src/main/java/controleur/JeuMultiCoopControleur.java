@@ -68,7 +68,6 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
 
-		System.out.println("super");
 
 		this.client.lancerRequete("p");
 

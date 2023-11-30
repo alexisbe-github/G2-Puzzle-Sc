@@ -60,7 +60,6 @@ public class Client {
 		this.lancerRequete(joueur);
 		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 		setNoClient((int) ois.readObject());
-		System.out.println("NUMERO CLIENT : "+this.noClient);
 	}
 	
 }

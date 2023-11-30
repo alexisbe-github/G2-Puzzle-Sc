@@ -125,8 +125,6 @@ public class MenuControleur implements Initializable {
 		Joueur j2 = new Joueur("j2", img);
 		Client c2 = new Client(j2);
 		c2.seConnecter("localhost", 8080);
-		// System.out.println("Connexion ip:"+saisieIP.getText()+"
-		// Port:"+saisiePort.getText());
 		((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",
 				new LobbyControleur(this.owner, j2, c2));
 	}

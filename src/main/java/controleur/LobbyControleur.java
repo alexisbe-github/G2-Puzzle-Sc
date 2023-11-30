@@ -136,12 +136,11 @@ public class LobbyControleur implements Initializable {
 
 						List<Object> tab = (List<Object>) oisObj;
 
-						System.out.println("SIUUUU " + tab.get(0));
 
 						if (tab.get(0).equals("i") && !estHote) {
 
 							// 0: param, 1: joueurs, 2: image, 3: taille, 4: estCoop
-							System.out.println("BIEN RECU : " + tab.get(0));
+							
 							this.estCoop = (boolean) tab.get(4);
 							this.taille = (int) tab.get(3);
 							this.img = (byte[]) tab.get(2);

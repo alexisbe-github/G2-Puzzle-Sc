@@ -347,9 +347,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	}
 
 	private void animCase(EDeplacement dir) {
-
 		int xMultiplier = 0, yMultiplier = 0;
-
 		switch (dir) {
 		case HAUT:
 			yMultiplier = -1;
@@ -364,40 +362,21 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			xMultiplier = -1;
 			break;
 		}
-
-		System.out.println("avantif");
 		int nCoordX = partie.getPuzzle().getXCaseVide() - xMultiplier;
 		int nCoordY = partie.getPuzzle().getYCaseVide() - yMultiplier;
 
 		if (nCoordX < partie.getPuzzle().getTaille() && nCoordX >= 0 && nCoordY < partie.getPuzzle().getTaille()
 				&& nCoordY >= 0) {
-
-			System.out.println("coups " + partie.getPuzzle().getNbCoups());
 			Case c = partie.getPuzzle().getCase(nCoordX, nCoordY);
 			Label p = getLabelParIndex(c.getIndex());
 			int largeurCase = (int) p.getWidth();
 
 			TranslateTransition anim = new TranslateTransition(Duration.millis(200), p);
-
 			anim.setByX(xMultiplier * largeurCase);
 			anim.setByY(yMultiplier * largeurCase);
-			System.out.println("dpx " + xMultiplier * largeurCase);
-			System.out.println("dpy " + yMultiplier * largeurCase);
-			System.out.println("node: " + p.getId());
-
 			anim.play();
-
 			anim.setOnFinished((event) -> {
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						deplacerCase(dir);
-					}
-
-				});
-
+				deplacerCase(dir);
 			});
 
 		}

@@ -73,8 +73,6 @@ public class RecherchePartieControleur implements Initializable {
 			Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
 			Client c = new Client(j);
 			c.seConnecter(saisieIP.getText(), Integer.parseInt(saisiePort.getText()));
-			// System.out.println("Connexion ip:"+saisieIP.getText()+"
-			// Port:"+saisiePort.getText());
 			((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",
 					new LobbyControleur(this.owner, j, c));
 

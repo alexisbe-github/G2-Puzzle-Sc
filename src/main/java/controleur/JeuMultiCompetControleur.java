@@ -58,8 +58,6 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
 
-		System.out.println("super");
-
 		this.client.lancerRequete("p");
 
 		while (!this.puzzle.verifierGrille()) {

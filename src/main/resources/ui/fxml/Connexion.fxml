@@ -38,7 +38,7 @@
 					<children>
 						<Label text="Adresse IP :" prefWidth="100.0" />
 						<TextField fx:id="saisieIP" prefWidth="100.0"
-							promptText="192.168.1.X" />
+							promptText="adresse ip" />
 					</children>
 				</HBox>
 				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
@@ -46,7 +46,7 @@
 					<children>
 						<Label text="Port :" />
 						<TextField fx:id="saisiePort" prefHeight="25.0"
-							prefWidth="60.0" promptText="12345" text="8081" />
+							prefWidth="60.0" promptText="8080"/>
 					</children>
 				</HBox>
 			</children>

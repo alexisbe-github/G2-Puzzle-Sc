@@ -178,6 +178,7 @@ public class NouvellePartieControleur implements Initializable {
 
 	private void erreurLancement() {
 		System.out.println("erreurlancement");
+		//TODO
 	}
 
 	@FXML
