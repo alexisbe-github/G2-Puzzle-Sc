@@ -39,8 +39,8 @@ public class SQLUtils {
 			sql = "SELECT COUNT(DISTINCT pc.id_partie) AS nb_victoires FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = ? AND p.taille_grille = ?";
 		}
 		try {
-			try (Connection connexion = Connexion.getInstance().getConnection();
-					PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+			Connection connexion = Connexion.getInstance().getConnection();
+			try (PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
 							ResultSet.CONCUR_READ_ONLY)) {
 				if (taille_grille < 3) {
 					pstmt.setLong(1, joueur.getId());

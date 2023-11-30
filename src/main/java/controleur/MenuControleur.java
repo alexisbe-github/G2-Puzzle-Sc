@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
+import main.java.model.bdd.Connexion;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
 import main.java.model.partie.ContextePartie;
@@ -44,7 +45,7 @@ public class MenuControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		Connexion.getInstance(); // Appelle la connexion pour réduire le temps de chargement dans les menus
 	}
 
 	@FXML
