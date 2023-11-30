@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import main.java.model.bdd.SQLUtils;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 
@@ -92,7 +93,9 @@ public class StatistiquesControleur implements Initializable {
 				} else {
 					this.setAlignment(Pos.CENTER);
 					int nbVictoires = 0;
-					//nbVictoires = Utils.getNbVictoires(item);
+					DAOJoueur daoj = new DAOJoueur();
+					JoueurSQL j = daoj.trouver(item);
+					nbVictoires = SQLUtils.getNbVictoires(j,0);
 					setGraphic(new Label(""+nbVictoires));
 				}
 				this.setItem(item);
