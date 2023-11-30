@@ -16,7 +16,8 @@ import javax.imageio.ImageIO;
 import main.java.utils.Utils;
 
 public class Puzzle implements Serializable, Cloneable {
-
+	
+	public static final int TAILLE_MAX = 10;
 	public static final int TAILLE_MINI = 3;
 	private boolean undoUtilise, undoActive;
 	private Case[][] grille;
@@ -30,7 +31,7 @@ public class Puzzle implements Serializable, Cloneable {
 	 * @param taille du Puzzle (si 4 -> 4x4).
 	 */
 	public Puzzle(int taille) {
-		final int TAILLE = (taille > TAILLE_MINI ? taille : TAILLE_MINI);
+		final int TAILLE = Math.max(TAILLE_MINI, Math.min(TAILLE_MAX, taille));
 		this.grille = new Case[TAILLE][TAILLE];
 		this.initGrille();
 		this.nbCoups = 0;
