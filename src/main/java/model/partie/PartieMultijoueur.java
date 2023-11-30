@@ -60,6 +60,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		
 		if(partieLancee) System.out.println("SPSPSPSPSP");
 		oop.writeObject(output);
+		oop.flush();
 	}
 	
 	public void envoyerPuzzle(String param, Socket s, Joueur j) throws IOException {
@@ -75,6 +76,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		}
 		
 		oop.writeObject(output);
+		oop.flush();
 	}
 
 	public List<Joueur> getJoueurs() {
