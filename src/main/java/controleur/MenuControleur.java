@@ -48,6 +48,7 @@ public class MenuControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		Connexion.getInstance(); // Appelle la connexion pour réduire le temps de chargement dans les menus
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		owner.setResizable(false);
 	}
 
 	@FXML
