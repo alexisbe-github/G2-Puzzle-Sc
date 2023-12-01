@@ -103,32 +103,5 @@ public class MenuControleur implements Initializable {
 		((VueGenerale) this.owner).updateStyle();
 	}
 
-	@FXML
-	private void debug(ActionEvent event) throws IOException, InvalidPortException, ClassNotFoundException {
-		boolean estCoop = coopRadio.isSelected();
-		VueGenerale vg = new VueGenerale(this.owner);
-		byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
-		Joueur j = new Joueur("EmileTasVu???", img, 7440);
-		ContextePartie cp = new ContextePartie(j);
-		PartieMultijoueur p;
-		if (estCoop)
-			p = new PartieMultijoueurCooperative();
-		else
-			p = new PartieMultijoueurCompetitive();
-		cp.setStrategy(p);
 
-		Serveur s = new Serveur();
-		s.lancerServeur(p, 8080);
-		Client c = new Client(j);
-		c.seConnecter(NetworkUtils.getServeurIPV4(true), 8080);
-
-		LobbyControleur lc = new LobbyControleur(vg, p, j, estCoop, img, 3, c);
-		vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
-
-		Joueur j2 = new Joueur("ricotruuuc", img, 7439);
-		Client c2 = new Client(j2);
-		c2.seConnecter("localhost", 8080);
-		((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",
-				new LobbyControleur(this.owner, j2, c2));
-	}
 }

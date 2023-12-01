@@ -82,7 +82,7 @@ public class Puzzle implements Serializable, Cloneable {
 		else
 			// La complexité des taquins de taille 3 est souvent trop faibles, on augmente
 			// donc significativement le mélange.
-			mult = (int) Math.pow(this.grille.length, 1);//TODO
+			mult = (int) Math.pow(this.grille.length, 5);
 		
 		do {
 			for (int i = 0; i < mult; i++) {
