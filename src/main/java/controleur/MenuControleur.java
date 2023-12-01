@@ -42,7 +42,6 @@ public class MenuControleur implements Initializable {
 
 	public MenuControleur(Stage stage) {
 		this.owner = stage;
-		this.owner.setResizable(false);
 	}
 
 	@Override
