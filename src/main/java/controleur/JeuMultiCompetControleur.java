@@ -55,6 +55,12 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 
 	}
 	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize(location,resources);
+		this.aVotreTour.setVisible(false);
+		this.aVotreTour.setManaged(false);
+	}
 	
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
