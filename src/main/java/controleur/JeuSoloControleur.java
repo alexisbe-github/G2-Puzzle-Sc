@@ -133,8 +133,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	protected void updateJeu() {
 		this.updateImages(); // BUG ANIM VIENT D'ICI (si tu mets le updateImages dans le "Initialize" et que
 								// commentes celui la ça """marche""")
-		if (this.partie.getPuzzle().verifierGrille())
+		if (this.partie.getPuzzle().verifierGrille()) {
 			this.updateVictoire();
+			boutonIA.setDisable(true);
+			boutonPause.setDisable(true);
+			boutonUndo.setDisable(true);
+		}
 	}
 
 	@Override
