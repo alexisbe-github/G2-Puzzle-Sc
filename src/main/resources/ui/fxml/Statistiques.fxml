@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.RadioButton?>
 
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity"
@@ -29,17 +30,10 @@
 			spacing="20.0" VBox.vgrow="NEVER">
 			<children>
 				<Label text="Filtrer :" />
-				<Button mnemonicParsing="false" text="Victoires" />
-				<Button mnemonicParsing="false" text="Temps" />
-				<TextField maxWidth="60.0" promptText="Taille" />
-			</children>
-		</HBox>
-		<HBox alignment="CENTER" prefHeight="41.0" prefWidth="418.0"
-			spacing="20.0">
-			<children>
-				<Label text="Trier par :" />
-				<Button mnemonicParsing="false" text="Nom" />
-				<Button mnemonicParsing="false" text="Score" />
+				<RadioButton fx:id="victoiresRadio" mnemonicParsing="false" text="Victoires" />
+				<RadioButton fx:id="tempsRadio" mnemonicParsing="false" text="Temps" />
+				<TextField fx:id="inputTaille" maxWidth="60.0" promptText="Taille" />
+				<Button onAction="#updateFiltres" text="OK"/>
 			</children>
 		</HBox>
 		<TableView fx:id="tableau" prefHeight="200.0"
@@ -47,7 +41,6 @@
 			<columns>
 				<TableColumn fx:id="colonnePhoto" prefWidth="75.0"
 					text="Photo">
-					<!-- <cellValueFactory> <PropertyValueFactory property="image"/> </cellValueFactory> -->
 				</TableColumn>
 				<TableColumn fx:id="colonnePseudo" prefWidth="75.0"
 					text="Pseudo" />
