@@ -154,16 +154,16 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 				// dpAnim(event.getCode());
 				try {
 					switch (event.getCode()) {
-					case UP:
+					case Z,UP:
 						client.lancerRequete("h");
 						break;
-					case DOWN:
+					case S,DOWN:
 						client.lancerRequete("b");
 						break;
-					case LEFT:
+					case Q,LEFT:
 						client.lancerRequete("g");
 						break;
-					case RIGHT:
+					case D,RIGHT:
 						client.lancerRequete("d");
 						break;
 					default:

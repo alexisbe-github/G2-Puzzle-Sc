@@ -143,8 +143,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	protected void updateJeu() {
 		this.updateImages(); // BUG ANIM VIENT D'ICI (si tu mets le updateImages dans le "Initialize" et que
 								// commentes celui la ça """marche""")
-		if (this.partie.getPuzzle().verifierGrille())
+		if (this.partie.getPuzzle().verifierGrille()) {
 			this.updateVictoire();
+			boutonIA.setDisable(true);
+			boutonPause.setDisable(true);
+			boutonUndo.setDisable(true);
+		}
 	}
 
 	@Override
@@ -189,16 +193,16 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			public void handle(KeyEvent event) {
 				if (!estEnPause) {
 					switch (event.getCode()) {
-					case UP:
+					case Z,UP:
 						animCase(EDeplacement.HAUT);
 						break;
-					case DOWN:
+					case S,DOWN:
 						animCase(EDeplacement.BAS);
 						break;
-					case LEFT:
+					case Q,LEFT:
 						animCase(EDeplacement.GAUCHE);
 						break;
-					case RIGHT:
+					case D,RIGHT:
 						animCase(EDeplacement.DROITE);
 						break;
 					default:
@@ -230,6 +234,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 						});
 						Thread.sleep(300);
 					}
+					boutonPause.setDisable(true);
+					boutonIA.setDisable(true);
 					return null;
 				}
 			};
@@ -239,7 +245,9 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			threadIA.start();
 			iaLance = true;
 			boutonUndo.setDisable(true);
+			boutonPause.setDisable(true);
 		} else {
+			boutonPause.setDisable(false);
 			boutonIA.setText("Lancer l'IA");
 			threadIA.interrupt();
 			if (partie.getPuzzle().undoActive()) {
