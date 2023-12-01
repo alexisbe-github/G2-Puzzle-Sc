@@ -1,9 +1,13 @@
 package test.java.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -350,5 +354,66 @@ public class TestPuzzle {
 		}
 	}
 	
+	@Test
+	public void testListeDeplacementsPossibles() {
+		List<EDeplacement> res = new ArrayList<>();
+		Case[][] grilleTest = new Case[TAILLE][TAILLE];
+		int compteur = 0;
+		for (int i = 0; i < TAILLE; i++) {
+			for (int j = 0; j < TAILLE; j++) {
+				if (!(i == TAILLE - 1 && j == TAILLE - 1)) {
+					grilleTest[j][i] = new Case(compteur);
+				}
+				compteur++;
+			}
+		}
+
+		grilleTest[TAILLE - 1][TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
+		puzzle.setGrille(grilleTest);
+		
+		res = puzzle.listeDeplacementsPossibles();
+
+		assertTrue(res.contains(EDeplacement.BAS));
+		assertTrue(res.contains(EDeplacement.DROITE));
+	}
+	
+	@Test
+	public void testInverseDeplacement() {
+		EDeplacement dpH = EDeplacement.HAUT;
+		EDeplacement dpB = EDeplacement.BAS;
+		EDeplacement dpG = EDeplacement.GAUCHE;
+		EDeplacement dpD = EDeplacement.DROITE;
+		
+		assertEquals(EDeplacement.HAUT, puzzle.inverseDeplacement(dpB));
+		assertEquals(EDeplacement.BAS, puzzle.inverseDeplacement(dpH));
+		assertEquals(EDeplacement.GAUCHE,puzzle.inverseDeplacement(dpD));
+		assertEquals(EDeplacement.DROITE, puzzle.inverseDeplacement(dpG));
+	}
+	
+	@Test
+	public void testUndo() throws CloneNotSupportedException {
+
+		
+		Case[][] grilleTest = new Case[TAILLE][TAILLE];
+		int compteur = 0;
+		for (int i = 0; i < TAILLE; i++) {
+			for (int j = 0; j < TAILLE; j++) {
+				if (!(i == TAILLE - 1 && j == TAILLE - 1)) {
+					grilleTest[j][i] = new Case(compteur);
+				}
+				compteur++;
+			}
+		}
+
+		grilleTest[TAILLE - 1][TAILLE - 1] = new Case(Case.INDEX_CASE_VIDE);
+		Puzzle p = new Puzzle(3);
+		p.setGrille(grilleTest);
+		Puzzle pClone = (Puzzle)p.clone();
+		
+		pClone.deplacerCase(EDeplacement.DROITE);
+		pClone.undo();
+		
+		assertEquals(p, pClone);
+	}
 	
 }
