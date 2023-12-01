@@ -63,6 +63,8 @@
 						<exclude>**/utils/*</exclude>
 						<exclude>**/vue/*</exclude>
 						<exclude>**/PartieMultijoueur.*</exclude>
+						<exclude>**/Noeud.*</exclude>
+						<exclude>**/IAAStar.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
