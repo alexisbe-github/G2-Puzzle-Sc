@@ -24,7 +24,7 @@ public class TestPartieSolo {
 
 	@BeforeAll
 	public static void setUp() {
-		joueur = new Joueur("Joueur", null);
+		joueur = new Joueur("Joueur", null, 0);
 		partie = new PartieSolo(joueur);
 		grille = new Case[][] { { new Case(1), new Case(2), new Case(3) }, { new Case(4), new Case(-1), new Case(5) },
 				{ new Case(6), new Case(7), new Case(8) } };

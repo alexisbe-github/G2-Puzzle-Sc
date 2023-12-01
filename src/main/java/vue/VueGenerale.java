@@ -29,6 +29,7 @@ public class VueGenerale extends Stage {
 		this.setScene(scene);
 		this.setTitle("Taquin - " + titre);
 		this.updateStyle();
+		this.setResizable(false);
 		this.show();
 	}
 	

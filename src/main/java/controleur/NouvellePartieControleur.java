@@ -203,7 +203,7 @@ public class NouvellePartieControleur implements Initializable {
 		if (joueurChoisi != null) {
 			try {
 				byte[] img = HostedImage.getImageBytes(joueurChoisi.getUrlpp());
-				Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
+				Joueur j = new Joueur(joueurChoisi.getPseudo(), img, joueurChoisi.getId());
 				int taille = Integer.parseInt(this.saisieTaille.getText());
 				if (soloRadio.isSelected()) {
 					PartieSolo p = new PartieSolo(j);

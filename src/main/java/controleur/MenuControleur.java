@@ -109,7 +109,7 @@ public class MenuControleur implements Initializable {
 		boolean estCoop = coopRadio.isSelected();
 		VueGenerale vg = new VueGenerale(this.owner);
 		byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
-		Joueur j = new Joueur("j1", img);
+		Joueur j = new Joueur("EmileTasVu???", img, 7440);
 		ContextePartie cp = new ContextePartie(j);
 		PartieMultijoueur p;
 		if (estCoop)
@@ -126,7 +126,7 @@ public class MenuControleur implements Initializable {
 		LobbyControleur lc = new LobbyControleur(vg, p, j, estCoop, img, 3, c);
 		vg.changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml", lc);
 
-		Joueur j2 = new Joueur("j2", img);
+		Joueur j2 = new Joueur("ricotruuuc", img, 7439);
 		Client c2 = new Client(j2);
 		c2.seConnecter("localhost", 8080);
 		((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",

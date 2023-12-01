@@ -11,15 +11,20 @@ public class Joueur implements Serializable {
 
 	private String nom;
 	private byte[] image;
+	private long id;
 
 	/**
 	 * 
 	 * @param nom   Nom du joueur
 	 * @param image Image au format binaire correspondant à l'avatar du joueur
 	 */
-	public Joueur(String nom, byte[] image) {
+	public Joueur(String nom, byte[] image, long id) {
 		this.nom = nom;
 		this.image = image;
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 
 	public String getNom() {

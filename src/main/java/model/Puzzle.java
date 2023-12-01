@@ -76,8 +76,16 @@ public class Puzzle implements Serializable, Cloneable {
 	 */
 	public void melanger() {
 		Random rd = new Random();
+		int mult;
+		if (this.grille.length != 3)
+			mult = (int) Math.pow(this.grille.length, 4);
+		else
+			// La complexité des taquins de taille 3 est souvent trop faibles, on augmente
+			// donc significativement le mélange.
+			mult = (int) Math.pow(this.grille.length, 1);//TODO
+		
 		do {
-			for (int i = 0; i < Math.pow(this.grille.length, 4); i++) {
+			for (int i = 0; i < mult; i++) {
 				int x = Utils.getRandomNumberInRange(0, 3);
 				switch (x) {
 				case 0:

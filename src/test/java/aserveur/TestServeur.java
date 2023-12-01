@@ -31,7 +31,7 @@ public class TestServeur {
 
 	@BeforeAll
 	public static void setUp() {
-		joueur = new Joueur("Joueur hôte", null);
+		joueur = new Joueur("Joueur hôte", null, 0);
 		try {
 			client = new Client(joueur);
 		} catch (IOException e) {

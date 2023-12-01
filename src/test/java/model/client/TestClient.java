@@ -33,9 +33,9 @@ public class TestClient {
 	@BeforeAll
 	public static void setUp() throws InvalidPortException {
 		try {
-			joueur1 = new Joueur("Joueur hôte", null);
+			joueur1 = new Joueur("Joueur hôte", null, 0);
 			client1 = new Client(joueur1);
-			joueur2 = new Joueur("Joueur 2", null);
+			joueur2 = new Joueur("Joueur 2", null, 0);
 			client2 = new Client(joueur2);
 		} catch (IOException e) {
 
