@@ -54,6 +54,11 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 		this.joueurs = joueurs;
 
 	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+	}
 
 	@Override
 	protected void readStream() throws IOException, InterruptedException {

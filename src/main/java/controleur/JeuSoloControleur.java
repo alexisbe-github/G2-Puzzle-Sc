@@ -69,6 +69,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
 		boutonPause.setFocusTraversable(false);
 		boutonIA.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);

@@ -51,6 +51,8 @@ public class StatistiquesControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
 		this.radioGroupe = new ToggleGroup();
 		tempsRadio.setToggleGroup(radioGroupe);
 		victoiresRadio.setToggleGroup(radioGroupe);

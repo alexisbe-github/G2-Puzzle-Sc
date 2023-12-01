@@ -75,6 +75,8 @@ public class LobbyControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
 		lancerPartie.setManaged(estHote);
 		this.updateInfos();
 		this.lancerThread();
