@@ -311,16 +311,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	/**
 	 * 
-	 * Renvoi le label correspondant à une case à l'aide de l'index de la case.
+	 * Renvoie le label correspondant à une case à l'aide de l'index de la case.
 	 * 
 	 * @param index : index de la case
 	 * @return l : label correspondant à la case.
 	 */
 	private Label getLabelParIndex(int index) {
-//		for (Label l : cases) {
-//			if (l.getId().equals("case" + index))
-//				return l;
-//		}
 
 		for (int i = 0; i < tabCases.length; i++) {
 			for (int j = 0; j < tabCases.length; j++) {

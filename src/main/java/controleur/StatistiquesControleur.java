@@ -104,7 +104,7 @@ public class StatistiquesControleur implements Initializable {
 	}
 
 	public void makeLastColumn(boolean victory, int taille) {
-		colonneVictoires.setText(victory ? "Victoires" : "Meilleur Temps");
+		colonneVictoires.setText(victory ? "Victoires" : "Meilleur temps");
 		colonneVictoires.setCellFactory(param -> new TableCell<JoueurSQL, Long>() {
 			@Override
 			protected void updateItem(Long item, boolean empty) {
@@ -121,7 +121,7 @@ public class StatistiquesControleur implements Initializable {
 						res = SQLUtils.getNbVictoires(j, taille) + "";
 					} else {
 						int d = SQLUtils.getTempsPartie(j, taille);
-						res = d > 0 ? d + "s" : "non défini";
+						res = d > 0 ? d + " s" : "Non défini";
 					}
 					setGraphic(new Label(res));
 				}
