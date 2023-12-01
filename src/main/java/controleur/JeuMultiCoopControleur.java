@@ -26,8 +26,7 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	boolean flagThreadEnd = false;
 	private int numJoueur;
 
-	@FXML
-	private Label aVotreTour;
+	
 
 	/**
 	 * 
@@ -45,11 +44,6 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 		this.numJoueurCourant = numJoueurCourant;
 		this.puzzle = puzzle;
 		this.joueurs = joueurs;
-	}
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
 	}
 
 	@Override

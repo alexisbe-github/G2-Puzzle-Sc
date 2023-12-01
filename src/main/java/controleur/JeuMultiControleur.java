@@ -47,6 +47,9 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 	protected Client client;
 
 	@FXML
+	protected Label aVotreTour;
+	
+	@FXML
 	protected VBox boxJoueurs;
 
 	@Override

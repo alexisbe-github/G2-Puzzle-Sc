@@ -14,6 +14,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +37,9 @@ public class CreerProfilControleur implements Initializable {
 
 	@FXML
 	private TextField saisiePseudo;
+	
+	@FXML
+	private Button creerBouton;
 
 	public CreerProfilControleur(Stage stage) throws IOException {
 		this.owner = stage;
@@ -50,9 +54,18 @@ public class CreerProfilControleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		this.creerBouton.setDisable(true);
 		
 		this.updateImage();
 		this.addImageAction();
+		
+		saisiePseudo.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if(newValue.equals("")) {
+		    	creerBouton.setDisable(true);
+		    }else {
+		    	creerBouton.setDisable(false);
+		    }
+		});
 	}
 
 	private void addImageAction() {

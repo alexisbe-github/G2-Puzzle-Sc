@@ -37,7 +37,7 @@ import main.java.model.joueur.Joueur;
 import main.java.vue.VueJeuMultiCoop;
 
 public class JeuMultiCompetControleur extends JeuMultiControleur implements Initializable {
-
+	
 	/**
 	 * 
 	 * @param stage  : fenêtre dans laquelle la scene est affichée
@@ -55,11 +55,7 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 
 	}
 	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
-	}
-
+	
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
 
