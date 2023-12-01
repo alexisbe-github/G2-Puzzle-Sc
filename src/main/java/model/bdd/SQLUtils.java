@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import main.java.model.Puzzle;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 
 /**
@@ -22,7 +23,7 @@ public class SQLUtils {
 	 * 
 	 * @param joueur        Le joueur dont il faut renvoyer le nombre de victoires
 	 * @param taille_grille La taille de la grille pour laquelle la recherche doit
-	 *                      s'appliquer. Pour ne pas tenir compte de ce paramètre,
+S	 *                      s'appliquer. Pour ne pas tenir compte de ce paramètre,
 	 *                      entrer une taille strictement inférieure à
 	 *                      <code>3</code>.
 	 * @return Le nombre de victoires du joueur. <br>
@@ -61,6 +62,41 @@ public class SQLUtils {
 			e.printStackTrace();
 		} finally {
 			return nb_victoires;
+		}
+	}
+	
+	
+	public static int getTempsPartie(JoueurSQL joueur, int taille_grille) {
+		String sql;
+		int duree = 0;
+		if (taille_grille < Puzzle.TAILLE_MINI) {
+			sql = "SELECT MIN(duree_secondes) AS duree FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = ?";
+		} else {
+			sql = "SELECT MIN(duree_secondes) AS duree FROM partie_competitive AS pc INNER JOIN partie AS p ON pc.id_partie = p.id WHERE pc.id_vainqueur = ? AND p.taille_grille = ?";
+		}
+		try {
+			Connection connexion = Connexion.getInstance().getConnection();
+			try (PreparedStatement pstmt = connexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+							ResultSet.CONCUR_READ_ONLY)) {
+				if (taille_grille < Puzzle.TAILLE_MINI) {
+					pstmt.setLong(1, joueur.getId());
+				} else {
+					pstmt.setLong(1, joueur.getId());
+					pstmt.setInt(2, taille_grille);
+				}
+				pstmt.execute();
+				try (ResultSet rs = pstmt.getResultSet()) {
+					if (rs.next()) {
+						duree = rs.getInt("duree");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			return duree;
 		}
 	}
 }

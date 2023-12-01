@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
@@ -42,6 +43,8 @@ public class RecherchePartieControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
 		try {
 			this.updateListeProfils();
 		} catch (IOException e) {

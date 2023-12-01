@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -55,6 +56,8 @@ public class NouvellePartieControleur implements Initializable {
 	private RadioButton multiCompetRadio;
 	@FXML
 	private TextField saisiePort;
+	@FXML
+	private Button lancerBouton;
 
 	@FXML
 	private MenuButton menuProfils;
@@ -78,6 +81,8 @@ public class NouvellePartieControleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+
 		this.menuProfils.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handleMenuClick(event));
 
 		this.radioGroupe = new ToggleGroup();
@@ -92,20 +97,21 @@ public class NouvellePartieControleur implements Initializable {
 
 		this.soloRadio.setToggleGroup(radioGroupe);
 		this.soloRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
+		
+		this.saisiePort.textProperty().addListener((observable, oldValue, newValue) -> {
+		    this.updateEtatBoutonLancer();
+		});
+		this.saisieTaille.textProperty().addListener((observable, oldValue, newValue) -> {
+			this.updateEtatBoutonLancer();
+		});
 
 		this.updateImagePartie();
-
+		this.updateEtatBoutonLancer();
 	}
 
 	private void updateInfosJoueur() throws IOException {
 		imageJoueur.setImage(HostedImage.getImage(joueurChoisi.getUrlpp()));
 		pseudoJoueur.setText(this.joueurChoisi.getPseudo());
-	}
-
-	private void updateAll() throws IOException {
-		this.updateImagePartie();
-		this.updateInfosJoueur();
-		this.updateJoueurs();
 	}
 
 	private void updateJoueurs() throws IOException {
@@ -120,6 +126,7 @@ public class NouvellePartieControleur implements Initializable {
 					try {
 						this.setJoueurChoisi(jactuel);
 						this.menuProfils.setText(jactuel.getPseudo());
+						this.updateEtatBoutonLancer();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -154,7 +161,7 @@ public class NouvellePartieControleur implements Initializable {
 	@FXML
 	private void creerProfilBouton(ActionEvent event) throws IOException {
 		VueGenerale vm = new VueGenerale(this.owner);
-		vm.changerVue("Création du profil", "src/main/resources/ui/fxml/CreationProfil.fxml",
+		vm.changerVue("Creation profil", "src/main/resources/ui/fxml/CreationProfil.fxml",
 				new CreerProfilControleur(vm));
 	}
 
@@ -174,11 +181,22 @@ public class NouvellePartieControleur implements Initializable {
 			saisiePort.setManaged(false);
 			saisiePort.setVisible(false);
 		}
+		this.updateEtatBoutonLancer();
+	}
+
+	private void updateEtatBoutonLancer() {
+		if (this.radioGroupe.getSelectedToggle() == null || this.saisieTaille.getText().equals("")
+				|| this.joueurChoisi == null
+				|| (saisiePort.isVisible() && saisiePort.getText().equals(""))) {
+			this.lancerBouton.setDisable(true);
+		} else {
+			this.lancerBouton.setDisable(false);
+		}
 	}
 
 	private void erreurLancement() {
 		System.out.println("erreurlancement");
-		//TODO
+		// TODO
 	}
 
 	@FXML

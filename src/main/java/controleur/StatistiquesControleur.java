@@ -10,9 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +27,8 @@ import main.java.model.bdd.dao.beans.JoueurSQL;
 public class StatistiquesControleur implements Initializable {
 
 	private Stage owner;
+	private ObservableList<JoueurSQL> joueursData;
+	private ToggleGroup radioGroupe;
 
 	@FXML
 	private TableView<JoueurSQL> tableau;
@@ -33,6 +38,12 @@ public class StatistiquesControleur implements Initializable {
 	private TableColumn<JoueurSQL, String> colonnePseudo;
 	@FXML
 	private TableColumn<JoueurSQL, Long> colonneVictoires;
+	@FXML
+	private RadioButton victoiresRadio;
+	@FXML
+	private RadioButton tempsRadio;
+	@FXML
+	private TextField inputTaille;
 
 	public StatistiquesControleur(Stage stage) {
 		this.owner = stage;
@@ -40,10 +51,15 @@ public class StatistiquesControleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
+		this.radioGroupe = new ToggleGroup();
+		tempsRadio.setToggleGroup(radioGroupe);
+		victoiresRadio.setToggleGroup(radioGroupe);
 		
 		DAOJoueur daoj = new DAOJoueur();
 		List<JoueurSQL> jsql = daoj.trouverTout();
-		ObservableList<JoueurSQL> joueursData = FXCollections.observableArrayList(jsql);
+		joueursData = FXCollections.observableArrayList(jsql);
 
 		colonnePseudo.setCellValueFactory(new PropertyValueFactory<JoueurSQL, String>("pseudo"));
 		colonnePhoto.setCellValueFactory(new PropertyValueFactory<JoueurSQL, String>("urlpp"));
@@ -63,9 +79,10 @@ public class StatistiquesControleur implements Initializable {
 				this.setItem(item);
 			}
 		});
-		
+
 		colonnePhoto.setCellFactory(param -> new TableCell<JoueurSQL, String>() {
 			private ImageView imageView = new ImageView();
+
 			@Override
 			protected void updateItem(String item, boolean empty) {
 				super.updateItem(item, empty);
@@ -82,7 +99,12 @@ public class StatistiquesControleur implements Initializable {
 				this.setItem(item);
 			}
 		});
-		
+
+		this.makeLastColumn(false, 0);
+	}
+
+	public void makeLastColumn(boolean victory, int taille) {
+		colonneVictoires.setText(victory ? "Victoires" : "Meilleur temps");
 		colonneVictoires.setCellFactory(param -> new TableCell<JoueurSQL, Long>() {
 			@Override
 			protected void updateItem(Long item, boolean empty) {
@@ -92,18 +114,31 @@ public class StatistiquesControleur implements Initializable {
 					setGraphic(null);
 				} else {
 					this.setAlignment(Pos.CENTER);
-					int nbVictoires = 0;
+					String res;
 					DAOJoueur daoj = new DAOJoueur();
 					JoueurSQL j = daoj.trouver(item);
-					nbVictoires = SQLUtils.getNbVictoires(j,0);
-					setGraphic(new Label(""+nbVictoires));
+					if (victory) {
+						res = SQLUtils.getNbVictoires(j, taille) + "";
+					} else {
+						int d = SQLUtils.getTempsPartie(j, taille);
+						res = d > 0 ? d + " s" : "Non défini";
+					}
+					setGraphic(new Label(res));
 				}
 				this.setItem(item);
 			}
 		});
-
 		this.tableau.setItems(joueursData);
-
+	}
+	
+	@FXML
+	private void updateFiltres() {
+		try {
+			this.makeLastColumn(this.victoiresRadio.isSelected(), Integer.parseInt(this.inputTaille.getText()));
+		}catch(NumberFormatException e) {
+			this.makeLastColumn(this.victoiresRadio.isSelected(), 0);
+		}
+		
 	}
 
 }

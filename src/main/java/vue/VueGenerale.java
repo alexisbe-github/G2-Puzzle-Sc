@@ -15,7 +15,7 @@ import main.java.controleur.NouvellePartieControleur;
 
 public class VueGenerale extends Stage {
 
-	public static String theme = "electrique";
+	public static String theme = "espace";
 
 	public VueGenerale(Stage primary) throws IOException {
 		this.initModality(Modality.NONE);

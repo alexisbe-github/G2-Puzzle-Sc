@@ -2,13 +2,16 @@ package main.java.controleur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -23,8 +26,7 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	boolean flagThreadEnd = false;
 	private int numJoueur;
 
-	@FXML
-	private Label aVotreTour;
+	
 
 	/**
 	 * 

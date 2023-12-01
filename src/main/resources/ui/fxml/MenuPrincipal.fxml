@@ -95,7 +95,6 @@
 	                 <RadioButton fx:id="coopRadio" mnemonicParsing="false"
 							text="coop" />
                   </HBox>
-                  
                </children>
                <opaqueInsets>
                   <Insets />

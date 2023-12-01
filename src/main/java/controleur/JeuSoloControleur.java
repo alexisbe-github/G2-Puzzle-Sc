@@ -3,6 +3,7 @@ package main.java.controleur;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,6 +32,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
@@ -69,6 +71,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+
 		boutonPause.setFocusTraversable(false);
 		boutonIA.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
@@ -307,16 +311,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	/**
 	 * 
-	 * Renvoi le label correspondant à une case à l'aide de l'index de la case.
+	 * Renvoie le label correspondant à une case à l'aide de l'index de la case.
 	 * 
 	 * @param index : index de la case
 	 * @return l : label correspondant à la case.
 	 */
 	private Label getLabelParIndex(int index) {
-//		for (Label l : cases) {
-//			if (l.getId().equals("case" + index))
-//				return l;
-//		}
 
 		for (int i = 0; i < tabCases.length; i++) {
 			for (int j = 0; j < tabCases.length; j++) {
@@ -333,13 +333,15 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	 * @param e L'événement
 	 */
 	private void handleExit(Event e) {
-//		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
-//			return;
-//		}
-		// TODO Ne pas sérialiser si la partie est terminée
+		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
+			return;
+		}
 		if (!this.partie.getPuzzle().verifierGrille()) {
 			this.partie.getTimer().stopChrono();
 			String dossier = "src/main/java/model/serialisation/objets/";
+			File cheminDossier = new File(dossier);
+			if (!cheminDossier.exists())
+				cheminDossier.mkdirs();
 			String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
 			String chemin = dossier + nom;
 			Serialisation.serialiserObjet(this.partie, chemin);

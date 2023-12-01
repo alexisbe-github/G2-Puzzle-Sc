@@ -88,7 +88,7 @@
 		<HBox alignment="CENTER" prefHeight="100.0" prefWidth="597.0" spacing="20.0">
 			<children>
             <Button mnemonicParsing="false" onAction="#retourBouton" text="Retour" />
-				<Button mnemonicParsing="false" onAction="#lancerPartie" text="Lancer la partie">
+				<Button mnemonicParsing="false" onAction="#lancerPartie" text="Lancer la partie" fx:id="lancerBouton">
 					<font>
 						<Font size="20.0" />
 					</font>

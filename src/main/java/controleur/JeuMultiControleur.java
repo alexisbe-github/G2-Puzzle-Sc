@@ -47,11 +47,16 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 	protected Client client;
 
 	@FXML
+	protected Label aVotreTour;
+	
+	@FXML
 	protected VBox boxJoueurs;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
+		
 		this.updateImages();
 		this.initJoueur();
 		this.updateJoueurs();
