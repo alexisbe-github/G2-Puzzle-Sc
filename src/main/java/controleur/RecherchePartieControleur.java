@@ -21,6 +21,7 @@ import main.java.model.bdd.dao.DAOJoueur;
 import main.java.model.bdd.dao.beans.JoueurSQL;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
+import main.java.utils.HostedImage;
 import main.java.vue.VueGenerale;
 
 public class RecherchePartieControleur implements Initializable {
@@ -72,8 +73,8 @@ public class RecherchePartieControleur implements Initializable {
 	@FXML
 	private void connexion(ActionEvent event) throws IOException, NumberFormatException, ClassNotFoundException {
 		if (joueurChoisi != null) {
-			byte[] img = Files.readAllBytes(Paths.get("src/main/resources/images/defaulticon.png"));
-			Joueur j = new Joueur(joueurChoisi.getPseudo(), img);
+			Joueur j = new Joueur(joueurChoisi.getPseudo(), HostedImage.getImageBytes(joueurChoisi.getUrlpp()),
+					joueurChoisi.getId());
 			Client c = new Client(j);
 			c.seConnecter(saisieIP.getText(), Integer.parseInt(saisiePort.getText()));
 			((VueGenerale) this.owner).changerVue("Lobby", "src/main/resources/ui/fxml/Lobby.fxml",

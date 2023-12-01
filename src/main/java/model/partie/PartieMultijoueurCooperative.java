@@ -1,16 +1,15 @@
 package main.java.model.partie;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import main.java.model.EDeplacement;
 import main.java.model.Puzzle;
+import main.java.model.bdd.dao.DAOPartie;
+import main.java.model.bdd.dao.DAOPartieCooperative;
+import main.java.model.bdd.dao.beans.PartieCooperativeSQL;
+import main.java.model.bdd.dao.beans.PartieSQL;
 import main.java.model.joueur.Joueur;
 
 public class PartieMultijoueurCooperative extends PartieMultijoueur{ 
@@ -33,12 +32,27 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	}
 	
 	@Override
-	protected List<Object> getOutputLancement(Joueur j) throws IOException {
+	protected List<Object> getOutputPuzzle(Joueur j){
 		List<Object> output = new ArrayList<Object>();
-		output.add("s");
-		output.add(this.joueurs);
 		output.add(this.indexJoueurCourant);
 		output.add(this.puzzleCommun);
+		if(this.puzzleCommun.verifierGrille()) {
+			if(this.id==-1) {
+				DAOPartie daop = new DAOPartie();
+				PartieSQL psql = new PartieSQL();
+				psql.setNbCoups(puzzleCommun.getNbCoups());
+				psql.setTailleGrille(this.taille);
+				psql = daop.creer(psql);
+				this.id=psql.getId();
+			}
+
+			DAOPartieCooperative daopc = new DAOPartieCooperative();
+			PartieCooperativeSQL pcsql = new PartieCooperativeSQL();
+			pcsql.setIdJoueur(j.getId());
+			pcsql.setNbCoups(puzzleCommun.getNbCoups());
+			pcsql.setIdPartie(this.id);
+			daopc.creer(pcsql);
+		}
 		return output;
 	}
 

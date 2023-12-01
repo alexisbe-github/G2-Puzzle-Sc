@@ -89,7 +89,6 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 			});
 			Thread.sleep(500);
 		}
-
 	}
 
 	@Override

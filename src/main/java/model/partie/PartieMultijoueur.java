@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import main.java.model.EDeplacement;
 import main.java.model.joueur.Joueur;
@@ -17,6 +16,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 	protected byte[] image;
 	protected int taille;
 	protected boolean partieLancee = false;
+	protected long id = -1;
 
 	public abstract void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException;
 
@@ -63,8 +63,11 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 			this.partieLancee = true;
 		}
 		
-		if(partieLancee)
-			output = getOutputLancement(j);
+		if(partieLancee) {
+			output = getOutputPuzzle(j);
+			output.add(0, "s");
+			output.add(1, this.joueurs);
+		}
 		
 		oop.writeObject(output);
 		oop.flush();
@@ -76,8 +79,8 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 	 * @return la liste d'objets à envoyer
 	 * @throws IOException
 	 */
-	protected abstract List<Object> getOutputLancement(Joueur j) throws IOException;
-
+	protected abstract List<Object> getOutputPuzzle(Joueur j);
+	
 	/**
 	 * 
 	 * @param param : parametre de la requete.
@@ -90,12 +93,7 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
 
 		output.add(param);
-		if (this instanceof PartieMultijoueurCooperative) {
-			output.add(((PartieMultijoueurCooperative) this).getIndexJoueurCourant());
-			output.add(((PartieMultijoueurCooperative) this).getPuzzleCommun());
-		} else if (this instanceof PartieMultijoueurCompetitive) {
-			output.add(((PartieMultijoueurCompetitive) this).getPuzzleDuJoueur(j));
-		}
+		output.addAll(getOutputPuzzle(j));
 
 		oop.writeObject(output);
 		oop.flush();

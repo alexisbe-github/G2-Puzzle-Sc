@@ -38,9 +38,9 @@ public class TestPartieMultijoueurCompetitive {
 
 	@BeforeAll
 	public static void setUp() throws InvalidPortException, IOException, InterruptedException, ClassNotFoundException {
-		joueur1 = new Joueur("Joueur hôte", null);
+		joueur1 = new Joueur("Joueur hôte", null, 0);
 		client1 = new Client(joueur1);
-		joueur2 = new Joueur("Joueur 2", null);
+		joueur2 = new Joueur("Joueur 2", null, 0);
 		client2 = new Client(joueur2);
 		partieMultiCompetitive = new PartieMultijoueurCompetitive();
 		if(TestServeur.serveur == null) {
