@@ -14,7 +14,7 @@ import main.java.model.bdd.dao.beans.JoueurSQL;
 public class SQLUtils {
 
 	/**
-	 * Renvoie le nombre de victoires d'un joueur passé en paramètre. <br>
+	 * Renvoit le nombre de victoires d'un joueur passé en paramètre. <br>
 	 * Il est possible de spécifier une taille de grille en particulier, ou
 	 * d'obtenir le résultat en général. <br>
 	 * Pour ne pas tenir compte de la taille de la grille, veuillez entrer n'importe
@@ -23,7 +23,7 @@ public class SQLUtils {
 	 * 
 	 * @param joueur        Le joueur dont il faut renvoyer le nombre de victoires
 	 * @param taille_grille La taille de la grille pour laquelle la recherche doit
-	 *                      s'appliquer. Pour ne pas tenir compte de ce paramètre,
+S	 *                      s'appliquer. Pour ne pas tenir compte de ce paramètre,
 	 *                      entrer une taille strictement inférieure à
 	 *                      <code>3</code>.
 	 * @return Le nombre de victoires du joueur. <br>
