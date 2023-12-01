@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import main.java.utils.Utils;
 
 public class Puzzle implements Serializable, Cloneable {
-	
+
 	public static final int TAILLE_MAX = 10;
 	public static final int TAILLE_MINI = 3;
 	private boolean undoUtilise, undoActive;
@@ -283,10 +283,34 @@ public class Puzzle implements Serializable, Cloneable {
 		return res;
 	}
 
+	public String toStringConsole() {
+		String res = "";
+		String line = "ABCDEFGHIJKLMNO";
+		for (int i = 0; i < this.grille.length; i++) {
+			for (int j = 0; j < this.grille.length; j++) {
+				if (this.grille[j][i].getIndex() != Case.INDEX_CASE_VIDE) {
+					res += line.charAt(this.grille[j][i].getIndex());
+				} else {
+					res += " ";
+				}
+				if (j == this.grille.length - 1)
+					res += "\n";
+				else
+					res += " / ";
+			}
+		}
+		return res;
+	}
+
 	public int getNbCoups() {
 		return this.nbCoups;
 	}
 
+	/**
+	 * Retourne la liste de déplacements possible à l'état actuel du puzzle
+	 * 
+	 * @return
+	 */
 	public List<EDeplacement> listeDeplacementsPossibles() {
 		List<EDeplacement> deplacementsPossibles = new ArrayList<>();
 		if (this.getXCaseVide() < this.grille.length - 1)
@@ -300,6 +324,13 @@ public class Puzzle implements Serializable, Cloneable {
 		return deplacementsPossibles;
 	}
 
+	/**
+	 * Permet de savoir le déplacement opposé par rapport à une direction de type
+	 * EDeplacement
+	 * 
+	 * @param move EDeplacement
+	 * @return EDeplacement mouvement inverse de move
+	 */
 	public static EDeplacement inverseDeplacement(EDeplacement move) {
 		switch (move) {
 		case HAUT:
@@ -315,8 +346,16 @@ public class Puzzle implements Serializable, Cloneable {
 		}
 	}
 
+	/**
+	 * Sauvegarde l'état du puzzle (grille et nombre de coups actuels) dans un
+	 * memento
+	 * 
+	 * @return Object de type Memento
+	 */
 	public Object saveToMemento() {
 		Case[][] tmp = new Case[this.grille.length][this.grille.length];
+		// on clone la grille car c'est un objet, pour éviter d'avoir la même référence
+		// dans le memento
 		for (int i = 0; i < this.grille.length; i++) {
 			for (int j = 0; j < this.grille.length; j++) {
 				try {
@@ -329,6 +368,11 @@ public class Puzzle implements Serializable, Cloneable {
 		return new Memento(tmp, nbCoups);
 	}
 
+	/**
+	 * Restore depuis un memento le puzzle
+	 * 
+	 * @param m, Object de type Memento attendu
+	 */
 	public void restoreFromMemento(Object m) {
 		if (m instanceof Memento) {
 			Memento memento = (Memento) m;
