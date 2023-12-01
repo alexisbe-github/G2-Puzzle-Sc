@@ -220,6 +220,8 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 						});
 						Thread.sleep(300);
 					}
+					boutonPause.setDisable(true);
+					boutonIA.setDisable(true);
 					return null;
 				}
 			};
@@ -229,7 +231,9 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			threadIA.start();
 			iaLance = true;
 			boutonUndo.setDisable(true);
+			boutonPause.setDisable(true);
 		} else {
+			boutonPause.setDisable(false);
 			boutonIA.setText("Lancer l'IA");
 			threadIA.interrupt();
 			if (partie.getPuzzle().undoActive()) {
