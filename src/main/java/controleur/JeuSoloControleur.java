@@ -32,6 +32,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import main.java.model.Case;
 import main.java.model.EDeplacement;
@@ -336,10 +337,9 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	 * @param e L'événement
 	 */
 	private void handleExit(Event e) {
-//		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
-//			return;
-//		}
-		// TODO Ne pas sérialiser si la partie est terminée
+		if (!(e instanceof WindowEvent || e instanceof ActionEvent)) {
+			return;
+		}
 		if (!this.partie.getPuzzle().verifierGrille()) {
 			this.partie.getTimer().stopChrono();
 			String dossier = "src/main/java/model/serialisation/objets/";
