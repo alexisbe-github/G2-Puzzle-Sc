@@ -54,7 +54,7 @@
 				<Insets bottom="20.0" top="20.0" />
 			</GridPane.margin>
 		</VBox>
-		<Button mnemonicParsing="false" onAction="#connexion"
+		<Button mnemonicParsing="false" fx:id="boutonConnexion" onAction="#connexion"
 			prefWidth="85.0" text="Connexion" GridPane.columnIndex="2"
 			GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 		<MenuButton fx:id="menuProfils" alignment="CENTER"

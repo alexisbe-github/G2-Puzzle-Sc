@@ -2,9 +2,6 @@ package main.java.controleur;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -38,6 +36,9 @@ public class RecherchePartieControleur implements Initializable {
 	@FXML
 	private MenuButton menuProfils;
 
+	@FXML
+	private Button boutonConnexion;
+
 	public RecherchePartieControleur(Stage stage) {
 		this.owner = stage;
 	}
@@ -50,6 +51,28 @@ public class RecherchePartieControleur implements Initializable {
 			this.updateListeProfils();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		boutonConnexion.setDisable(true);
+
+		this.saisiePort.textProperty().addListener((observable, oldValue, newValue) -> {
+			this.updateEtatBouton();
+		});
+
+		this.saisieIP.textProperty().addListener((observable, oldValue, newValue) -> {
+			this.updateEtatBouton();
+		});
+	}
+
+	private void updateEtatBouton() {
+		try {
+			Integer.parseInt(saisiePort.getText());
+			if (saisieIP.getText().equals("") || this.joueurChoisi == null) {
+				boutonConnexion.setDisable(true);
+			} else {
+				boutonConnexion.setDisable(false);
+			}
+		} catch (NumberFormatException e) {
+			boutonConnexion.setDisable(true);
 		}
 	}
 
@@ -64,6 +87,7 @@ public class RecherchePartieControleur implements Initializable {
 				item.setOnAction(value -> {
 					joueurChoisi = jactuel;
 					this.menuProfils.setText(jactuel.getPseudo());
+					this.updateEtatBouton();
 				});
 				menuProfils.getItems().add(item);
 			}
