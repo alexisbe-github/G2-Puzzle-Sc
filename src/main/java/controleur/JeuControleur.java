@@ -15,9 +15,6 @@ public abstract class JeuControleur implements Initializable {
 
 	protected Stage owner;
 
-	protected double xClick;
-	protected double yClick;
-
 	@FXML
 	protected Label chrono;
 	@FXML
@@ -37,16 +34,34 @@ public abstract class JeuControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 	}
 
+	/**
+	 * initialise les informations du joueur?
+	 */
 	protected abstract void initJoueur();
 
+	/**
+	 * met a jour l'affichage des images du puzzle.
+	 */
 	protected abstract void updateImages();
 
+	/**
+	 * met à jour les informations de jeu(images, victoire)
+	 */
 	protected abstract void updateJeu();
 
+	/**
+	 * met à jour le nombre de coups et le chronomètre (si partie solo)
+	 */
 	protected abstract void updateInfos();
 
+	/**
+	 * met à jour l'affichage lorsqu'il y a victoire
+	 */
 	protected abstract void updateVictoire();
 
+	/**
+	 * met toute la fenêtre à jour.
+	 */
 	protected void updateAll() {
 		updateJeu();
 		updateInfos();

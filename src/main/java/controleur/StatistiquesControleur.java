@@ -52,11 +52,11 @@ public class StatistiquesControleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
-		
+
 		this.radioGroupe = new ToggleGroup();
 		tempsRadio.setToggleGroup(radioGroupe);
 		victoiresRadio.setToggleGroup(radioGroupe);
-		
+
 		DAOJoueur daoj = new DAOJoueur();
 		List<JoueurSQL> jsql = daoj.trouverTout();
 		joueursData = FXCollections.observableArrayList(jsql);
@@ -103,7 +103,16 @@ public class StatistiquesControleur implements Initializable {
 		this.makeLastColumn(false, 0);
 	}
 
-	public void makeLastColumn(boolean victory, int taille) {
+	/**
+	 * Méthode qui permet d'actualiser la dernière colonne en fonction des
+	 * paramètres
+	 * 
+	 * @param victory : True si affichage des victoires, False si affichage des
+	 *                meilleurs temps
+	 * @param taille  : taille des taquins dont les données seront prises. si <3,
+	 *                elles seront prises de tous.
+	 */
+	private void makeLastColumn(boolean victory, int taille) {
 		colonneVictoires.setText(victory ? "Victoires" : "Meilleur temps");
 		colonneVictoires.setCellFactory(param -> new TableCell<JoueurSQL, Long>() {
 			@Override
@@ -130,15 +139,15 @@ public class StatistiquesControleur implements Initializable {
 		});
 		this.tableau.setItems(joueursData);
 	}
-	
+
 	@FXML
 	private void updateFiltres() {
 		try {
 			this.makeLastColumn(this.victoiresRadio.isSelected(), Integer.parseInt(this.inputTaille.getText()));
-		}catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			this.makeLastColumn(this.victoiresRadio.isSelected(), 0);
 		}
-		
+
 	}
 
 }

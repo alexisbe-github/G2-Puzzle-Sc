@@ -70,12 +70,12 @@ public class JeuMultiCoopControleur extends JeuMultiControleur implements Initia
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
 
-
+		//Requête p signifiant puzzle.
 		this.client.lancerRequete("p");
 
+		//Tant que la partie n'est pas finie
 		while (!this.puzzle.verifierGrille()) {
 			Platform.runLater(() -> {
-
 				try {
 					ObjectInputStream ois;
 					ois = new ObjectInputStream(client.getSocket().getInputStream());

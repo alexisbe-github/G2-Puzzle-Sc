@@ -25,7 +25,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	public PartieMultijoueurCooperative() {
 		indexJoueurCourant = 0;
 		joueurs = new ArrayList<>();
-		tableSocketDesJoueurs = new HashMap<>();
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	}
 	
 	@Override
-	protected List<Object> envoyerLancement(Joueur j) throws IOException {
+	protected List<Object> getOutputLancement(Joueur j) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		output.add("s");
 		output.add(this.joueurs);
@@ -46,7 +45,6 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 	@Override
 	public void deconnecterJoueur(Joueur j) {
 		joueurs.remove(j);
-		tableSocketDesJoueurs.remove(j);
 	}
 
 	/**

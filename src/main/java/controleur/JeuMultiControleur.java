@@ -1,27 +1,20 @@
 package main.java.controleur;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -30,11 +23,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import main.java.model.Puzzle;
 import main.java.model.client.Client;
 import main.java.model.joueur.Joueur;
-import main.java.vue.VueJeuMultiCoop;
 
 public abstract class JeuMultiControleur extends JeuControleur implements Initializable {
 
@@ -57,21 +48,18 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
 		
+		//Initialisation des informations de la fenêtre
 		this.updateImages();
 		this.initJoueur();
 		this.updateJoueurs();
 
-		// grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) ->
-		// this.handlePressAction(event));
-		// grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) ->
-		// this.handleReleaseAction(event));
-
+		//Lancement du thread d'intéraction avec le serveur.
 		this.lancerThread();
 	}
 
 	/**
 	 * mise a jour des images affichées en fonction de la position des cases dans la
-	 * grille
+	 * grille.
 	 */
 	@Override
 	protected void updateImages() {
@@ -107,8 +95,13 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 		}
 	}
 
+	/**
+	 * Cette méthode met a jour l'affichage des joueurs à la droite de l'écran.
+	 */
 	protected void updateJoueurs() {
+		//Clear l'affichage présent
 		this.boxJoueurs.getChildren().clear();
+		//Parcours des joueurs : Création de chaque VBox contenant Label(pseudo) et Image du joueur
 		for (Joueur j : joueurs) {
 			VBox v = new VBox(); // Box dans laquelle on affichera les infos des joueurs
 			v.setAlignment(Pos.CENTER);
@@ -123,6 +116,7 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 			v.setId("box" + j.getNom());
 			v.getChildren().add(i);
 			v.getChildren().add(l);
+			//Ajout de la VBox a la fenetre.
 			boxJoueurs.getChildren().add(v); // Ajout a la box principal
 		}
 	}
@@ -182,7 +176,12 @@ public abstract class JeuMultiControleur extends JeuControleur implements Initia
 			}
 		});
 	}
-
+	
+	/**
+	 * Cette méthode permet de demander les infos au serveur et de les lire.
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	protected abstract void readStream() throws IOException, InterruptedException;
 
 	protected void lancerThread() {

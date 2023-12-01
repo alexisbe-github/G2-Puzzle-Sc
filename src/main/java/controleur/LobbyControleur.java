@@ -77,11 +77,15 @@ public class LobbyControleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
 		
+		//Affichage du bouton de lancement de partie seulement pour l'hôte.
 		lancerPartie.setManaged(estHote);
 		this.updateInfos();
 		this.lancerThread();
 	}
 
+	/**
+	 * Met à jour l'affichage des joueurs
+	 */
 	private void updateJoueurs() {
 		this.boxJoueurs.getChildren().clear();
 		for (Joueur j : joueurs) {
@@ -103,6 +107,9 @@ public class LobbyControleur implements Initializable {
 		}
 	}
 
+	/**
+	 * Met à jour les informations affichées
+	 */
 	private void updateInfos() {
 		if (img != null && taille > 2) {
 			this.imagePuzzle.setImage(new Image(new ByteArrayInputStream(this.img)));
@@ -119,6 +126,12 @@ public class LobbyControleur implements Initializable {
 		}
 	}
 
+	/**
+	 * Permet de demander et lire les informations du serveur
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws InterruptedException
+	 */
 	private void readStream() throws IOException, ClassNotFoundException, InterruptedException {
 
 		if (!this.estHote)

@@ -19,7 +19,6 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 	public PartieMultijoueurCompetitive() {
 		joueurs = new ArrayList<>();
 		tablePuzzleDesJoueurs = new HashMap<>();
-		tableSocketDesJoueurs = new HashMap<>();
 	}
 
 	@Override
@@ -29,7 +28,7 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 			tablePuzzleDesJoueurs.put(j, puzzleDuJoueurJ);
 		}
 	}
-
+	
 	@Override
 	public void deplacerCase(EDeplacement dp, Joueur joueur, int numJoueur) throws IOException {
 		Puzzle puzzleDuJoueur = tablePuzzleDesJoueurs.get(joueur);
@@ -55,7 +54,7 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 	}
 	
 	@Override
-	protected List<Object> envoyerLancement(Joueur j) throws IOException {
+	protected List<Object> getOutputLancement(Joueur j) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		output.add("s");
 		output.add(this.joueurs);
@@ -67,7 +66,6 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 	public void deconnecterJoueur(Joueur j) {
 		joueurs.remove(j);
 		tablePuzzleDesJoueurs.remove(j);
-		tableSocketDesJoueurs.remove(j);
 	}
 
 	public Puzzle getPuzzleDuJoueur(Joueur j) {

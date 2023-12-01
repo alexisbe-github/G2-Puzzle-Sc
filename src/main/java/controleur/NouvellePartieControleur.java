@@ -97,9 +97,9 @@ public class NouvellePartieControleur implements Initializable {
 
 		this.soloRadio.setToggleGroup(radioGroupe);
 		this.soloRadio.addEventHandler(MouseEvent.MOUSE_PRESSED, l);
-		
+
 		this.saisiePort.textProperty().addListener((observable, oldValue, newValue) -> {
-		    this.updateEtatBoutonLancer();
+			this.updateEtatBoutonLancer();
 		});
 		this.saisieTaille.textProperty().addListener((observable, oldValue, newValue) -> {
 			this.updateEtatBoutonLancer();
@@ -186,8 +186,7 @@ public class NouvellePartieControleur implements Initializable {
 
 	private void updateEtatBoutonLancer() {
 		if (this.radioGroupe.getSelectedToggle() == null || this.saisieTaille.getText().equals("")
-				|| this.joueurChoisi == null
-				|| (saisiePort.isVisible() && saisiePort.getText().equals(""))) {
+				|| this.joueurChoisi == null || (saisiePort.isVisible() && saisiePort.getText().equals(""))) {
 			this.lancerBouton.setDisable(true);
 		} else {
 			this.lancerBouton.setDisable(false);

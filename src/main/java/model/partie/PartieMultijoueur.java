@@ -14,7 +14,6 @@ import main.java.model.joueur.Joueur;
 public abstract class PartieMultijoueur implements StrategyPartie, Serializable {
 
 	protected List<Joueur> joueurs;
-	protected Map<Joueur, Socket> tableSocketDesJoueurs;
 	protected byte[] image;
 	protected int taille;
 	protected boolean partieLancee = false;
@@ -23,16 +22,33 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 
 	public abstract void deconnecterJoueur(Joueur j);
 
+	/**
+	 * 
+	 * @param j
+	 * @param s
+	 * @throws IOException
+	 */
 	public void ajouterJoueur(Joueur j, Socket s) throws IOException {
 		joueurs.add(j);
-		tableSocketDesJoueurs.put(j, s);
 	}
 
+	/**
+	 * Permet de definir les infos de la partie pour pouvoir les envoyer à tous les joueurs.
+	 * @param img : image du puzzle
+	 * @param t : taille du puzzle
+	 */
 	public void setInfos(byte[] img, int t) {
 		this.image = img;
 		this.taille = t;
 	}
 
+	/**
+	 * 
+	 * @param param : paramètres de la requête
+	 * @param s : socket du serveur
+	 * @param j : joueur qui envoi la requête
+	 * @throws IOException
+	 */
 	public void envoyerJoueurs(String param, Socket s, Joueur j) throws IOException {
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
 		List<Object> output = new ArrayList<Object>();
@@ -48,14 +64,27 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 		}
 		
 		if(partieLancee)
-			output = envoyerLancement(j);
+			output = getOutputLancement(j);
 		
 		oop.writeObject(output);
 		oop.flush();
 	}
 
-	protected abstract List<Object> envoyerLancement(Joueur j) throws IOException;
+	/**
+	 * 
+	 * @param j : joueur qui lance la requête
+	 * @return la liste d'objets à envoyer
+	 * @throws IOException
+	 */
+	protected abstract List<Object> getOutputLancement(Joueur j) throws IOException;
 
+	/**
+	 * 
+	 * @param param : parametre de la requete.
+	 * @param s : socket du serveur.
+	 * @param j : joueur qui envoi la requête.
+	 * @throws IOException
+	 */
 	public void envoyerPuzzle(String param, Socket s, Joueur j) throws IOException {
 		List<Object> output = new ArrayList<Object>();
 		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
@@ -74,10 +103,6 @@ public abstract class PartieMultijoueur implements StrategyPartie, Serializable 
 
 	public List<Joueur> getJoueurs() {
 		return this.joueurs;
-	}
-
-	public Map<Joueur, Socket> getTableSocketDesJoueurs() {
-		return tableSocketDesJoueurs;
 	}
 
 }

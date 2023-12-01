@@ -46,6 +46,10 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	private boolean estEnPause = false;
 	private ExecutorService executor = Executors.newCachedThreadPool();
 
+	// Coordonnées de click enregistrées pour le déplacement des cases par "drag".
+	protected double xClick;
+	protected double yClick;
+
 	private List<EDeplacement> solution;
 	private Thread threadIA;
 	private int i; // index solution IA
@@ -73,18 +77,23 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
 
+		// On empêche les éléments de la fenetre d'etre focus.
 		boutonPause.setFocusTraversable(false);
 		boutonIA.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
 		boutonQuitter.setFocusTraversable(false);
 
+		// Ajout des différents evenements.
 		grille.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> this.handlePressAction(event));
 		grille.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent event) -> this.handleReleaseAction(event));
 		owner.setOnCloseRequest(event -> this.handleExit(event));
 
+		// Setup du chrono
 		this.partie.addPropertyChangeListener(this);
 		this.partie.getTimer().addPropertyChangeListener("property", this);
 		this.partie.getTimer().lancerChrono();
+
+		// Initialisation de la fenêtre
 		this.initJoueur();
 		this.updateAll();
 	}
@@ -100,12 +109,14 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		Image image;
 		grille.getChildren().clear();
 
+		// Parcours de tout le puzzle
 		for (int i = 0; i < partie.getPuzzle().getTaille(); i++) {
 			for (int j = 0; j < partie.getPuzzle().getTaille(); j++) {
+				// Création d'un label et ajout de tous les éléments utiles
 				Label l = new Label();
 				if (partie.getPuzzle().getCase(j, i).getIndex() != -1)
 					l.setText("" + ((int) partie.getPuzzle().getCase(j, i).getIndex() + 1));
-				l.setFont(new Font(18));
+				l.setFont(new Font(16));
 				l.setTextFill(Color.YELLOW);
 				l.setPrefWidth(largeurCase);
 				l.setPrefHeight(largeurCase);
@@ -113,18 +124,17 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 				l.setLayoutX(j * largeurCase);
 				l.setLayoutY(i * largeurCase);
 
-				l.setId("case" + partie.getPuzzle().getCase(j, i).getIndex());
+				l.setId("case" + partie.getPuzzle().getCase(j, i).getIndex()); // ID pour retrouver facilement
 
+				// Image en background du Label de la case.
 				image = new Image(new ByteArrayInputStream(partie.getPuzzle().getCase(j, i).getImage()));
-
 				Background bgi = new Background(
 						new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
 								BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, false)));
 				if (partie.getPuzzle().getCase(j, i).getIndex() != -1)
 					l.setBackground(bgi);
-				grille.getChildren().add(l);
-				tabCases[i][j] = l;
-				// cases.add(l);
+				grille.getChildren().add(l); // Ajout de la case a la grille affichée.
+				tabCases[i][j] = l; // Ajout de la case au tableau de cases pour les animations.
 			}
 		}
 	}
@@ -292,8 +302,12 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	 * @param event
 	 */
 	private void handleReleaseAction(MouseEvent event) {
+		// Coordonnées du vecteur qui définit le déplacement de la souris entre le clic
+		// et le relachement
 		double translateX = event.getX() - xClick;
 		double translateY = event.getY() - yClick;
+
+		// Si possible de se déplacer, faire les déplacements corréspondants.
 		if (!estEnPause && (Math.abs(translateY) > 10 || Math.abs(translateX) > 10)) {
 			if (Math.abs(translateX) > Math.abs(translateY)) {
 				if (translateX > 0)
@@ -340,7 +354,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			this.partie.getTimer().stopChrono();
 			String dossier = "src/main/java/model/serialisation/objets/";
 			File cheminDossier = new File(dossier);
-			if (!cheminDossier.exists())
+			if (!cheminDossier.exists()) // Si le dossier n'existe pas, le créer.
 				cheminDossier.mkdirs();
 			String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
 			String chemin = dossier + nom;
@@ -350,7 +364,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 
 	private void animCase(EDeplacement dir) {
 		int xMultiplier = 0, yMultiplier = 0;
-		switch (dir) {
+		switch (dir) { // Définit le déplacement présumé de la case.
 		case HAUT:
 			yMultiplier = -1;
 			break;
@@ -364,9 +378,11 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			xMultiplier = -1;
 			break;
 		}
+		// Nouvelles coordonnées de la case dans le puzzle
 		int nCoordX = partie.getPuzzle().getXCaseVide() - xMultiplier;
 		int nCoordY = partie.getPuzzle().getYCaseVide() - yMultiplier;
 
+		// Si les coordonnées sont valides, alors on déclenche l'animation puis en déplace la case.
 		if (nCoordX < partie.getPuzzle().getTaille() && nCoordX >= 0 && nCoordY < partie.getPuzzle().getTaille()
 				&& nCoordY >= 0) {
 			Case c = partie.getPuzzle().getCase(nCoordX, nCoordY);

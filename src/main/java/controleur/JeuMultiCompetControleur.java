@@ -37,7 +37,7 @@ import main.java.model.joueur.Joueur;
 import main.java.vue.VueJeuMultiCoop;
 
 public class JeuMultiCompetControleur extends JeuMultiControleur implements Initializable {
-	
+
 	/**
 	 * 
 	 * @param stage  : fenêtre dans laquelle la scene est affichée
@@ -53,14 +53,14 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 		this.joueurs = joueurs;
 
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(location,resources);
+		super.initialize(location, resources);
 		this.aVotreTour.setVisible(false);
 		this.aVotreTour.setManaged(false);
 	}
-	
+
 	@Override
 	protected void readStream() throws IOException, InterruptedException {
 

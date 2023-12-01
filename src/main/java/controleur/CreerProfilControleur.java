@@ -46,11 +46,7 @@ public class CreerProfilControleur implements Initializable {
 		this.image = ImageIO.read(new File("src/main/resources/images/defaulticon.png"));
 	}
 
-	private void updateImage() {
-		image = Scalr.resize(image, Scalr.Mode.FIT_EXACT, 250, 250);
-		this.imageJoueur.setImage(SwingFXUtils.toFXImage(this.image, null));
-	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
@@ -67,11 +63,24 @@ public class CreerProfilControleur implements Initializable {
 		    }
 		});
 	}
+	
+	/**
+	 * Met à jour l'affichage de l'image sélectionnée
+	 */
+	private void updateImage() {
+		image = Scalr.resize(image, Scalr.Mode.FIT_EXACT, 250, 250);
+		this.imageJoueur.setImage(SwingFXUtils.toFXImage(this.image, null));
+	}
 
+	/**
+	 * Permet de sélectionner une image provenant de son ordinateur.
+	 */
 	private void addImageAction() {
+		//Ajout d'un écouteur de clic sur l'image.
 		this.imageJoueur.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//Affichage d'une fenêtre de choix de fichiers
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.getExtensionFilters()
 						.add(new ExtensionFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg", "*.jpeg", "*.png"));
@@ -79,6 +88,7 @@ public class CreerProfilControleur implements Initializable {
 				File file = fileChooser.showOpenDialog(owner);
 				if (file != null) {
 					try {
+						//On resize l'image pour être sur de traîter systématiquement les mêmes tailles.
 						image = Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_EXACT, 1000, 1000);
 						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
 								file.getName().length());
@@ -93,9 +103,12 @@ public class CreerProfilControleur implements Initializable {
 		});
 	}
 
+	
 	@FXML
 	public void creerProfilBouton() {
-		if (this.image != null && this.saisiePseudo.getText() != null) {
+		//Si les informations ont été remplies
+		if (this.image != null && !this.saisiePseudo.getText().equals("")) {
+			//Création d'un nouveau joueur à l'aide de la DAO.
 			DAOJoueur dao = new DAOJoueur();
 			JoueurSQL joueur = new JoueurSQL();
 			joueur.setPseudo(this.saisiePseudo.getText());

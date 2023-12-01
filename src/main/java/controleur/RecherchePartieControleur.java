@@ -44,7 +44,7 @@ public class RecherchePartieControleur implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
-		
+
 		try {
 			this.updateListeProfils();
 		} catch (IOException e) {
