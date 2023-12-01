@@ -39,7 +39,6 @@ public class JeuConsole {
 				puzzle.deplacerCase(EDeplacement.HAUT);
 				break;
 			}
-			System.out.println("test");
 		} while (!puzzle.verifierGrille());
 		System.out.println("Vous avez résolu le puzzle en " + puzzle.getNbCoups() + " coup(s)! Féliciations!");
 	}
