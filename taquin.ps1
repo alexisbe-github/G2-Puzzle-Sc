@@ -6,7 +6,7 @@ $cheminWarGenere = "C:/Users/Administrateur/Desktop/L3/Java/Projet/G2-Puzzle-Sc-
 $cheminWebapps = "C:/Users/Administrateur/Downloads/Apache Tomcat/apache-tomcat-10.0.23/webapps"
 $cheminWarExistant = Join-Path $cheminWebapps "taquin.war"
 
-# Si le fichier WAR est généré, déplace-le dans le répertoire Tomcat webapps en écrasant le fichier existant
+# Si le fichier WAR est généré, le déplace dans le répertoire Tomcat webapps en écrasant le fichier existant
 if (Test-Path $cheminWarGenere) {
     Move-Item -Path $cheminWarGenere -Destination $cheminWarExistant -Force
     Write-Host "Le fichier WAR a bien été créé."
