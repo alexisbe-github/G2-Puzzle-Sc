@@ -179,16 +179,16 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 			public void handle(KeyEvent event) {
 				if (!estEnPause) {
 					switch (event.getCode()) {
-					case UP:
+					case Z,UP:
 						animCase(EDeplacement.HAUT);
 						break;
-					case DOWN:
+					case S,DOWN:
 						animCase(EDeplacement.BAS);
 						break;
-					case LEFT:
+					case Q,LEFT:
 						animCase(EDeplacement.GAUCHE);
 						break;
-					case RIGHT:
+					case D,RIGHT:
 						animCase(EDeplacement.DROITE);
 						break;
 					default:
