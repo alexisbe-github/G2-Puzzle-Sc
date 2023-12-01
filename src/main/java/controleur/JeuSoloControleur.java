@@ -3,6 +3,7 @@ package main.java.controleur;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -70,7 +71,7 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		owner.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/images/logo.jpg")));
-		
+
 		boutonPause.setFocusTraversable(false);
 		boutonIA.setFocusTraversable(false);
 		boutonUndo.setFocusTraversable(false);
@@ -342,6 +343,9 @@ public class JeuSoloControleur extends JeuControleur implements Initializable, P
 		if (!this.partie.getPuzzle().verifierGrille()) {
 			this.partie.getTimer().stopChrono();
 			String dossier = "src/main/java/model/serialisation/objets/";
+			File cheminDossier = new File(dossier);
+			if (!cheminDossier.exists())
+				cheminDossier.mkdirs();
 			String nom = String.format("partie_solo-%d.ser", System.currentTimeMillis());
 			String chemin = dossier + nom;
 			Serialisation.serialiserObjet(this.partie, chemin);
