@@ -33,18 +33,15 @@ public class PartieMultijoueurCooperative extends PartieMultijoueur{
 		puzzleCommun = new Puzzle(taillePuzzle, image);
 	}
 	
-//	@Override
-//	protected void envoyerLancement(Socket s, Joueur j) throws IOException {
-//		List<Object> output = new ArrayList<Object>();
-//		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
-//		
-//		output.add("s");
-//		output.add(this.joueurs);
-//		output.add(this.indexJoueurCourant);
-//		output.add(this.puzzleCommun);
-//		
-//		oop.writeObject(output);
-//	}
+	@Override
+	protected List<Object> envoyerLancement(Joueur j) throws IOException {
+		List<Object> output = new ArrayList<Object>();
+		output.add("s");
+		output.add(this.joueurs);
+		output.add(this.indexJoueurCourant);
+		output.add(this.puzzleCommun);
+		return output;
+	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {

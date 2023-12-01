@@ -54,17 +54,14 @@ public class PartieMultijoueurCompetitive extends PartieMultijoueur {
 		return false;
 	}
 	
-//	@Override
-//	protected void envoyerLancement(Socket s, Joueur j) throws IOException {
-//		List<Object> output = new ArrayList<Object>();
-//		ObjectOutputStream oop = new ObjectOutputStream(s.getOutputStream());
-//		
-//		output.add("s");
-//		output.add(this.joueurs);
-//		output.add(this.getPuzzleDuJoueur(j));
-//		
-//		oop.writeObject(output);
-//	}
+	@Override
+	protected List<Object> envoyerLancement(Joueur j) throws IOException {
+		List<Object> output = new ArrayList<Object>();
+		output.add("s");
+		output.add(this.joueurs);
+		output.add(this.getPuzzleDuJoueur(j));
+		return output;
+	}
 
 	@Override
 	public void deconnecterJoueur(Joueur j) {

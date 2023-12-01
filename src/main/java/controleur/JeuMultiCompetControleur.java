@@ -49,7 +49,6 @@ public class JeuMultiCompetControleur extends JeuMultiControleur implements Init
 		this.owner = stage;
 		this.joueur = joueur;
 		this.client = client;
-
 		this.puzzle = puzzle;
 		this.joueurs = joueurs;
 
